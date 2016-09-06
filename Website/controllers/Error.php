@@ -1,0 +1,18 @@
+<?php
+
+class Error extends Controller {
+
+    public $pageName = "";
+    
+    public function __construct($_pageName) {
+        parent::__construct();
+        
+        $this->pageName = $_pageName;
+    }
+    
+    public function index() {
+        $this->view->pageName = $this->pageName;
+        $this->view->render('error/index');
+    }
+
+}
