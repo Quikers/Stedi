@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="13.3">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>490</x>
+      <y>250</y>
+      <w>160</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>users
+--
+int id(16)
+
+varchar username(255)
+varchar password(42)
+varchar email(255)
+varchar firstname(255)
+varchar insertion(255)
+varchar lastname(255)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>990</x>
+      <y>250</y>
+      <w>160</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>games
+--
+int id(16)
+
+varchar path(255)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>740</x>
+      <y>250</y>
+      <w>160</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>ratings
+--
+int userid(16)
+int gameid(16)
+
+decimal rating(5,0)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>890</x>
+      <y>270</y>
+      <w>120</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&gt;-</panel_attributes>
+    <additional_attributes>10.0;30.0;60.0;30.0;60.0;10.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>640</x>
+      <y>270</y>
+      <w>120</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&gt;-</panel_attributes>
+    <additional_attributes>100.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>
