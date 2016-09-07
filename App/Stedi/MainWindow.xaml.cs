@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Windows;
 
 namespace Stedi {
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
