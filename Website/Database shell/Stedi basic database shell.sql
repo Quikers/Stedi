@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 07, 2016 at 11:48 AM
+-- Generation Time: Sep 08, 2016 at 10:42 AM
 -- Server version: 10.1.10-MariaDB
 -- PHP Version: 5.6.19
 
@@ -23,12 +23,31 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `comments`
+--
+
+CREATE TABLE `comments` (
+  `id` int(16) NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `userid` int(16) NOT NULL,
+  `comment` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `games`
 --
 
 CREATE TABLE `games` (
   `id` int(16) NOT NULL,
-  `path` varchar(255) NOT NULL
+  `name` varchar(255) NOT NULL,
+  `path` varchar(255) NOT NULL,
+  `activated` tinyint(1) NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `genre` varchar(255) NOT NULL,
+  `author` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -71,10 +90,24 @@ INSERT INTO `users` (`id`, `username`, `password`, `email`, `firstname`, `insert
 --
 
 --
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `userid` (`userid`);
+
+--
 -- Indexes for table `games`
 --
 ALTER TABLE `games`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `ratings`
+--
+ALTER TABLE `ratings`
+  ADD KEY `userid` (`userid`),
+  ADD KEY `gameid` (`gameid`);
 
 --
 -- Indexes for table `users`
@@ -86,6 +119,11 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for dumped tables
 --
 
+--
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `id` int(16) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `users`
 --
