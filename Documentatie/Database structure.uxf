@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="13.3">
+<diagram program="umlet" version="14.2">
   <zoom_level>10</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>490</x>
-      <y>250</y>
+      <x>70</x>
+      <y>150</y>
       <w>160</w>
-      <h>170</h>
+      <h>180</h>
     </coordinates>
     <panel_attributes>users
 --
-int id(16)
+int id(16) P key
 
 varchar username(255)
 varchar password(42)
@@ -24,25 +24,31 @@ varchar lastname(255)</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>990</x>
-      <y>250</y>
+      <x>570</x>
+      <y>150</y>
       <w>160</w>
-      <h>170</h>
+      <h>180</h>
     </coordinates>
     <panel_attributes>games
 --
-int id(16)
+int id(16) P key
 
-varchar path(255)</panel_attributes>
+varchar name(255)
+varchar path(255)
+bool activated(1)
+datetime created
+varchar author(255)
+varchar genre(255)
+varchar description(255)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>740</x>
-      <y>250</y>
+      <x>320</x>
+      <y>150</y>
       <w>160</w>
-      <h>170</h>
+      <h>180</h>
     </coordinates>
     <panel_attributes>ratings
 --
@@ -55,8 +61,8 @@ decimal rating(5,0)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>890</x>
-      <y>270</y>
+      <x>470</x>
+      <y>170</y>
       <w>120</w>
       <h>50</h>
     </coordinates>
@@ -66,12 +72,40 @@ decimal rating(5,0)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>640</x>
-      <y>270</y>
+      <x>220</x>
+      <y>170</y>
       <w>120</w>
       <h>30</h>
     </coordinates>
     <panel_attributes>lt=&gt;-</panel_attributes>
     <additional_attributes>100.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>320</x>
+      <y>350</y>
+      <w>160</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>comments
+--
+int id(16) P key
+
+datetime created
+int userid(16)
+text comment</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>220</x>
+      <y>180</y>
+      <w>120</w>
+      <h>260</h>
+    </coordinates>
+    <panel_attributes>lt=&gt;-</panel_attributes>
+    <additional_attributes>100.0;240.0;50.0;240.0;50.0;10.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>
