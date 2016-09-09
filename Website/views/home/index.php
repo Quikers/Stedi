@@ -4,6 +4,7 @@
         <form method="POST" action="<?= URL ?>login">
             <input required type="text" name="username" id="iUsername" placeholder="Username"><br>
             <input required type="password" name="password" id="iPassword" placeholder="Password">
+            <input type="submit" id="iSubmit" hidden="true">
         </form>
     </div>
     
@@ -18,6 +19,7 @@
             <input required autocomplete="off" type="text"      name="firstname" id="iFirstname" placeholder="First name"><br>
             <input          autocomplete="off" type="text"      name="insertion" id="iInsertion" placeholder="Insertion (e.g. van der)"><br>
             <input required autocomplete="off" type="text"      name="lastname"  id="iLastname"  placeholder="Last name">
+            <input type="submit" id="iSubmit" hidden="true">
         </form>
     </div>
 </div>
