@@ -1,8 +1,8 @@
-</div>
+    </div>
 
-<div id="footer">
-    (C) Stedi, 2016
-</div>
-
+    <div id="footer">
+        &copy; Stedi, 2016
+    </div>
+        
 </body>
 </html>

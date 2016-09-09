@@ -11,7 +11,7 @@ class Error extends Controller {
     }
     
     public function index() {
-        $this->view->pageName = $this->pageName;
+        $this->view->title = $this->pageName;
         $this->view->render('error/index');
     }
 
