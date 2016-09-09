@@ -12,12 +12,12 @@ class Database extends PDO
     
     public function query($sql) {
         $sth = $this->prepare($sql);
-        foreach ($array as $key => $value) {
-            $sth->bindValue("$key", $value);
-        }
-        
         $sth->execute();
-        return $sth->fetchAll(PDO::FETCH_ASSOC);
+        
+        $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+        
+        if (count($result) == 1) { $result = $result[0]; }
+        return $result;
     }
     
 }

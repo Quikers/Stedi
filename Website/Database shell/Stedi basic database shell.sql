@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 08, 2016 at 10:42 AM
+-- Generation Time: Sep 09, 2016 at 11:05 AM
 -- Server version: 10.1.10-MariaDB
 -- PHP Version: 5.6.19
 
@@ -43,7 +43,7 @@ CREATE TABLE `games` (
   `id` int(16) NOT NULL,
   `name` varchar(255) NOT NULL,
   `path` varchar(255) NOT NULL,
-  `activated` tinyint(1) NOT NULL,
+  `activated` int(2) NOT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `genre` varchar(255) NOT NULL,
   `author` varchar(255) NOT NULL,

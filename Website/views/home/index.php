@@ -1,4 +1,9 @@
 <div id="formContainer">
+    
+    <?php if (isset($_SESSION["loginFail"]) && $_SESSION["loginFail"] == true) { ?>
+        <h1>Login failed, invalid username or password.</h1>
+    <?php } ?>
+    
     <div id="loginContainer">
         <h2>LOGIN</h2>
         <form method="POST" action="<?= URL ?>login">

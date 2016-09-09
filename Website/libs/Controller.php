@@ -6,15 +6,14 @@ class Controller {
         $this->view = new View();
     }
     
-    public function loadModel($name, $modelPath = 'models/') {
+    public function loadModel($name, $modelPath = '../models/') {
         
-        $path = $modelPath . $name.'_model.php';
+        $path = $modelPath . $name.'Model.php';
         
         if (file_exists($path)) {
-            require $modelPath .$name.'_model.php';
+            require $path;
             
-            $modelName = $name . '_Model';
-            $this->model = new $modelName();
+            $this->model = new $name();
         }        
     }
 
