@@ -5,8 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Stedi"
         mc:Ignorable="d"
-        Title="Stedi" Height="720" Width="1280" WindowStartupLocation="CenterScreen" FontFamily="Segoe UI Light" Topmost="True" Deactivated="Stedi_Deactivated">
-    <Grid Background="#606060">
-        
+        Title="Stedi" Height="720" Width="1280" WindowStartupLocation="CenterScreen" FontFamily="Segoe UI Light" Topmost="True" Deactivated="Stedi_Deactivated" WindowState="Maximized" WindowStyle="None">
+    <Grid x:Name="TheMainWindow" Background="Black" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <ListBox x:Name="lbGames" HorizontalAlignment="Left" Margin="10,71,0,48" Width="200" Background="#28FFFFFF" Foreground="White" BorderThickness="0" SelectionChanged="lbGames_SelectionChanged" FontFamily="Arial"/>
+        <TextBox x:Name="txtSearchbar" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" Background="#28FFFFFF" BorderThickness="0" Width="200" Height="25" FontFamily="Arial" KeyDown="txtSearchbar_KeyDown"/>
+        <Grid x:Name="gridGameInfo" Margin="215,10,10,10" Background="#33FFFFFF">
+            <Label x:Name="lblName" Content="Name" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="1019" Height="58" FontSize="32" Background="#00000000" Foreground="White" FontFamily="Arial"/>
+            <Label x:Name="lblCreated" Content="Created: " HorizontalAlignment="Left" Margin="10,68,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Arial"/>
+            <Button x:Name="btnPlay" Content="Play" HorizontalAlignment="Left" Margin="10,97,0,0" VerticalAlignment="Top" Width="160" Height="30" FontSize="21.333" FontFamily="Arial" Background="#FF35552D" Foreground="White" Click="btnPlay_Click"/>
+            <Label x:Name="lblGenre" Content="Genre: " HorizontalAlignment="Left" Margin="10,149,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Arial"/>
+            <Label x:Name="lblDescription" Content="Descriptrion:" HorizontalAlignment="Left" Margin="10,178,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Arial"/>
+            <TextBox x:Name="txtDescription" HorizontalAlignment="Left" Height="150" Margin="10,207,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="1019" Background="#01FFFFFF" Foreground="White" FontFamily="Arial" BorderThickness="0"/>
+        </Grid>
+        <Label x:Name="lblSortBy" Content="Sort by:" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Arial"/>
+        <Button x:Name="btnRefresh" Content="Refresh" HorizontalAlignment="Left" Height="33" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="200" BorderThickness="0" Background="#28FFFFFF" Foreground="White" Click="btnRefresh_Click" FontFamily="Arial"/>
+        <Button x:Name="btnDate" Content="Date" HorizontalAlignment="Left" Margin="61,44,0,0" VerticalAlignment="Top" Width="37" Background="#00000000" Foreground="White" FontFamily="Arial" BorderThickness="0"/>
+        <Button x:Name="btnRating" Content="Rating" HorizontalAlignment="Left" Margin="103,44,0,0" VerticalAlignment="Top" Width="43" Background="#00000000" Foreground="White" FontFamily="Arial" BorderThickness="0"/>
+        <Button x:Name="btnPopularity" Content="Popularity" HorizontalAlignment="Left" Margin="151,44,0,0" VerticalAlignment="Top" Width="54" Background="#00000000" Foreground="White" FontFamily="Arial" BorderThickness="0"/>
+
     </Grid>
 </Window>
