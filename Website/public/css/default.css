@@ -1,3 +1,9 @@
+@font-face {
+    font-family: Century Gothic;
+    src: url(CenturyGothic.ttf);
+}
+
+
 * {
     clear: both;
     padding: 0;
@@ -64,7 +70,7 @@ a:hover {
     width: 100%;
     padding: 15px 0;
     
-    font-family: "Century Gothic";
+    font-family: Century Gothic;
     text-align: center;
 }
 
