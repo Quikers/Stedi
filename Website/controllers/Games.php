@@ -7,7 +7,7 @@ class Games extends Controller {
     }
     
     public function index() {
-        $this->view->render();
+        $this->view->render("games/index");
     }
 
 }
