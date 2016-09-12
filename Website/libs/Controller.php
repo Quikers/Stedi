@@ -13,6 +13,7 @@ class Controller {
         if (file_exists($path)) {
             require $path;
             
+            $name .= 'Model';
             $this->model = new $name();
         }        
     }

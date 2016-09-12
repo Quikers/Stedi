@@ -10,13 +10,13 @@ class Database extends PDO
         //parent::setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTIONS);
     }
     
-    public function query($sql) {
+    public function query($sql, $format = true) {
         $sth = $this->prepare($sql);
         $sth->execute();
         
         $result = $sth->fetchAll(PDO::FETCH_ASSOC);
         
-        if (count($result) == 1) { $result = $result[0]; }
+        if (count($result) == 1 && $format == true) { $result = $result[0]; }
         return $result;
     }
     

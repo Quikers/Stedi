@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    <?php Session::init(); print_r($_SESSION); ?>
+    <?php Session::init(); ?>
     
     <script src="<?= URL; ?>public/js/jquery.js"></script>
     <!-- <script src="<?= URL; ?>public/js/bootstrap.min.js"></script> -->
@@ -21,7 +21,6 @@
                 <div class="li <?= $this->title == "Home" ? "active" : "" ?>"><a href="<?= URL ?>home">Home</a></div>
             <?php } else { ?>
                 <div class="li <?= $this->title == "Logout" ? "active" : "" ?>"><a href="<?= URL ?>logout">Logout</a></div>
-                <div class="li <?= $this->title == "Home" ? "active" : "" ?>"><a href="<?= URL ?>home">Home</a></div>
                 <div class="li <?= $this->title == "Games" ? "active" : "" ?>"><a href="<?= URL ?>games">Games</a></div>
                 <div class="li <?= $this->title == "Upload Your Own Game" ? "active" : "" ?>"><a href="<?= URL ?>upload">Upload Your Own Game</a></div>
             <?php } ?>

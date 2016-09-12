@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Diagnostics;
 using System.Windows;
 using System.Collections.Generic;
@@ -29,6 +30,8 @@ namespace Stedi {
             lbGames.BorderThickness = new Thickness(0);
             lbGames.SelectionChanged += lbGames_SelectionChanged;
             lbGames.FontFamily = new FontFamily("Segoe UI");
+
+            
 
             t = new Timer(2000);
             t.Elapsed += t_elapsed;
