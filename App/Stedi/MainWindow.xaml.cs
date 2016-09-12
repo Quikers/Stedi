@@ -81,7 +81,9 @@ namespace Stedi {
             games = new List<string[]>();
 
             // Add query to a MySqlCommand object
-            return Database.query("SELECT * FROM games");
+            games = Database.query("SELECT * FROM games");
+
+            return;
         }
 
         // Filter game list
