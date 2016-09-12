@@ -1,39 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows;
+using System.Collections.Generic;
 
 // IO for checking and reading file
 using System.IO;
 
-// MySql
-using MySql.Data;
-using MySql.Data.MySqlClient;
-using System.Collections.Generic;
-
 namespace Stedi {
     public partial class MainWindow : Window {
         // Variables
-        private static MySqlConnection MySqlConn;
         List<string[]> games;
 
         public MainWindow()
         {
-            // Init
-            // Create MySQL connection
-            string MySqlConfig = "Server=localhost;Database=stedi;Uid=root;";
-            try
-            {
-                MySqlConn = new MySqlConnection(MySqlConfig);
-                MySqlConn.Open();
-            }
-            catch
-            {
-                // Couldn't connect to database. Show error message and close application
-                MessageBox.Show("Couldn't connect to database.");
-                Application.Current.Shutdown();
-            }
-
-            // MySQL connection created succesfully ready to start application window
             InitializeComponent();
 
             // Update while preparing the window
@@ -102,25 +81,7 @@ namespace Stedi {
             games = new List<string[]>();
 
             // Add query to a MySqlCommand object
-            string query = "SELECT * FROM games";
-            MySqlCommand cmd = new MySqlCommand(query, MySqlConn);
-            cmd.CommandType = System.Data.CommandType.Text;
-
-            // Execute the query and save the result in the game list
-            using (MySqlDataReader reader = cmd.ExecuteReader())
-            {
-                while(reader.Read())
-                {
-                    // Add a new string array
-                    games.Add(new string[reader.FieldCount]);
-
-                    // Set the values of the string array
-                    for(int i=0; i<reader.FieldCount; i++)
-                    {
-                        games[games.Count - 1][i] = reader.GetString(i);
-                    }
-                }
-            }
+            return Database.query("SELECT * FROM games");
         }
 
         // Filter game list
