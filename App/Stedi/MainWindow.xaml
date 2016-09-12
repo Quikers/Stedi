@@ -13,7 +13,7 @@
             <Label x:Name="lblName" Content="Name" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="1019" Height="58" FontSize="32" Background="#00000000" Foreground="White" FontFamily="Arial"/>
             <Label x:Name="lblCreated" Content="Created: " HorizontalAlignment="Left" Margin="10,68,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Arial"/>
             <Button x:Name="btnPlay" Content="Play" HorizontalAlignment="Left" Margin="10,97,0,0" VerticalAlignment="Top" Width="160" Height="30" FontSize="21.333" FontFamily="Arial" Background="#FF35552D" Foreground="White" Click="btnPlay_Click"/>
-            <Label x:Name="lblGenre" Content="Genre: " HorizontalAlignment="Left" Margin="10,149,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Arial"/>
+            <Label x:Name="lblGenre" Content="" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="16"/>
             <Label x:Name="lblDescription" Content="Descriptrion:" HorizontalAlignment="Left" Margin="10,178,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Arial"/>
             <TextBox x:Name="txtDescription" HorizontalAlignment="Left" Height="150" Margin="10,207,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="1019" Background="#01FFFFFF" Foreground="White" FontFamily="Arial" BorderThickness="0"/>
         </Grid>

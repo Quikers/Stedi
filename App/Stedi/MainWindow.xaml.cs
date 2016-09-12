@@ -41,7 +41,7 @@ namespace Stedi {
         }
 
         // Update listbox
-        private void updateListbox(List<string[]> games)
+        private void updateListbox()
         {
             // CLear listbox
             lbGames.Items.Clear();
@@ -84,22 +84,22 @@ namespace Stedi {
         private void update()
         {
             // Get games from the database
-            games = getGames();
+            getGames();
 
             // Filter games for valid directories, executables and if activated
-            games = filterGames(games);
+            filterGames();
 
             // TODO: Check if some sorting method is specified and sort by default
 
             // Update listbox
-            updateListbox(games);
+            updateListbox();
         }
 
         // Get all games from the database
-        private List<string[]> getGames()
+        private void getGames()
         {
             // List to save the game information in
-            List<string[]> games = new List<string[]>();
+            games = new List<string[]>();
 
             // Add query to a MySqlCommand object
             string query = "SELECT * FROM games";
@@ -121,12 +121,10 @@ namespace Stedi {
                     }
                 }
             }
-            
-            return games;
         }
 
         // Filter game list
-        private List<string[]> filterGames(List<string []> games)
+        private void filterGames()
         {
             // TODO: Check if returning the list is needed because games is probably passed by reference
             // Loop through all the games
@@ -167,8 +165,6 @@ namespace Stedi {
                     // TODO: Maybe report this error somewhere ???
                 }
             }
-
-            return games;
         }
 
         private void Stedi_Deactivated(object sender, EventArgs e) {
@@ -237,7 +233,7 @@ namespace Stedi {
             }
 
             // Update view
-            updateListbox(games);
+            updateListbox();
         }
     }
 }
