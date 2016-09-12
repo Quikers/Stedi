@@ -5,36 +5,57 @@ using System.Collections.Generic;
 
 // IO for checking and reading file
 using System.IO;
+using System.Timers;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Stedi {
     public partial class MainWindow : Window {
         // Variables
-        List<string[]> games;
+        static List<string[]> games;
+        static Timer t;
 
+        private static ListBox lbGames = new ListBox();
+        
         public MainWindow()
         {
             InitializeComponent();
+
+            lbGames.HorizontalAlignment = HorizontalAlignment.Left;
+            lbGames.Margin = new Thickness(10, 71, 0, 9.6);
+            lbGames.Width = 200;
+            lbGames.Background = (Brush)new BrushConverter().ConvertFromString("#28FFFFFF");
+            lbGames.Foreground = Brushes.White;
+            lbGames.BorderThickness = new Thickness(0);
+            lbGames.SelectionChanged += lbGames_SelectionChanged;
+            lbGames.FontFamily = new FontFamily("Segoe UI");
+
+            t = new Timer(2000);
+            t.Elapsed += t_elapsed;
+            t.Start();
 
             // Update while preparing the window
             update();
         }
 
         // Update listbox
-        private void updateListbox()
+        private static void updateListbox()
         {
-            // CLear listbox
-            lbGames.Items.Clear();
+            try {
+                // CLear listbox
+                lbGames.Items.Clear();
 
-            // Loop through all games and add them in the listbox
-            for(int i=0; i<games.Count; i++)
-            {
-                lbGames.Items.Add(games[i][1]); // WARNING this colum position might change
-            }
+                // Loop through all games and add them in the listbox
+                for (int i = 0; i < games.Count; i++) {
+                    lbGames.Items.Add(games[i][1]); // WARNING this colum position might change
+                }
 
-            // If there are any games select the first one
-            if(lbGames.Items.Count > 0)
-            {
-                lbGames.SelectedIndex = 0;
+                // If there are any games select the first one
+                if (lbGames.Items.Count > 0) {
+                    lbGames.SelectedIndex = 0;
+                }
+            } catch (Exception ex) {
+                MessageBox.Show(ex.ToString());
             }
         }
 
@@ -48,10 +69,10 @@ namespace Stedi {
             lblName.Content = games[index][1]; // WARNING this colum position might change
 
             // Set created
-            lblCreated.Content = "Created: " + games[index][5] + " " + games[index][4]; // WARNING this colum position might change
+            lblCreated.Content = "Created by: " + games[index][5] + " " + games[index][4]; // WARNING this colum position might change
 
             // Set genre
-            lblGenre.Content = "Genre: " + games[index][6]; // WARNING this colum position might change
+            lblGenre.Content = games[index][6]; // WARNING this colum position might change
 
             // Set description
             txtDescription.Text = games[index][7]; // WARNING this colum position might change
@@ -60,7 +81,7 @@ namespace Stedi {
         }
 
         // Update
-        private void update()
+        private static void update()
         {
             // Get games from the database
             getGames();
@@ -75,7 +96,7 @@ namespace Stedi {
         }
 
         // Get all games from the database
-        private void getGames()
+        private static void getGames()
         {
             // List to save the game information in
             games = new List<string[]>();
@@ -87,9 +108,8 @@ namespace Stedi {
         }
 
         // Filter game list
-        private void filterGames()
+        private static void filterGames()
         {
-            // TODO: Check if returning the list is needed because games is probably passed by reference
             // Loop through all the games
             for(int i=0; i<games.Count; i++)
             {
@@ -130,13 +150,6 @@ namespace Stedi {
             }
         }
 
-        private void Stedi_Deactivated(object sender, EventArgs e) {
-            Activate();
-            Topmost = false; // important
-            Topmost = true;  // important
-            Focus();         // important
-        }
-
         // Update game info when a game is selected
         private void lbGames_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
@@ -155,9 +168,14 @@ namespace Stedi {
         }
 
         // Update everything
-        private void btnRefresh_Click(object sender, RoutedEventArgs e)
-        {
-            update();
+        private void t_elapsed(object sender, EventArgs e) {
+            t.Stop();
+
+            getGames();
+            filterGames();
+            updateListbox();
+
+            t.Start();
         }
 
         private void txtSearchbar_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
