@@ -11,6 +11,9 @@ namespace Stedi {
     static class Database {
         private static MySqlConnection MySqlConn;
 
+        /// <summary>
+        /// Static database class to get information from the Stedi database.
+        /// </summary>
         static Database() {
             // Init
             // Create MySQL connection
@@ -25,6 +28,11 @@ namespace Stedi {
             }
         }
 
+        /// <summary>
+        /// Sends a request to the Stedi database to retrieve information.
+        /// </summary>
+        /// <param name="sql">The SQL code to send</param>
+        /// <returns></returns>
         public static List<string[]> query(string sql) {
             List<string[]> items = new List<string[]>();
 

@@ -6,32 +6,39 @@ using System.Collections.Generic;
 
 // IO for checking and reading file
 using System.IO;
-using System.Timers;
+using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
+using Timer = System.Timers.Timer;
 
 namespace Stedi {
     public partial class MainWindow : Window {
         // Variables
-        static List<string[]> games;
-        static Timer t;
+        List<string[]> games = new List<string[]>();
+        private Process gameProcess = new Process();
+        private int savedIndex = -1;
+        Timer t;
 
-        private static ListBox lbGames = new ListBox();
+        private ListBox lbGames = new ListBox();
         
         public MainWindow()
         {
             InitializeComponent();
 
             lbGames.HorizontalAlignment = HorizontalAlignment.Left;
-            lbGames.Margin = new Thickness(10, 71, 0, 9.6);
-            lbGames.Width = 200;
+            lbGames.Margin = new Thickness(10, 81, 0, 9.6);
+            lbGames.Width = 350;
             lbGames.Background = (Brush)new BrushConverter().ConvertFromString("#28FFFFFF");
             lbGames.Foreground = Brushes.White;
             lbGames.BorderThickness = new Thickness(0);
             lbGames.SelectionChanged += lbGames_SelectionChanged;
             lbGames.FontFamily = new FontFamily("Segoe UI");
+            lbGames.FontSize = 20;
 
-            
+            TheMainWindow.Children.Add(lbGames);
+
+            cbCategory.SelectedIndex = 0;
 
             t = new Timer(2000);
             t.Elapsed += t_elapsed;
@@ -41,8 +48,10 @@ namespace Stedi {
             update();
         }
 
-        // Update listbox
-        private static void updateListbox()
+        /// <summary>
+        /// Updates lbGames' content.
+        /// </summary>
+        private void updateListbox()
         {
             try {
                 // CLear listbox
@@ -55,15 +64,18 @@ namespace Stedi {
 
                 // If there are any games select the first one
                 if (lbGames.Items.Count > 0) {
-                    lbGames.SelectedIndex = 0;
+                    lbGames.SelectedIndex = savedIndex != -1 ? savedIndex : 0;
                 }
             } catch (Exception ex) {
                 MessageBox.Show(ex.ToString());
             }
         }
 
-        // Update game information
-        private void updateGameInfo(List<string []> games, int index)
+        /// <summary>
+        /// Updates the on-screen information about the specified game.
+        /// </summary>
+        /// <param name="index">The index of the selected game</param>
+        private void updateGameInfo(int index)
         {
             // Check if index is a valid index
             if (index < 0 || index >= games.Count) return;
@@ -71,21 +83,23 @@ namespace Stedi {
             // Set title
             lblName.Content = games[index][1]; // WARNING this colum position might change
 
-            // Set created
-            lblCreated.Content = "Created by: " + games[index][5] + " " + games[index][4]; // WARNING this colum position might change
-
             // Set genre
-            lblGenre.Content = games[index][6]; // WARNING this colum position might change
+            lblGenre.Content = string.Join(" / ", games[index][5].Split(' '));
+
+            // Set created
+            lblCreated.Content = "Created by: " + games[index][6]; // WARNING this colum position might change
+            lblDate.Content = "Release date: " + games[index][4].Split(' ')[0]; // WARNING this colum position might change
 
             // Set description
             txtDescription.Text = games[index][7]; // WARNING this colum position might change
-
-            // TODO: Get comments and show them
         }
 
-        // Update
-        private static void update()
-        {
+        /// <summary>
+        /// All updates combined into one function.
+        /// </summary>
+        private void update() {
+            savedIndex = lbGames.SelectedIndex;
+
             // Get games from the database
             getGames();
 
@@ -93,73 +107,92 @@ namespace Stedi {
             filterGames();
 
             // TODO: Check if some sorting method is specified and sort by default
+        }
 
-            // Update listbox
+        /// <summary>
+        /// Gets the list of games from the database.
+        /// </summary>
+        private void getGames()
+        {
+            // Add query to a MySqlCommand object
+            games = Database.query("SELECT * FROM games");
+        }
+        
+        /// <summary>
+        /// Filters all games by category and the search bar.
+        /// </summary>
+        private void filterGames() {
+            Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Games");
+
+            // Loop through all the games
+            for (int i = 0; i < games.Count; i++)
+            {
+                // Check if game is activated
+                if(Convert.ToInt16(games[i][3]) == 0)
+                {
+                    // Game is not activated and will be removed from the list
+                    games.RemoveAt(i);
+
+                    // Decrease i by 1 because the current index is removed and replaced by another one
+                    i--;
+                } else if(!Directory.Exists(Directory.GetCurrentDirectory() + @"\Games\" + games[i][0])) {
+                    // Game is not activated and will be removed from the list
+                    games.RemoveAt(i);
+
+                    // Set game to activated but doesn't exist on hard drive
+                    Database.query("UPDATE `games` SET `activated` = 2");
+
+                    // Decrease i by 1 because the current index is removed and replaced by another one
+                    i--;
+                } else if (!File.Exists(Directory.GetCurrentDirectory() + @"\Games\" + games[i][0] + @"\Game.exe")) {
+                    // Game.exe does not exist and will be removed from the list
+                    games.RemoveAt(i);
+
+                    // Set game to activated but doesn't exist on hard drive
+                    Database.query("UPDATE `games` SET `activated` = 2");
+
+                    // Decrease i by 1 because the current index is removed and replaced by another one
+                    i--;
+                }
+            }
+
+            if (txtSearchbar.Text.Trim(' ') != "") {
+
+                // String to search for
+                string searchValue = txtSearchbar.Text.ToLower();
+
+                // Loop through all the games
+                for (int i = 0; i < games.Count; i++) {
+                    // WARNING this colum positions might change
+                    if (!games[i][1].ToLower().Contains(searchValue) // Search in the name
+                        && !games[i][5].ToLower().Contains(searchValue) // Search in the author
+                        && !games[i][6].ToLower().Contains(searchValue) // Search in the genre
+                        && !games[i][7].ToLower().Contains(searchValue)) // Search in the discription
+                    {
+                        // When nothing is found remove from list
+                        games.RemoveAt(i);
+
+                        // Decrease i by 1 because the current index is removed and replaced by another one
+                        i--;
+                    }
+                }
+            }
+
+            // Update view
             updateListbox();
         }
 
-        // Get all games from the database
-        private static void getGames()
+        /// <summary>
+        /// Update game info when a game is selected
+        /// </summary>
+        private void lbGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // List to save the game information in
-            games = new List<string[]>();
-
-            // Add query to a MySqlCommand object
-            games = Database.query("SELECT * FROM games");
-
-            return;
+            updateGameInfo(lbGames.SelectedIndex);
         }
 
-        // Filter game list
-        private static void filterGames()
-        {
-            // Loop through all the games
-            for(int i=0; i<games.Count; i++)
-            {
-                // Check if game is activated by admin
-                if(games[i][3] == "False")
-                {
-                    // Game is not activated and will be removed from the list
-                    games.RemoveAt(i);
-
-                    // Decrease i by 1 because the current index is removed and replaced by another one
-                    i--;
-                }
-
-                // Check if the folder of the game exists
-                // else if is used to prevent i from decreasing by more than one
-                else if(!Directory.Exists(Directory.GetCurrentDirectory() + "\\games\\" + games[i][2])) // WARNING this colum position might change
-                {
-                    // Game is not activated and will be removed from the list
-                    games.RemoveAt(i);
-
-                    // Decrease i by 1 because the current index is removed and replaced by another one
-                    i--;
-                    
-                    // TODO: Maybe report this error somewhere ???
-                }
-
-                // Check if executable exists
-                else if (!File.Exists(Directory.GetCurrentDirectory() + "\\games\\" + games[i][2] + "\\game.exe")) // WARNING this colum position might change
-                {
-                    // Game is not activated and will be removed from the list
-                    games.RemoveAt(i);
-
-                    // Decrease i by 1 because the current index is removed and replaced by another one
-                    i--;
-                    
-                    // TODO: Maybe report this error somewhere ???
-                }
-            }
-        }
-
-        // Update game info when a game is selected
-        private void lbGames_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            updateGameInfo(games, lbGames.SelectedIndex);
-        }
-
-        // Execute selected game executable
+        /// <summary>
+        /// Executes the selected game.
+        /// </summary>
         private void btnPlay_Click(object sender, RoutedEventArgs e)
         {
             // Check if selected index is valid
@@ -167,57 +200,26 @@ namespace Stedi {
             if (index < 0 || index >= games.Count) return;
 
             // Run executable
-            System.Diagnostics.Process.Start(Directory.GetCurrentDirectory() + "\\games\\" + games[index][2] + "\\game.exe"); // WARNING this colum position might change
+            gameProcess = Process.Start(Directory.GetCurrentDirectory() + @"\games\" + games[index][2] + @"\game.exe");
         }
 
-        // Update everything
+        /// <summary>
+        /// Gets the games from the database every 2 seconds.
+        /// </summary>
         private void t_elapsed(object sender, EventArgs e) {
             t.Stop();
 
-            getGames();
-            filterGames();
-            updateListbox();
+            Dispatcher.Invoke(update);
 
             t.Start();
         }
 
+        /// <summary>
+        /// Searches the lbGames for the specified game.
+        /// </summary>
         private void txtSearchbar_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            // Check if enter is pressed
-            if (e.Key != System.Windows.Input.Key.Enter) return; // Maybe remove this ?
-
-            // First get full game list
             update();
-
-            // When search bar is empty show everything
-            if(txtSearchbar.Text == "")
-            {
-                update();
-                return;
-            }
-
-            // String to search for
-            string searchValue = txtSearchbar.Text.ToLower();
-
-            // Loop through all the games
-            for(int i=0; i<games.Count; i++)
-            {
-                // WARNING this colum positions might change
-                if (!games[i][1].ToLower().Contains(searchValue) // Search in the name
-                    && !games[i][5].ToLower().Contains(searchValue) // Search in the author
-                    && !games[i][6].ToLower().Contains(searchValue) // Search in the genre
-                    && !games[i][7].ToLower().Contains(searchValue)) // Search in the discription
-                {
-                    // When nothing is found remove from list
-                    games.RemoveAt(i);
-
-                    // Decrease i by 1 because the current index is removed and replaced by another one
-                    i--;
-                }
-            }
-
-            // Update view
-            updateListbox();
         }
     }
 }

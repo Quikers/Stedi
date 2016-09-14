@@ -7,19 +7,70 @@
         mc:Ignorable="d"
         Title="Stedi" Height="720" Width="1280" WindowStartupLocation="CenterScreen" FontFamily="Segoe UI Light" WindowState="Maximized" WindowStyle="None">
     <Grid x:Name="TheMainWindow" Background="Black" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <TextBox x:Name="txtSearchbar" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" Background="#28FFFFFF" BorderThickness="0" Width="200" Height="25" FontFamily="Arial" KeyDown="txtSearchbar_KeyDown"/>
-        <Grid x:Name="gridGameInfo" Margin="215,10,10,10" Background="#33FFFFFF">
-            <Label x:Name="lblName" Content="Name" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="1019" Height="58" FontSize="32" Background="#00000000" Foreground="White" FontFamily="Arial"/>
-            <Label x:Name="lblCreated" Content="Created: " HorizontalAlignment="Left" Margin="10,68,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Arial"/>
-            <Button x:Name="btnPlay" Content="Play" HorizontalAlignment="Left" Margin="10,97,0,0" VerticalAlignment="Top" Width="160" Height="30" FontSize="21.333" FontFamily="Arial" Background="#FF35552D" Foreground="White" Click="btnPlay_Click"/>
-            <Label x:Name="lblGenre" Content="" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="16"/>
-            <Label x:Name="lblDescription" Content="Descriptrion:" HorizontalAlignment="Left" Margin="10,178,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Arial"/>
-            <TextBox x:Name="txtDescription" HorizontalAlignment="Left" Height="150" Margin="10,207,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="1019" Background="#01FFFFFF" Foreground="White" FontFamily="Arial" BorderThickness="0"/>
+        <TextBox x:Name="txtSearchbar" FontSize="20" Padding="10, 5, 10, 5" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" Background="#28FFFFFF" BorderThickness="0" Width="350" Height="35" FontFamily="Century Gothic" KeyDown="txtSearchbar_KeyDown"/>
+        <TextBlock IsHitTestVisible="False" Padding="10, 5, 10, 5" Text="Search" FontSize="20" TextAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,8,0,0" Foreground="DarkGray" Height="37" Width="74">
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Text, ElementName=txtSearchbar}" Value="">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+        <Grid x:Name="gridGameInfo" Margin="365,10,9.6,9.6" Background="#33FFFFFF">
+            <Label x:Name="lblGenre" Content="" HorizontalAlignment="Left" Margin="44,75,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="24" Height="40" Width="832"/>
+            <Label x:Name="lblName" Content="Name" HorizontalAlignment="Left" Margin="32,32,0,0" VerticalAlignment="Top" Width="844" Height="62" FontSize="40" Background="#00000000" Foreground="White" FontFamily="Century Gothic" FontWeight="Thin"/>
+            <Label x:Name="lblCreated" Content="Created by: " HorizontalAlignment="Left" Margin="32,132,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="18" Height="32" Width="844"/>
+            <Label x:Name="lblDate" Content="Created on: " HorizontalAlignment="Left" Margin="32,168,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="18" Height="32" Width="844"/>
+            <Button x:Name="btnPlay" Content="Play" HorizontalAlignment="Left" Margin="32,235,0,0" VerticalAlignment="Top" Width="156" Height="29" FontSize="21.333" FontFamily="Arial" Background="#9F000000" Foreground="White" Click="btnPlay_Click"/>
+            <TextBox x:Name="txtDescription" HorizontalAlignment="Left" Height="383" Margin="32,285,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="844" Background="#01FFFFFF" Foreground="White" FontFamily="Segoe UI" BorderThickness="0" FontSize="20"/>
         </Grid>
-        <Label x:Name="lblSortBy" Content="Sort by:" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Arial"/>
-        <Button x:Name="btnDate" Content="Date" HorizontalAlignment="Left" Margin="61,44,0,0" VerticalAlignment="Top" Width="37" Background="#00000000" Foreground="White" FontFamily="Arial" BorderThickness="0"/>
-        <Button x:Name="btnRating" Content="Rating" HorizontalAlignment="Left" Margin="103,44,0,0" VerticalAlignment="Top" Width="43" Background="#00000000" Foreground="White" FontFamily="Arial" BorderThickness="0"/>
-        <Button x:Name="btnPopularity" Content="Popularity" HorizontalAlignment="Left" Margin="151,44,0,0" VerticalAlignment="Top" Width="54" Background="#00000000" Foreground="White" FontFamily="Arial" BorderThickness="0"/>
+        <Label x:Name="lblSortBy" Content="Sort by:" HorizontalAlignment="Left" Margin="6,46,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Arial" FontSize="20"/>
+        <ComboBox x:Name="cbCategory" Template="{DynamicResource ComboBoxStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="276" Padding="5,0,5,0"  Margin="84,50,0,0" Height="26" FontSize="20">
+            <ComboBox.Resources>
+                <ControlTemplate x:Key="ComboBoxStyle" TargetType="{x:Type ComboBox}">
+                    <Grid>
+                        <ToggleButton x:Name="ToggleButton" Background="White">
+                        </ToggleButton>
+                        <Border x:Name="Border" Background="White">
+                            <TextBlock FontSize="20" Background="#BB000000" Foreground="White" FontFamily="Segoe UI Light"></TextBlock>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </ComboBox.Resources>
+            <ComboBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ComboBoxItem}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ComboBoxItem">
+                                <Grid>
+                                    <Border x:Name="Border" Background="Transparent">
+                                        <TextBlock FontSize="20" Background="#9F000000" Foreground="White" FontFamily="Segoe UI Light">
+                                    <ContentPresenter></ContentPresenter>
+                                        </TextBlock>
+                                    </Border>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="ComboBoxItem.IsSelected" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="#99000000"></Setter>
+                                    </Trigger>
+                                    <Trigger Property="ComboBoxItem.IsMouseOver" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="#66000000"></Setter>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ComboBox.ItemContainerStyle>
+            <ComboBoxItem>Test item 1</ComboBoxItem>
+            <ComboBoxItem>Test item 2</ComboBoxItem>
+            <ComboBoxItem>Test item 3</ComboBoxItem>
+            <ComboBoxItem>Test item 4</ComboBoxItem>
+        </ComboBox>
 
     </Grid>
 </Window>
