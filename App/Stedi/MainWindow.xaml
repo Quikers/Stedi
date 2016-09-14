@@ -6,8 +6,125 @@
         xmlns:local="clr-namespace:Stedi"
         mc:Ignorable="d"
         Title="Stedi" Height="720" Width="1280" WindowStartupLocation="CenterScreen" FontFamily="Segoe UI Light" WindowState="Maximized" WindowStyle="None">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="ComboBoxNormalBorderBrush" Color="#e3e9ef" />
+        <SolidColorBrush x:Key="ComboBoxNormalBackgroundBrush" Color="#3EFFFFFF"/>
+        <SolidColorBrush x:Key="ComboBoxDisabledForegroundBrush" Color="#888" />
+        <SolidColorBrush x:Key="ComboBoxDisabledBackgroundBrush" Color="#eee" />
+        <SolidColorBrush x:Key="ComboBoxDisabledBorderBrush" Color="#888" />
+
+        <ControlTemplate TargetType="ToggleButton" x:Key="ComboBoxToggleButtonTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="20" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.ColumnSpan="2" Name="Border"
+              BorderBrush="{StaticResource ComboBoxNormalBorderBrush}" 
+              CornerRadius="0" BorderThickness="0" 
+              Background="{StaticResource ComboBoxNormalBackgroundBrush}" />
+                <Border Grid.Column="1" Margin="0" BorderBrush="#444" Name="ButtonBorder"
+              CornerRadius="0" BorderThickness="0" 
+              Background="{StaticResource ComboBoxNormalBackgroundBrush}" />
+
+                <Path Name="Arrow" Grid.Column="1" 
+            Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"
+            HorizontalAlignment="Center" Fill="#444"
+            VerticalAlignment="Center" />
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="UIElement.IsMouseOver" Value="True">
+                    <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="#4CFFFFFF"/>
+                </Trigger>
+                <Trigger Property="ToggleButton.IsChecked" Value="True">
+                    <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="#5AFFFFFF"/>
+                    <Setter Property="Shape.Fill" TargetName="Arrow" Value="#66FEFEFE"/>
+                </Trigger>
+                <Trigger Property="UIElement.IsEnabled" Value="False">
+                    <Setter Property="Panel.Background" TargetName="Border" Value="{StaticResource ComboBoxDisabledBackgroundBrush}"/>
+                    <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource ComboBoxDisabledBackgroundBrush}"/>
+                    <Setter Property="Border.BorderBrush" TargetName="ButtonBorder" Value="{StaticResource ComboBoxDisabledBorderBrush}"/>
+                    <Setter Property="TextElement.Foreground" Value="{StaticResource ComboBoxDisabledForegroundBrush}"/>
+                    <Setter Property="Shape.Fill" TargetName="Arrow" Value="#999"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <Style x:Key="ComboBoxFlatStyle"  TargetType="{x:Type ComboBox}">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+            <Setter Property="TextElement.Foreground" Value="WhiteSmoke"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton Name="ToggleButton" Grid.Column="2"
+                                ClickMode="Press" Focusable="False"
+                                IsChecked="{Binding Path=IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                Template="{StaticResource ComboBoxToggleButtonTemplate}"/>
+
+                            <ContentPresenter Name="ContentSite" Margin="5,0,5,0" IsHitTestVisible="False"
+                              HorizontalAlignment="Left" VerticalAlignment="Center"
+                              Content="{TemplateBinding ComboBox.SelectionBoxItem}" 
+                              ContentTemplate="{TemplateBinding ComboBox.SelectionBoxItemTemplate}"
+                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"/>
+                            <TextBox Name="PART_EditableTextBox" Margin="3, 3, 23, 3"
+                              IsReadOnly="{TemplateBinding IsReadOnly}"
+                              Visibility="Hidden" Background="#9F000000"
+                              HorizontalAlignment="Left" VerticalAlignment="Center"
+                              Focusable="True">
+                                <TextBox.Template>
+                                    <ControlTemplate TargetType="TextBox" >
+                                        <Border Name="PART_ContentHost" Focusable="False" />
+                                    </ControlTemplate>
+                                </TextBox.Template>
+                            </TextBox>
+                            <!-- Popup showing items -->
+                            <Popup Name="Popup" Placement="Bottom"
+                               Focusable="False" AllowsTransparency="True"
+                               IsOpen="{TemplateBinding ComboBox.IsDropDownOpen}"
+                               PopupAnimation="Slide">
+                                <Grid Name="DropDown" SnapsToDevicePixels="True"
+                                    MinWidth="{TemplateBinding FrameworkElement.ActualWidth}"
+                                    MaxHeight="{TemplateBinding ComboBox.MaxDropDownHeight}">
+                                    <Border Name="DropDownBorder" Background="White" Margin="0, 1, 0, 0"
+                                        CornerRadius="0" BorderThickness="0" 
+                                        BorderBrush="{StaticResource ComboBoxNormalBorderBrush}"/>
+                                    <ScrollViewer Margin="0" SnapsToDevicePixels="True">
+                                        <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="ItemsControl.HasItems" Value="False">
+                                <Setter Property="FrameworkElement.MinHeight" TargetName="DropDownBorder" Value="95"/>
+                            </Trigger>
+                            <Trigger Property="UIElement.IsEnabled" Value="False">
+                                <Setter Property="TextElement.Foreground" Value="{StaticResource ComboBoxDisabledForegroundBrush}"/>
+                            </Trigger>
+                            <Trigger Property="ItemsControl.IsGrouping" Value="True">
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
+                            </Trigger>
+                            <Trigger Property="ComboBox.IsEditable" Value="True">
+                                <Setter Property="KeyboardNavigation.IsTabStop" Value="False"/>
+                                <Setter Property="UIElement.Visibility" TargetName="PART_EditableTextBox" Value="Visible"/>
+                                <Setter Property="UIElement.Visibility" TargetName="ContentSite" Value="Hidden"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
     <Grid x:Name="TheMainWindow" Background="Black" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <TextBox x:Name="txtSearchbar" FontSize="20" Padding="10, 5, 10, 5" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" Background="#28FFFFFF" BorderThickness="0" Width="350" Height="35" FontFamily="Century Gothic" KeyDown="txtSearchbar_KeyDown"/>
+        <TextBox x:Name="txtSearchbar" FontSize="20" Padding="10, 5, 10, 5" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" Background="#28FFFFFF" BorderThickness="0" Width="400" Height="35" FontFamily="Century Gothic" KeyDown="txtSearchbar_KeyDown"/>
         <TextBlock IsHitTestVisible="False" Padding="10, 5, 10, 5" Text="Search" FontSize="20" TextAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,8,0,0" Foreground="DarkGray" Height="37" Width="74">
             <TextBlock.Style>
                 <Style TargetType="{x:Type TextBlock}">
@@ -20,27 +137,16 @@
                 </Style>
             </TextBlock.Style>
         </TextBlock>
-        <Grid x:Name="gridGameInfo" Margin="365,10,9.6,9.6" Background="#33FFFFFF">
+        <Grid x:Name="gridGameInfo" Margin="415,10,9.6,9.6" Background="#33FFFFFF">
             <Label x:Name="lblGenre" Content="" HorizontalAlignment="Left" Margin="44,75,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="24" Height="40" Width="832"/>
             <Label x:Name="lblName" Content="Name" HorizontalAlignment="Left" Margin="32,32,0,0" VerticalAlignment="Top" Width="844" Height="62" FontSize="40" Background="#00000000" Foreground="White" FontFamily="Century Gothic" FontWeight="Thin"/>
             <Label x:Name="lblCreated" Content="Created by: " HorizontalAlignment="Left" Margin="32,132,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="18" Height="32" Width="844"/>
             <Label x:Name="lblDate" Content="Created on: " HorizontalAlignment="Left" Margin="32,168,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="18" Height="32" Width="844"/>
             <Button x:Name="btnPlay" Content="Play" HorizontalAlignment="Left" Margin="32,235,0,0" VerticalAlignment="Top" Width="156" Height="29" FontSize="21.333" FontFamily="Arial" Background="#9F000000" Foreground="White" Click="btnPlay_Click"/>
-            <TextBox x:Name="txtDescription" HorizontalAlignment="Left" Height="383" Margin="32,285,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="844" Background="#01FFFFFF" Foreground="White" FontFamily="Segoe UI" BorderThickness="0" FontSize="20"/>
+            <TextBox x:Name="txtDescription" HorizontalAlignment="Left" Height="383" Margin="32,285,0,0" TextWrapping="Wrap" Text="Description" VerticalAlignment="Top" Width="844" Background="#01FFFFFF" Foreground="White" FontFamily="Segoe UI" BorderThickness="0" FontSize="20"/>
         </Grid>
         <Label x:Name="lblSortBy" Content="Sort by:" HorizontalAlignment="Left" Margin="6,46,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Arial" FontSize="20"/>
-        <ComboBox x:Name="cbCategory" Template="{DynamicResource ComboBoxStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="276" Padding="5,0,5,0"  Margin="84,50,0,0" Height="26" FontSize="20">
-            <ComboBox.Resources>
-                <ControlTemplate x:Key="ComboBoxStyle" TargetType="{x:Type ComboBox}">
-                    <Grid>
-                        <ToggleButton x:Name="ToggleButton" Background="White">
-                        </ToggleButton>
-                        <Border x:Name="Border" Background="White">
-                            <TextBlock FontSize="20" Background="#BB000000" Foreground="White" FontFamily="Segoe UI Light"></TextBlock>
-                        </Border>
-                    </Grid>
-                </ControlTemplate>
-            </ComboBox.Resources>
+        <ComboBox x:Name="cbCategory" SelectedIndex="0" Style="{StaticResource ComboBoxFlatStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="326" Padding="5,0,5,0"  Margin="84,50,0,0" Height="26" FontSize="20" SelectionChanged="cbCategory_SelectionChanged">
             <ComboBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ComboBoxItem}">
                     <Setter Property="Template">
@@ -48,7 +154,7 @@
                             <ControlTemplate TargetType="ComboBoxItem">
                                 <Grid>
                                     <Border x:Name="Border" Background="Transparent">
-                                        <TextBlock FontSize="20" Background="#9F000000" Foreground="White" FontFamily="Segoe UI Light">
+                                        <TextBlock Padding="5,0,5,0" FontSize="20" Background="#9F000000" Foreground="White" FontFamily="Segoe UI Monospace">
                                     <ContentPresenter></ContentPresenter>
                                         </TextBlock>
                                     </Border>
@@ -66,10 +172,12 @@
                     </Setter>
                 </Style>
             </ComboBox.ItemContainerStyle>
-            <ComboBoxItem>Test item 1</ComboBoxItem>
-            <ComboBoxItem>Test item 2</ComboBoxItem>
-            <ComboBoxItem>Test item 3</ComboBoxItem>
-            <ComboBoxItem>Test item 4</ComboBoxItem>
+            <ComboBoxItem>Most popular</ComboBoxItem>
+            <ComboBoxItem>Least popular</ComboBoxItem>
+            <ComboBoxItem>Highest rating</ComboBoxItem>
+            <ComboBoxItem>Lowest rating</ComboBoxItem>
+            <ComboBoxItem>Oldest</ComboBoxItem>
+            <ComboBoxItem>Newest</ComboBoxItem>
         </ComboBox>
 
     </Grid>
