@@ -22,7 +22,7 @@
             <?php } else { ?>
                 <div class="li <?= $this->title == "Logout" ? "active" : "" ?>"><a href="<?= URL ?>logout">Logout</a></div>
                 <div class="li <?= $this->title == "Games" ? "active" : "" ?>"><a href="<?= URL ?>games">Games</a></div>
-                <div class="li <?= $this->title == "Upload Your Own Game" ? "active" : "" ?>"><a href="<?= URL ?>upload">Upload Your Own Game</a></div>
+                <div class="li <?= $this->title == "Upload Your Game" ? "active" : "" ?>"><a href="<?= URL ?>upload">Upload Your Game</a></div>
             <?php } ?>
         </div>
 
