@@ -16,7 +16,7 @@ class Games extends Controller {
             $gameList["games"] = $gamesModel->getGames();
         } else {
             $gameList["listType"] = "singleGame";
-            $gameList["game"] = $gamesModel->getGameInfo($params);
+            $gameList["game"] = $gamesModel->getGameInfo($params); 
         }
         
         $this->view->gamesList = $gameList;
