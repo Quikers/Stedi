@@ -49,24 +49,29 @@ if ($gameList["listType"] == "allGames") {
 
 <script>
 
-function Update () {
-    var prevWidth = 0;
-    var i = 0;
-    
-    (function myLoop () {          
-        setTimeout(function () {   
-            $(".game:nth-child(" + (i + 1) + ")").fadeIn(500);
-            alert($(".game:nth-child(" + (i + 1) + ")").width());
-            // ANIMATION HERE (remember half of width.
-            if (++i < $(".game").length) myLoop();
-        }, 200);
-    })(); 
+var listType = JSON.parse(<?= json_encode($gameList["listType"]) ?>);
+
+if (listType !== "allGames") {
+
+    function Update () {
+        var prevWidth = 0;
+        var i = 0;
+
+        (function myLoop () {          
+            setTimeout(function () {   
+                $(".game:nth-child(" + (i + 1) + ")").fadeIn(500);
+                alert($(".game:nth-child(" + (i + 1) + ")").width());
+                // ANIMATION HERE (remember half of width.
+                if (++i < $(".game").length) myLoop();
+            }, 200);
+        })(); 
+    }
+
+
+    $(document).ready(function () {
+        Update();
+    });
 }
-
-
-$(document).ready(function () {
-    Update();
-});
 
 
 </script>

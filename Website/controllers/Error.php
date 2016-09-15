@@ -6,6 +6,7 @@ class Error extends Controller {
     
     public function __construct($_pageName) {
         parent::__construct();
+        session::init();
         
         $this->pageName = $_pageName;
     }

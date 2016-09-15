@@ -4,6 +4,7 @@ class Games extends Controller {
     
     function __construct() {
         parent::__construct();
+        session::init();
     }
     
     public function index() {
@@ -20,7 +21,9 @@ class Games extends Controller {
         $gameList = array();
         
         $gameList["listType"] = "allGames";
-        $gameList["games"] = $gamesModel->getNonApprovedGames();
+        //$gameList["games"] = $gamesModel->getNonApprovedGames();
+            
+            print_r($_SESSION);
         
         $this->view->gamesList = $gameList;
         $this->view->title = "Games";
