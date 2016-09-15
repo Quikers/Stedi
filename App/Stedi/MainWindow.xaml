@@ -141,8 +141,28 @@
             <Label x:Name="lblGenre" Content="" HorizontalAlignment="Left" Margin="44,75,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="24" Height="40" Width="832"/>
             <Label x:Name="lblName" Content="Name" HorizontalAlignment="Left" Margin="32,32,0,0" VerticalAlignment="Top" Width="844" Height="62" FontSize="40" Background="#00000000" Foreground="White" FontFamily="Century Gothic" FontWeight="Thin"/>
             <Label x:Name="lblCreated" Content="Created by: " HorizontalAlignment="Left" Margin="32,132,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="18" Height="32" Width="844"/>
-            <Label x:Name="lblDate" Content="Created on: " HorizontalAlignment="Left" Margin="32,168,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="18" Height="32" Width="844"/>
-            <Button x:Name="btnPlay" Content="Play" HorizontalAlignment="Left" Margin="32,235,0,0" VerticalAlignment="Top" Width="156" Height="29" FontSize="21.333" FontFamily="Arial" Background="#9F000000" Foreground="White" Click="btnPlay_Click"/>
+            <Label x:Name="lblDate" Content="Release date: " HorizontalAlignment="Left" Margin="32,168,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="18" Height="32" Width="844"/>
+            <Button x:Name="btnPlay" Content="Play" HorizontalAlignment="Left" VerticalAlignment="Top" Width="156" Height="40" FontSize="21.333" FontFamily="Arial" Background="#9F000000" Foreground="White" Click="btnPlay_Click" Margin="32,223,0,0">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#7FFFFFFF" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid Background="{TemplateBinding Background}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#7FFFFFFF"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
             <TextBox x:Name="txtDescription" HorizontalAlignment="Left" Height="383" Margin="32,285,0,0" TextWrapping="Wrap" Text="Description" VerticalAlignment="Top" Width="844" Background="#01FFFFFF" Foreground="White" FontFamily="Segoe UI" BorderThickness="0" FontSize="20"/>
         </Grid>
         <Label x:Name="lblSortBy" Content="Sort by:" HorizontalAlignment="Left" Margin="6,46,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Arial" FontSize="20"/>

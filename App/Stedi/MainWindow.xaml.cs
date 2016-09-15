@@ -12,20 +12,20 @@ using System.IO;
 using Timer = System.Timers.Timer;
 
 namespace Stedi {
-    enum comboBoxItems {
-        mostPopular =   0,
-        leastPopular =  1,
-        highestRating = 2,
-        lowestRating =  3,
-        oldest =        4,
-        newest =        5
+    enum ComboBoxItems {
+        MostPopular =   0,
+        LeastPopular =  1,
+        HighestRating = 2,
+        LowestRating =  3,
+        Oldest =        4,
+        Newest =        5
     }
 
     public partial class MainWindow : Window {
         // Variables
         List<string[]> games = new List<string[]>();
         private Process gameProcess = new Process();
-        private comboBoxItems cbItems = new comboBoxItems();
+        private ComboBoxItems cbItems = new ComboBoxItems();
         private int savedIndex = -1;
         Timer t;
 
@@ -55,7 +55,7 @@ namespace Stedi {
             t.Start();
 
             // Update while preparing the window
-            update();
+            Update();
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Stedi {
         /// <summary>
         /// Updates lbGames' content.
         /// </summary>
-        private void updateListbox()
+        private void UpdateListbox()
         {
             try {
                 // CLear listbox
@@ -110,63 +110,63 @@ namespace Stedi {
         /// Updates the on-screen information about the specified game.
         /// </summary>
         /// <param name="index">The index of the selected game</param>
-        private void updateGameInfo(int index)
+        private void UpdateGameInfo(int index)
         {
             // Check if index is a valid index
             if (index < 0 || index >= games.Count) return;
 
             // Set title
-            lblName.Content = games[index][1]; // WARNING this colum position might change
+            LblName.Content = games[index][1]; // WARNING this colum position might change
 
             // Set genre
             List<string> genres = new List<string>(games[index][4].Split(' '));
             genres.Sort();
-            lblGenre.Content = string.Join(" / ", genres);
+            LblGenre.Content = string.Join(" / ", genres);
 
             // Set created
-            lblCreated.Content = "Created by: " + games[index][5]; // WARNING this colum position might change
-            lblDate.Content = "Release date: " + games[index][3].Split(' ')[0]; // WARNING this colum position might change
+            LblCreated.Content = "Created by: " + games[index][5]; // WARNING this colum position might change
+            LblDate.Content = "Release date: " + games[index][3].Split(' ')[0]; // WARNING this colum position might change
 
             // Set description
-            txtDescription.Text = games[index][6]; // WARNING this colum position might change
+            TxtDescription.Text = games[index][6]; // WARNING this colum position might change
         }
 
         /// <summary>
         /// All updates combined into one function.
         /// </summary>
-        private void update() {
+        private void Update() {
             savedIndex = lbGames.SelectedIndex;
 
             // Get games from the database
-            getGames();
+            GetGames();
 
             // Filter games for valid directories, executables and if activated
-            filterGames();
-
-            string name = "Space Pirates: The Return of the Flip Flop";
-            if (lbGames.Width - 10 < MeasureString(name).Width) {
-                int ofWidth = (int)(MeasureString(name).Width - lbGames.Width);
-                ofWidth = (ofWidth - ofWidth % 9) / 9 + 3;
-                name = name.Substring(0, name.Length - ofWidth) + "...";
-            }
-            lbGames.Items.Add(name);
+            FilterGames();
 
             // TODO: Check if some sorting method is specified and sort by default
+            SortGames();
+
+            // Update view
+            UpdateListbox();
+        }
+
+        private void SortGames() {
+            // ============================== ZET HIER DE CATEGORY SORT ==============================
         }
 
         /// <summary>
         /// Gets the list of games from the database.
         /// </summary>
-        private void getGames()
+        private void GetGames()
         {
             // Add query to a MySqlCommand object
-            games = Database.query("SELECT * FROM games");
+            games = Database.Query("SELECT * FROM games");
         }
         
         /// <summary>
         /// Filters all games by category and the search bar.
         /// </summary>
-        private void filterGames() {
+        private void FilterGames() {
             Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Games");
 
             // Loop through all the games
@@ -185,7 +185,7 @@ namespace Stedi {
                     games.RemoveAt(i);
 
                     // Set game to activated but doesn't exist on hard drive
-                    Database.query("UPDATE `games` SET `activated` = 2");
+                    Database.Query("UPDATE `games` SET `activated` = 2");
 
                     // Decrease i by 1 because the current index is removed and replaced by another one
                     i--;
@@ -194,17 +194,17 @@ namespace Stedi {
                     games.RemoveAt(i);
 
                     // Set game to activated but doesn't exist on hard drive
-                    Database.query("UPDATE `games` SET `activated` = 2");
+                    Database.Query("UPDATE `games` SET `activated` = 2");
 
                     // Decrease i by 1 because the current index is removed and replaced by another one
                     i--;
                 }
             }
 
-            if (txtSearchbar.Text.Trim(' ') != "") {
+            if (TxtSearchbar.Text.Trim(' ') != "") {
 
                 // String to search for
-                string searchValue = txtSearchbar.Text.ToLower();
+                string searchValue = TxtSearchbar.Text.ToLower();
 
                 // Loop through all the games
                 for (int i = 0; i < games.Count; i++) {
@@ -222,9 +222,6 @@ namespace Stedi {
                     }
                 }
             }
-
-            // Update view
-            updateListbox();
         }
 
         /// <summary>
@@ -232,7 +229,7 @@ namespace Stedi {
         /// </summary>
         private void lbGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            updateGameInfo(lbGames.SelectedIndex);
+            UpdateGameInfo(lbGames.SelectedIndex);
         }
 
         /// <summary>
@@ -244,8 +241,16 @@ namespace Stedi {
             int index = lbGames.SelectedIndex;
             if (index < 0 || index >= games.Count) return;
 
+            string filePath = Directory.GetCurrentDirectory() + @"\games\" + games[index][2] + @"\game.exe";
+
             // Run executable
-            gameProcess = Process.Start(Directory.GetCurrentDirectory() + @"\games\" + games[index][2] + @"\game.exe");
+            try {
+                gameProcess = Process.Start(filePath);
+            } catch (Exception ex) {
+                gameProcess = null;
+
+                MessageBox.Show(ex.ToString() + Environment.NewLine + Environment.NewLine + "File: " + filePath);
+            }
         }
 
         /// <summary>
@@ -255,8 +260,8 @@ namespace Stedi {
             t.Stop();
 
             try {
-                Dispatcher.Invoke(update);
-            } catch (Exception ex) { }
+                Dispatcher.Invoke(Update);
+            } catch (Exception ex) { } // Make sure program does not crash on exit
 
             t.Start();
         }
@@ -266,11 +271,11 @@ namespace Stedi {
         /// </summary>
         private void txtSearchbar_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            update();
+            Update();
         }
 
         private void cbCategory_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-
+            Update();
         }
     }
 }
