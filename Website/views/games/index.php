@@ -1,5 +1,17 @@
 <?php
 
+$alphabet = "01234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+function randomString($length, $alphabet) {
+    $string = "";
+
+    for ($i = 0; $i < $length; $i++) {
+        $string .= $alphabet[rand(0, 61)];
+    }
+
+    return $string;
+}
+
 $gameList = $this->gamesList;
 
 if ($gameList["listType"] == "allGames") {
@@ -13,7 +25,7 @@ if ($gameList["listType"] == "allGames") {
 
 <div style="display: none;" class="game">
     <a class="fade" href="<?= URL ?>games/app/<?= $game["id"] ?>">
-        <h1><?= $game["name"] ?></h1>
+        <h1><?= randomString(rand(10, 50), $alphabet) /* $game["name"] */ ?></h1>
         <h2><?= join(" / ", explode(" ", $game["genre"])) ?></h2>
         <h3>Creator: <?= $game["author"] ?></h3>
         <h3>Released: <?= explode(" ", $game["created"])[0] ?></h3>
@@ -54,20 +66,17 @@ if ($gameList["listType"] == "allGames") {
 var listType = "<?= $gameList["listType"] ?>";
 
 if (listType === "allGames") {
+    var gamesList = <?= json_encode($gameList["games"]) ?>;
+    
+    console.log(gamesList);
 
     function Update () {
         var prevWidth = 0;
         var i = 0;
 
         (function myLoop () {          
-            setTimeout(function () {   
-                $(".game:nth-child(" + (i + 1) + ")").fadeIn(500);
-                // ANIMATION HERE (remember half of width).
-                
-//                if (i > 0) {
-//                    $(".game:nth-child(" + (i + 1) + ")").animate({ right: "+=" + ((prevWidth / 2) + ($(".game:nth-child(" + (i + 1) + ")").width() / 2)) }, 500, function () {});
-//                }
-                
+            setTimeout(function () {
+                $(".game:nth-child(" + (i + 1) + ")").fadeIn(400);
                 if (++i < $(".game").length) myLoop();
             }, 50);
         })(); 
