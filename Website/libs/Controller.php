@@ -3,6 +3,8 @@
 class Controller {
 
     function __construct() {
+        session::init();
+        
         $this->view = new View();
     }
     

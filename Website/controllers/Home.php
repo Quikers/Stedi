@@ -4,7 +4,6 @@ class Home extends Controller {
 
     function __construct() {
         parent::__construct();
-        session::init();
     }
     
     public function index() {

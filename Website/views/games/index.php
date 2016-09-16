@@ -5,9 +5,10 @@ $gameList = $this->gamesList;
 if ($gameList["listType"] == "allGames") {
     if (count($gameList["games"]) > 0) {
         
-?><div id="gameListContainer"><center><?php
-
-        foreach($gameList["games"] as $key => $game) {
+?><div id="gameListContainer"><?php
+        
+        for ($i = 0; $i < 20; $i++) {
+            foreach($gameList["games"] as $key => $game) {
 ?>
 
 <div style="display: none;" class="game">
@@ -21,9 +22,10 @@ if ($gameList["listType"] == "allGames") {
 
 
 <?php
+            }
         }
         
-?></center></div><?php
+?></div><?php
 
     }
 } else {
@@ -49,9 +51,9 @@ if ($gameList["listType"] == "allGames") {
 
 <script>
 
-var listType = JSON.parse(<?= json_encode($gameList["listType"]) ?>);
+var listType = "<?= $gameList["listType"] ?>";
 
-if (listType !== "allGames") {
+if (listType === "allGames") {
 
     function Update () {
         var prevWidth = 0;
@@ -60,10 +62,14 @@ if (listType !== "allGames") {
         (function myLoop () {          
             setTimeout(function () {   
                 $(".game:nth-child(" + (i + 1) + ")").fadeIn(500);
-                alert($(".game:nth-child(" + (i + 1) + ")").width());
-                // ANIMATION HERE (remember half of width.
+                // ANIMATION HERE (remember half of width).
+                
+//                if (i > 0) {
+//                    $(".game:nth-child(" + (i + 1) + ")").animate({ right: "+=" + ((prevWidth / 2) + ($(".game:nth-child(" + (i + 1) + ")").width() / 2)) }, 500, function () {});
+//                }
+                
                 if (++i < $(".game").length) myLoop();
-            }, 200);
+            }, 50);
         })(); 
     }
 
