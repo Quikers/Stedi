@@ -33,7 +33,7 @@ namespace Stedi {
         /// </summary>
         /// <param name="sql">The SQL code to send</param>
         /// <returns></returns>
-        public static List<string[]> query(string sql) {
+        public static List<string[]> Query(string sql) {
             List<string[]> items = new List<string[]>();
 
             MySqlCommand cmd = new MySqlCommand(sql, MySqlConn);

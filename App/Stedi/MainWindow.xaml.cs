@@ -35,8 +35,6 @@ namespace Stedi {
         {
             InitializeComponent();
 
-            Fonts.GetFontFamilies(new Uri("pack://application:,,,/resources/fonts/#"));
-
             lbGames.HorizontalAlignment = HorizontalAlignment.Left;
             lbGames.SetValue(ScrollViewer.HorizontalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
             lbGames.Margin = new Thickness(10, 81, 0, 9.6);

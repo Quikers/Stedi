@@ -142,7 +142,7 @@
             <Label x:Name="LblName" Content="Name" HorizontalAlignment="Left" Margin="32,32,0,0" VerticalAlignment="Top" Width="844" Height="62" FontSize="40" Background="#00000000" Foreground="White" FontFamily="Century Gothic" FontWeight="Thin"/>
             <Label x:Name="LblCreated" Content="Created by: " HorizontalAlignment="Left" Margin="32,132,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="18" Height="32" Width="844"/>
             <Label x:Name="LblDate" Content="Release date: " HorizontalAlignment="Left" Margin="32,168,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="18" Height="32" Width="844"/>
-            <Button x:Name="BtnPlay" Content="Play" HorizontalAlignment="Left" VerticalAlignment="Top" Width="156" Height="40" FontSize="21.333" FontFamily="Arial" Background="#9F000000" Foreground="White" Click="btnPlay_Click" Margin="32,223,0,0">
+            <Button x:Name="BtnPlay" Content="Play" HorizontalAlignment="Left" VerticalAlignment="Top" Width="156" Height="40" Cursor="Hand" FontSize="21.333" FontFamily="Arial" Background="#9F000000" Foreground="White" Click="btnPlay_Click" Margin="32,223,0,0">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Background" Value="#7FFFFFFF" />
@@ -163,7 +163,7 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <TextBox x:Name="TxtDescription" HorizontalAlignment="Left" Height="383" Margin="32,285,0,0" TextWrapping="Wrap" Text="Description" VerticalAlignment="Top" Width="844" Background="#01FFFFFF" Foreground="White" FontFamily="Segoe UI" BorderThickness="0" FontSize="20"/>
+            <TextBox x:Name="TxtDescription" HorizontalAlignment="Left" Height="383" Margin="32,285,0,0" IsReadOnly="true" Cursor="Arrow" TextWrapping="Wrap" Text="Description" VerticalAlignment="Top" Width="844" Background="#01FFFFFF" Foreground="White" FontFamily="Segoe UI" BorderThickness="0" FontSize="20"/>
         </Grid>
         <Label x:Name="LblSortBy" Content="Sort by:" HorizontalAlignment="Left" Margin="6,46,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Arial" FontSize="20"/>
         <ComboBox x:Name="CbCategory" SelectedIndex="0" Style="{StaticResource ComboBoxFlatStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="326" Padding="5,0,5,0"  Margin="84,50,0,0" Height="26" FontSize="20" SelectionChanged="cbCategory_SelectionChanged">
@@ -174,7 +174,7 @@
                             <ControlTemplate TargetType="ComboBoxItem">
                                 <Grid>
                                     <Border x:Name="Border" Background="Transparent">
-                                        <TextBlock Padding="5,0,5,0" FontSize="20" Background="#9F000000" Foreground="White" FontFamily="Segoe UI Monospace">
+                                        <TextBlock Padding="5,0,5,0" FontSize="20" Background="#9F000000" Foreground="White" FontFamily="Segoe UI">
                                     <ContentPresenter></ContentPresenter>
                                         </TextBlock>
                                     </Border>

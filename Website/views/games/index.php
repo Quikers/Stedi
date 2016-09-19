@@ -25,6 +25,8 @@ if ($gameList["listType"] == "allGames") {
 
 <div style="display: none;" class="game">
     <a class="fade" href="<?= URL ?>games/app/<?= $game["id"] ?>">
+        <div class="background" style="background: url('data:image/png;base64,<?= $game["background"] ?>') no-repeat left top; background-size: 100px 100px;"></div>
+
         <h1><?= randomString(rand(10, 50), $alphabet) /* $game["name"] */ ?></h1>
         <h2><?= join(" / ", explode(" ", $game["genre"])) ?></h2>
         <h3>Creator: <?= $game["author"] ?></h3>
@@ -68,6 +70,7 @@ var listType = "<?= $gameList["listType"] ?>";
 if (listType === "allGames") {
     var gamesList = <?= json_encode($gameList["games"]) ?>;
     
+    console.log(gamesList);
     console.log(gamesList);
 
     function Update () {
