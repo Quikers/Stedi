@@ -187,20 +187,21 @@ input {
     
     background: rgba(0, 0, 0, 0.4);
     
+    margin: 20px;
+    
     text-align: left;
 }
 
 #gameListContainer .game .background {
-    position: relative;
+    position: absolute;
     display: inline-block;
+    top: 0;
+    left: 0;
     
     min-width: 100%;
     min-height: 100%;
-    max-width: 100%;
-    max-height: 100%;
     
-    width: 100px;
-    height: 100px;
+    height: 120px;
     
     background-size: cover;
     background-repeat: no-repeat;
@@ -219,7 +220,7 @@ input {
     
     vertical-align: top;
     
-    padding: 20px;
+    padding: 15px 15px 5px 15px;
     
     overflow: hidden;
 }
@@ -281,4 +282,118 @@ input {
     font-weight: 400;
     
     padding: 25px 0 50px 0;
+}
+
+#uploadContainer {
+    padding: 50px;
+}
+
+#uploadContainer h1 {
+    font-family: Century Gothic;
+    font-weight: 100;
+    font-size: 40px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+#uploadContainer form {
+    position: absolute;
+    display: inline-block;
+    
+    margin-bottom: 100px;
+    
+    left: 0;
+    right: 0;
+}
+
+#uploadContainer form h2 {
+    position: relative;
+    left: 125px;
+    width: 644px;
+    margin-bottom: 20px;
+    
+    font-family: Century Gothic;
+    font-weight: 100;
+    font-size: 30px;
+}
+
+#uploadContainer #formContent {
+    width: 644px;
+    margin: 0 125px;
+}
+
+#uploadContainer form label, #uploadContainer form input[type="submit"] {
+    display: inline-block;
+    width: 125px;
+    
+    font-weight: 100;
+    font-size: 20px;
+}
+
+#uploadContainer form textarea {
+    padding: 7px;
+    
+    border: 0;
+    margin: 10px 0;
+    
+    background: rgba(0,0,0, 0.2);
+    font-size: 15px;
+    
+    width: 500px;
+    height: 200px;
+    
+    vertical-align: middle;
+}
+
+#uploadContainer form input {
+    width: 500px;
+    margin: 10px 0;
+}
+
+#uploadContainer form input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    
+    background: rgba(0,0,0, 0.4);
+    transition: 150ms ease-in-out;
+}
+
+#uploadContainer form input[type="submit"]:hover {
+    cursor: pointer;
+    background: rgba(0,0,0, 0.7);
+}
+
+#uploadContainer #formInfo {
+    position: absolute;
+    top: 125px;
+    right: 150px;
+    
+    width: 644px;
+    
+    margin-bottom: 100px;
+}
+
+#uploadContainer #formInfo h1 {
+    font-family: Century Gothic;
+    font-weight: 100;
+    font-size: 30px;
+    padding: 0;
+}
+
+#uploadContainer #formInfo h2 {
+    font-family: Century Gothic;
+    font-weight: 100;
+    font-size: 26px;
+}
+
+#uploadContainer #formInfo h3 {
+    font-size: 18px;
+    font-weight: 100;
+}
+
+@media screen and (max-width: 1799px) {
+    #uploadContainer #formInfo {
+        left: 125px;
+        top: 850px;
+    }
 }

@@ -11,7 +11,7 @@ class Home extends Controller {
             $this->view->title = "Home";
             $this->view->render("home/index");
         } else {
-            header("Location" . URL . "games");
+            header("Location:" . URL . "games");
         }
     }
 
