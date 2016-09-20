@@ -7,11 +7,11 @@ class GamesModel extends Model {
     }
 
     public function getGames() {
-        return $this->db->query("SELECT * FROM `games`", false);
+        return $this->db->Query("SELECT * FROM `games`", false);
     }
 
     public function getGameInfo($gameid) {
-        return $this->db->query("SELECT * FROM `games` WHERE `id` = $gameid");
+        return $this->db->Query("SELECT * FROM `games` WHERE `id` = $gameid");
     }
     
 }

@@ -7,7 +7,7 @@ class LoginModel extends Model {
     }
     
     public function login($username, $password) {
-        $result = $this->db->query('SELECT `id`, `username`, `accountType`, `email`, `firstname`, `insertion`, `lastname` FROM ' . DB_NAME . '.users WHERE `username` = "' . $username . '" AND `password` = PASSWORD("' . $password . '")');
+        $result = $this->db->Query('SELECT `id`, `username`, `accountType`, `email`, `firstname`, `insertion`, `lastname` FROM ' . DB_NAME . '.users WHERE `username` = "' . $username . '" AND `password` = PASSWORD("' . $password . '")');
         
         print_r($result);
         

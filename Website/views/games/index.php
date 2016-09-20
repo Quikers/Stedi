@@ -21,6 +21,7 @@ if ($gameList["listType"] == "allGames") {
         
         for ($i = 0; $i < 20; $i++) {
             foreach($gameList["games"] as $key => $game) {
+                if ((int)$game["activated"] > 0) {
 ?>
 
 <div style="display: none;" class="game">
@@ -37,6 +38,7 @@ if ($gameList["listType"] == "allGames") {
 
 
 <?php
+                }
             }
         }
         

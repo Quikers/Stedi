@@ -7,7 +7,7 @@
     
     <link rel="stylesheet" href="<?= URL; ?>public/css/default.css" />
 </head>
-<body>
+<body style="display: none;">
 
     <?php Session::init(); ?>
     
@@ -21,6 +21,7 @@
                 <div class="li <?= $this->title == "Home" ? "active" : "" ?>"><a href="<?= URL ?>home">Home</a></div>
             <?php } else { ?>
                 <div class="li <?= $this->title == "Logout" ? "active" : "" ?>"><a href="<?= URL ?>logout">Logout</a></div>
+                <div class="li <?= $this->title == "Dashboard" ? "active" : "" ?>"><a href="<?= URL ?>dashboard">Dashboard</a></div>
                 <div class="li <?= $this->title == "Games" ? "active" : "" ?>"><a href="<?= URL ?>games">Games</a></div>
                 <div class="li <?= $this->title == "Upload Your Game" ? "active" : "" ?>"><a href="<?= URL ?>upload">Upload Your Game</a></div>
             <?php } ?>
