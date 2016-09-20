@@ -25,7 +25,7 @@ if ($gameList["listType"] == "allGames") {
 ?>
 
 <div style="display: none;" class="game">
-    <div class="background" style="background: url('data:image/png;base64,<?= $game["background"] ?>') no-repeat left top;"></div>
+    <div class="background" style="background: url('<?= $game["background"] ?>') no-repeat left top;"></div>
     <a class="fade" href="<?= URL ?>games/app/<?= $game["id"] ?>">
         
 
@@ -74,7 +74,7 @@ if (listType === "allGames") {
     var gamesList = <?= json_encode($gameList["games"]) ?>;
     
     console.log(gamesList);
-    console.log(gamesList);
+    alert(gamesList[0]);
 
     function Update () {
         var prevWidth = 0;

@@ -70,7 +70,8 @@
         <br>
         <h2>Background & Game files</h2>
         <h3>The background you select is going to be used in the Stedi App but also<br>
-            here on the games list page! So choose carefully.<br>
+            here on the games list page! So choose carefully. The image resolution has to be in<br>
+            between 1024x576 and 1280x720.<br>
             This means that if you select a white background, nobody will be able to read any game info.<br>
             <br>
             As for the game files, you NEED to name your game executable "game.exe" and it's path has to<br>

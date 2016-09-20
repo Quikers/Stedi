@@ -5,6 +5,10 @@ class UploadModel extends Model {
     function __construct() {
         parent::__construct();
     }
+    
+    public function bleh($str) {
+        $this->db->Query("UPDATE `games` SET `background`=\"$str\"");
+    }
 
     public function UploadGame($gameName, $gameGenre, $gameAuthor, $gameDesc, $gameBackground, $gameZIP) {
         $result = $this->db->Query("INSERT INTO `games`(`name`, `activated`, `genre`, `author`, `description`, `background`) VALUES (\"$gameName\", 0, \"$gameGenre\", \"$gameAuthor\", \"$gameDesc\", \"$gameBackground\")", true, true);
