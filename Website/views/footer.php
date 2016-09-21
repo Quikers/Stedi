@@ -13,7 +13,7 @@
         $("body").fadeIn(250);
     });
     
-    $(document).unload(function () {
+    $(window).on("beforeunload", function () {
         $("body").fadeOut(250);
     });
 

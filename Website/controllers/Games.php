@@ -41,17 +41,20 @@ class Games extends Controller {
     }
     
     public function app($params = NULL) {
+        $this->view->title = "Games";
+        $this->view->render("games/index");
+    }
+    
+    public function getgames($params = NULL) {
         $this->loadModel("Games");
         $gamesModel = new GamesModel();
         $gameList = array();
         
-        $gameList["listType"] = "singleGame";
-        $gameList["game"] = $gamesModel->getGameInfo($params); 
-        $gameList["game"]["rating"] = "4.5 / 5 TEST"; 
+        $gameList["listType"] = $params != NULL ? "allGames" : "singleGame";
+        $gameList["game"] = $params != NULL ? $gamesModel->getGameInfo($params[0]) : $gamesModel->getGames(); 
+        $params != NULL ?: $gameList["game"]["rating"] = "4.5 / 5 TEST"; 
         
-        $this->view->gamesList = $gameList;
-        $this->view->title = "Games";
-        $this->view->render("games/index");
+        echo json_encode($gameList);
     }
 
 }
