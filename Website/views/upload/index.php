@@ -22,7 +22,7 @@
     ?>
     
     <h1>Upload your own game!</h1>
-    <form method="POST" action="<?= URL ?>upload/upload">
+    <form method="POST" action="<?= URL ?>upload/upload" enctype="multipart/form-data">
         <h2>Upload section</h2>
         <p style="padding-left: 125px; font-size: 20px; color: #FFCD00;">WARNING: Please make sure your game files are formatted correctly<br> before
             uploading them! Refer to the instructions on this page.</p>

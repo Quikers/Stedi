@@ -24,8 +24,8 @@ if ($gameList["listType"] == "allGames") {
                 if ((int)$game["activated"] > 0) {
 ?>
 
-<div style="display: none;" class="game">
-    <div class="background" style="background: url('<?= $game["background"] ?>') no-repeat left top;"></div>
+<div style="display: none;" class="game" id="<?= $game["id"] ?>">
+    <div class="background"></div>
     <a class="fade" href="<?= URL ?>games/app/<?= $game["id"] ?>">
         
 
@@ -52,10 +52,12 @@ if ($gameList["listType"] == "allGames") {
 
 
 <div id="gameInfoContainer">
+    <div class="background" style="background: url('<?= $game["background"] ?>') no-repeat left top;"></div>
+    
     <h1><?= $game["name"] ?></h1>
     <h2><?= join(" / ", explode(" ", $game["genre"])) ?></h2>
-    <h3>Created by: <?= $game["author"] ?></h3>
-    <h3>Release date: <?= explode(" ", $game["created"])[0] ?></h3>
+    <h3>Created by: <p style="display: inline-block;"><?= $game["author"] ?></p></h3>
+    <h3>Release date: <p style="display: inline-block;"><?= explode(" ", $game["created"])[0] ?></p></h3>
     <h4>Rating: <?= $game["rating"] ?></h4>
     <h5><?= $game["description"] ?></h5>
 </div>
@@ -71,44 +73,30 @@ if ($gameList["listType"] == "allGames") {
 var listType = "<?= $gameList["listType"] ?>";
 
 if (listType === "allGames") {
-    var gamesList = <?= json_encode($gameList["games"]) ?>;
-    
-    console.log(gamesList);
-
     function Update () {
         var prevWidth = 0;
         var i = 0;
 
         (function myLoop () {          
             setTimeout(function () {
-                $(".game:nth-child(" + (i + 1) + ")").fadeIn(400);
-                if (++i < $(".game").length) myLoop();
-            }, 50);
+                $.get("<?= URL ?>games/getgames/" + $(".game:nth-child(" + (i + 1) + ")").attr("id"), function (JSONdata) {
+                    var data = JSON.parse(JSONdata);
+                    
+                    $(".game:nth-child(" + (i + 1) + ") .background").attr("style", "background: url('" + data.game.background + "') no-repeat left top;");
+                    
+                    $(".game:nth-child(" + (i + 1) + ")").fadeIn(400);
+                    if (++i < $(".game").length) myLoop();
+                });
+            });
         })(); 
     }
 
 
     $(document).ready(function () {
-        $.get("<?= URL ?>games/getgames/", function (JSONdata) {
-            var data = JSON.parse(JSONdata);
-            
-            console.log(data);
-            
-//            for (var i = 0; i < data.length; i++) {
-//                $("#gameListContainer").append("<div style=\"display: none;\" class=\"game\">" +
-//                    "<div class=\"background\" style=\"background: url('" + data[i].background + "') no-repeat left top;\"></div>" +
-//                        "<a class=\"fade\" href=\"<?= URL ?>games/app/" + data[i].id + "\">" +
-//                            "<h1><?= randomString(rand(10, 50), $alphabet) /* data[i].name */ ?></h1>" +
-//                            "<h2>" + data[i].genre.split(" ").join(" / ") + "</h2>" +
-//                            "<h3>Creator: data[i].author</h3>" +
-//                            "<h3>Released: data[i].created.split(" ")[0]</h3>" +
-//                        "</a>" +
-//                    "</div>");
-//            }
-            
-            Update();
-        });
+        Update();
     });
+} else {
+    $("#content").css("background", "rgba(0, 0, 0, 0.75)");
 }
 
 
