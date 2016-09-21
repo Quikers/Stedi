@@ -17,7 +17,32 @@ $gameList = $this->gamesList;
 if ($gameList["listType"] == "allGames") {
     if (count($gameList["games"]) > 0) {
         
-?><div id="gameListContainer"></div><?php
+?><div id="gameListContainer"><?php
+        
+        for ($i = 0; $i < 20; $i++) {
+            foreach($gameList["games"] as $key => $game) {
+                if ((int)$game["activated"] > 0) {
+?>
+
+<div style="display: none;" class="game">
+    <div class="background" style="background: url('<?= $game["background"] ?>') no-repeat left top;"></div>
+    <a class="fade" href="<?= URL ?>games/app/<?= $game["id"] ?>">
+        
+
+        <h1><?= randomString(rand(10, 50), $alphabet) /* $game["name"] */ ?></h1>
+        <h2><?= join(" / ", explode(" ", $game["genre"])) ?></h2>
+        <h3>Creator: <?= $game["author"] ?></h3>
+        <h3>Released: <?= explode(" ", $game["created"])[0] ?></h3>
+    </a>
+</div>
+
+
+<?php
+                }
+            }
+        }
+        
+?></div><?php
 
     }
 } else {
@@ -47,6 +72,8 @@ var listType = "<?= $gameList["listType"] ?>";
 
 if (listType === "allGames") {
     var gamesList = <?= json_encode($gameList["games"]) ?>;
+    
+    console.log(gamesList);
 
     function Update () {
         var prevWidth = 0;
@@ -64,21 +91,20 @@ if (listType === "allGames") {
     $(document).ready(function () {
         $.get("<?= URL ?>games/getgames/", function (JSONdata) {
             var data = JSON.parse(JSONdata);
-            var games = data.games;
             
             console.log(data);
             
-            for (var i = 0; i < games.length; i++) {
-                $("#gameListContainer").append("<div style=\"display: none;\" class=\"game\">" +
-                    "<div class=\"background\" style=\"background: url('" + games[i].background + "') no-repeat left top;\"></div>" +
-                        "<a class=\"fade\" href=\"<?= URL ?>games/app/" + games[i].id + "\">" +
-                            "<h1><?= randomString(rand(10, 50), $alphabet) /* games[i].name */ ?></h1>" +
-                            "<h2>" + games[i].genre.split(" ").join(" / ") + "</h2>" +
-                            "<h3>Creator: " + games[i].author + "</h3>" +
-                            "<h3>Released: " + games[i].created.split(" ")[0] + "</h3>" +
-                        "</a>" +
-                    "</div>");
-            }
+//            for (var i = 0; i < data.length; i++) {
+//                $("#gameListContainer").append("<div style=\"display: none;\" class=\"game\">" +
+//                    "<div class=\"background\" style=\"background: url('" + data[i].background + "') no-repeat left top;\"></div>" +
+//                        "<a class=\"fade\" href=\"<?= URL ?>games/app/" + data[i].id + "\">" +
+//                            "<h1><?= randomString(rand(10, 50), $alphabet) /* data[i].name */ ?></h1>" +
+//                            "<h2>" + data[i].genre.split(" ").join(" / ") + "</h2>" +
+//                            "<h3>Creator: data[i].author</h3>" +
+//                            "<h3>Released: data[i].created.split(" ")[0]</h3>" +
+//                        "</a>" +
+//                    "</div>");
+//            }
             
             Update();
         });
