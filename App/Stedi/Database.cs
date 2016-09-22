@@ -11,6 +11,9 @@ namespace Stedi {
     static class Database {
         private static MySqlConnection MySqlConn;
 
+        /// <summary>
+        /// Static database class to get information from the Stedi database.
+        /// </summary>
         static Database() {
             // Init
             // Create MySQL connection
@@ -25,8 +28,13 @@ namespace Stedi {
             }
         }
 
-        public static List<string[]> query(string sql) {
-            List<string[]> items = new List<string[]>();
+        /// <summary>
+        /// Sends a request to the Stedi database to retrieve information.
+        /// </summary>
+        /// <param name="sql">The SQL code to send</param>
+        /// <returns></returns>
+        public static List<Dictionary<string, string>> Query(string sql) {
+            List<Dictionary<string, string>> items = new List<Dictionary<string, string>>();
 
             MySqlCommand cmd = new MySqlCommand(sql, MySqlConn);
             cmd.CommandType = System.Data.CommandType.Text;
@@ -35,9 +43,6 @@ namespace Stedi {
                 // Execute the query and save the result in the game list
                 using (MySqlDataReader reader = cmd.ExecuteReader()) {
                     while (reader.Read()) {
-                        // Add a new string array
-                        items.Add(new string[reader.FieldCount]);
-
                         // Set the values of the string array
                         for (int i = 0; i < reader.FieldCount; i++) {
                             items[items.Count - 1][i] = reader.GetString(i);

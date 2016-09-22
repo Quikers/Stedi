@@ -67,22 +67,22 @@ class Bootstrap {
         // Determine what to load
         switch ($length) {
             case 5:
-                //Controller->Method(Param1, Param2, Param3)
-                $this->_controller->{$this->_url[1]}($this->_url[2], $this->_url[3], $this->_url[4]);
+                //Controller->Method(Param1, Param2, Param3, Param4)
+                $this->_controller->{$this->_url[1]}(array($this->_url[2], $this->_url[3], $this->_url[4]));
                 break;
             
             case 4:
-                //Controller->Method(Param1, Param2)
-                $this->_controller->{$this->_url[1]}($this->_url[2], $this->_url[3]);
+                //Controller->Method(Param1, Param2, Param3)
+                $this->_controller->{$this->_url[1]}(array($this->_url[2], $this->_url[3]));
                 break;
             
             case 3:
                 //Controller->Method(Param1, Param2)
-                $this->_controller->{$this->_url[1]}($this->_url[2]);
+                $this->_controller->{$this->_url[1]}(array($this->_url[2]));
                 break;
             
             case 2:
-                //Controller->Method(Param1, Param2)
+                //Controller->Method(Param1)
                 $this->_controller->{$this->_url[1]}();
                 break;
             

@@ -10,13 +10,19 @@ class Database extends PDO
         //parent::setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTIONS);
     }
     
-    public function query($sql, $format = true) {
+    public function Query($sql, $format = true, $returnLastInsertedID = false) {
         $sth = $this->prepare($sql);
         $sth->execute();
         
         $result = $sth->fetchAll(PDO::FETCH_ASSOC);
         
         if (count($result) == 1 && $format == true) { $result = $result[0]; }
+        
+        if ($returnLastInsertedID) {
+            $result["result"] = $result;
+            $result["lastInsertedID"] = $this->lastInsertId();
+        }
+        
         return $result;
     }
     
