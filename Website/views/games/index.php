@@ -1,17 +1,5 @@
 <?php
 
-$alphabet = "01234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-function randomString($length, $alphabet) {
-    $string = "";
-
-    for ($i = 0; $i < $length; $i++) {
-        $string .= $alphabet[rand(0, 61)];
-    }
-
-    return $string;
-}
-
 $gameList = $this->gamesList;
 
 if ($gameList["listType"] == "allGames") {
@@ -19,9 +7,8 @@ if ($gameList["listType"] == "allGames") {
         
 ?><div id="gameListContainer"><?php
         
-        for ($i = 0; $i < 20; $i++) {
-            foreach($gameList["games"] as $key => $game) {
-                if ((int)$game["activated"] > 0) {
+        foreach($gameList["games"] as $key => $game) {
+            if ((int)$game["activated"] > 0) {
 ?>
 
 <div style="display: none;" class="game" id="<?= $game["id"] ?>">
@@ -29,7 +16,7 @@ if ($gameList["listType"] == "allGames") {
     <a class="fade" href="<?= URL ?>games/app/<?= $game["id"] ?>">
         
 
-        <h1><?= randomString(rand(10, 50), $alphabet) /* $game["name"] */ ?></h1>
+        <h1><?= $game["name"] ?></h1>
         <h2><?= join(" / ", explode(" ", $game["genre"])) ?></h2>
         <h3>Creator: <?= $game["author"] ?></h3>
         <h3>Released: <?= explode(" ", $game["created"])[0] ?></h3>
@@ -38,7 +25,6 @@ if ($gameList["listType"] == "allGames") {
 
 
 <?php
-                }
             }
         }
         

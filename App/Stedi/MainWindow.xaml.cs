@@ -138,6 +138,7 @@ namespace Stedi {
             // Get games from the database
             GetGames();
 
+            PrintGamesArray();
             // Filter games for valid directories, executables and if activated
             FilterGames();
 
@@ -160,6 +161,20 @@ namespace Stedi {
             // Add query to a MySqlCommand object
             games = Database.Query("SELECT * FROM games");
         }
+
+        private void PrintGamesArray() {
+            foreach (string[] game in games) {
+                string joinedString = "";
+
+                foreach (string field in game) {
+                    if (!field.Contains("base64")) {
+                        joinedString += field + "\r\n";
+                    }
+                }
+
+                MessageBox.Show(joinedString);
+            }
+        }
         
         /// <summary>
         /// Filters all games by category and the search bar.
@@ -168,17 +183,15 @@ namespace Stedi {
             Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Games");
 
             // Loop through all the games
-            for (int i = 0; i < games.Count; i++)
-            {
+            for (int i = 0; i < games.Count; i++) {
                 // Check if game is activated
-                if(Convert.ToInt16(games[i][2]) == 0)
-                {
+                if (Convert.ToInt16(games[i][2]) == 0) {
                     // Game is not activated and will be removed from the list
                     games.RemoveAt(i);
 
                     // Decrease i by 1 because the current index is removed and replaced by another one
                     i--;
-                } else if(!Directory.Exists(Directory.GetCurrentDirectory() + @"\Games\" + games[i][0])) {
+                } else if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\Games\" + games[i][0])) {
                     // Game is not activated and will be removed from the list
                     games.RemoveAt(i);
 

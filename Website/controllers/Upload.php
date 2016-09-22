@@ -64,12 +64,6 @@ class Upload extends Controller {
         if (isset($_POST["submit"])) {
             $supportedExts = array("jpg", "jpeg", "png", "bmp");
             
-            echo "<html><body><pre>";
-            print_r($_POST);
-            echo "<br>";
-            print_r($_FILES);
-            echo "<br></pre></body></html>";
-            
             $continue = false;
             $gameBGSplit = explode(".", $_FILES["gameBackground"]["name"]);
             foreach ($supportedExts as $key => $ext) { if (strtolower($gameBGSplit[count($gameBGSplit) - 1]) == $ext) { $continue = true; } }
@@ -79,9 +73,7 @@ class Upload extends Controller {
                 header("Location:" . URL . "upload");
             }
             
-            return;
-            
-            $image = getimagesize($_FILES[$_POST["gameFile"]["tmp_name"]]);
+            $image = getimagesize($_FILES["gameBackground"]["tmp_name"]);
             $minimum = array(
                 'width' => '1024',
                 'height' => '576'
@@ -117,8 +109,6 @@ class Upload extends Controller {
                     $_FILES["gameFile"]
                 );
             }
-            
-            
         }
     }
 }
