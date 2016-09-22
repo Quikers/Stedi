@@ -4,14 +4,13 @@ class Games extends Controller {
     
     function __construct() {
         parent::__construct();
+        
+        // If user is not logged in return to home screen
+        if (!isset($_SESSION["loggedIn"]) || !$_SESSION["loggedIn"]) { header("Location:" . URL . "home"); }
     }
     
     public function index() {
-        if ((int)$_SESSION["user"]["accountType"] == 0) {
-            header("Location:" . URL . "games/approval/");
-        } else {
-            header("Location:" . URL . "games/apps/");
-        }
+        header("Location:" . URL . "games/apps/");
     }
     
     public function approval($params = NULL) {
