@@ -44,13 +44,15 @@ namespace Stedi {
                 using (MySqlDataReader reader = cmd.ExecuteReader()) {
                     while (reader.Read()) {
                         // Set the values of the string array
+                        items.Add(new Dictionary<string, string>());
+
                         for (int i = 0; i < reader.FieldCount; i++) {
-                            items[items.Count - 1][i] = reader.GetString(i);
+                            items[items.Count - 1].Add(reader.GetName(i), reader.GetString(i));
                         }
                     }
                 }
             } catch (Exception ex) {
-                MessageBox.Show("Something went wrong with the database connection.\nStats for nerds:\n\n" + ex);
+                MessageBox.Show("Something went wrong with the database connection.\n\nStats for nerds:\n\n" + ex);
             }
 
             return items;
