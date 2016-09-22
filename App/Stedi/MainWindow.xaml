@@ -124,7 +124,7 @@
     </Window.Resources>
 
     <Grid x:Name="TheMainWindow" Background="Black" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <TextBox x:Name="TxtSearchbar" FontSize="20" Padding="10, 5, 10, 5" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" Background="#28FFFFFF" BorderThickness="0" Width="400" Height="35" FontFamily="Century Gothic" KeyDown="txtSearchbar_KeyDown"/>
+        <TextBox x:Name="TxtSearchbar" FontSize="20" Padding="10, 5, 10, 5" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" Background="#28FFFFFF" BorderThickness="0" Width="400" Height="35" FontFamily="Century Gothic" TextChanged="txtSearchbar_TextChanged"/>
         <TextBlock IsHitTestVisible="False" Padding="10, 5, 10, 5" Text="Search" FontSize="20" TextAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,8,0,0" Foreground="DarkGray" Height="37" Width="74">
             <TextBlock.Style>
                 <Style TargetType="{x:Type TextBlock}">

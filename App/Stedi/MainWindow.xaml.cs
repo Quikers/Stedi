@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.IO;
 
 using Timer = System.Timers.Timer;
+using System.Windows.Media.Imaging;
+using System.Text.RegularExpressions;
 
 namespace Stedi {
     enum ComboBoxItems {
@@ -25,6 +27,7 @@ namespace Stedi {
     public partial class MainWindow : Window {
         // Variables
         List<Dictionary<string, string>> games = new List<Dictionary<string, string>>();
+        List<Dictionary<string, string>> filteredGames = new List<Dictionary<string, string>>();
         private Process gameProcess = new Process();
         private ComboBoxItems cbItems = new ComboBoxItems();
         private int savedIndex = -1;
@@ -82,7 +85,7 @@ namespace Stedi {
                 lbGames.Items.Clear();
 
                 // Loop through all games and add them in the listbox
-                foreach (Dictionary<string, string> game in games) {
+                foreach (Dictionary<string, string> game in filteredGames) {
                     string name = game["name"];
                     int charWidth = 9;
 
@@ -112,22 +115,32 @@ namespace Stedi {
         private void UpdateGameInfo(int index)
         {
             // Check if index is a valid index
-            if (index < 0 || index >= games.Count) return;
+            if (index < 0 || index >= filteredGames.Count) return;
 
             // Set title
-            LblName.Content = games[index]["name"];
+            LblName.Content = filteredGames[index]["name"];
 
             // Set genre
-            List<string> genres = new List<string>(games[index]["genre"].Split(' '));
+            List<string> genres = new List<string>(filteredGames[index]["genre"].Split(' '));
             genres.Sort();
             LblGenre.Content = string.Join(" / ", genres);
 
             // Set created
-            LblCreated.Content = "Created by: " + games[index]["author"];
-            LblDate.Content = "Release date: " + games[index]["created"].Split(' ')[0];
+            LblCreated.Content = "Created by: " + filteredGames[index]["author"];
+            LblDate.Content = "Release date: " + filteredGames[index]["created"].Split(' ')[0];
 
             // Set description
-            TxtDescription.Text = games[index]["description"];
+            TxtDescription.Text = filteredGames[index]["description"];
+
+            // Set image background
+            Console.WriteLine(Regex.Match(filteredGames[index]["background"], @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value);
+            byte[] binaryData = Convert.FromBase64String(Regex.Match(filteredGames[index]["background"], @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value);
+
+            BitmapImage bi = new BitmapImage();
+            bi.BeginInit();
+            bi.StreamSource = new MemoryStream(binaryData);
+            bi.EndInit();
+            GridGameInfo.Background = new ImageBrush(bi);
         }
 
         /// <summary>
@@ -135,12 +148,34 @@ namespace Stedi {
         /// </summary>
         private void Update() {
             savedIndex = lbGames.SelectedIndex;
-
+           
             // Get games from the database
             GetGames();
 
             //PrintGamesArray();
             // Filter games for valid directories, executables and if activated
+            filteredGames.Clear();
+            filteredGames = null;
+            filteredGames = new List<Dictionary<string, string>>(games);
+            FilterGames();
+
+            // TODO: Check if some sorting method is specified and sort by default
+            SortGames();
+
+            // Update view
+            UpdateListbox();
+        }
+
+        private void SearchUpdate()
+        {
+            savedIndex = lbGames.SelectedIndex;
+
+            //PrintGamesArray();
+            // Filter games for valid directories, executables and if activated
+            filteredGames.Clear();
+            filteredGames = null;
+            filteredGames = new List<Dictionary<string, string>>(games);
+
             FilterGames();
 
             // TODO: Check if some sorting method is specified and sort by default
@@ -183,26 +218,26 @@ namespace Stedi {
             Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Games");
 
             // Loop through all the games
-            for (int i = 0; i < games.Count; i++) {
+            for (int i = 0; i < filteredGames.Count; i++) {
                 // Check if game is activated
-                if (Convert.ToInt16(games[i]["activated"]) == 0) {
+                if (Convert.ToInt16(filteredGames[i]["activated"]) == 0) {
                     // Game is not activated and will be removed from the list
-                    games.RemoveAt(i);
+                    filteredGames.RemoveAt(i);
 
                     // Decrease i by 1 because the current index is removed and replaced by another one
                     i--;
-                } else if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\Games\" + games[i]["id"])) {
+                } else if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\Games\" + filteredGames[i]["id"])) {
                     // Game is not activated and will be removed from the list
-                    games.RemoveAt(i);
+                    filteredGames.RemoveAt(i);
 
                     // Set game to activated but doesn't exist on hard drive
                     Database.Query("UPDATE `games` SET `activated` = 2");
 
                     // Decrease i by 1 because the current index is removed and replaced by another one
                     i--;
-                } else if (!File.Exists(Directory.GetCurrentDirectory() + @"\Games\" + games[i]["id"] + @"\Game.exe")) {
+                } else if (!File.Exists(Directory.GetCurrentDirectory() + @"\Games\" + filteredGames[i]["id"] + @"\Game.exe")) {
                     // Game.exe does not exist and will be removed from the list
-                    games.RemoveAt(i);
+                    filteredGames.RemoveAt(i);
 
                     // Set game to activated but doesn't exist on hard drive
                     Database.Query("UPDATE `games` SET `activated` = 2");
@@ -218,14 +253,14 @@ namespace Stedi {
                 string searchValue = TxtSearchbar.Text.ToLower();
 
                 // Loop through all the games
-                for (int i = 0; i < games.Count; i++) {
+                for (int i = 0; i < filteredGames.Count; i++) {
                     // WARNING this colum positions might change
-                    if (games[i]["name"].ToLower().Contains(searchValue) ||
-                        games[i]["author"].ToLower().Contains(searchValue) ||
-                        games[i]["genre"].ToLower().Contains(searchValue) ||
-                        games[i]["description"].ToLower().Contains(searchValue)) continue;
+                    if (filteredGames[i]["name"].ToLower().Contains(searchValue) ||
+                        filteredGames[i]["author"].ToLower().Contains(searchValue) ||
+                        filteredGames[i]["genre"].ToLower().Contains(searchValue) ||
+                        filteredGames[i]["description"].ToLower().Contains(searchValue)) continue;
                     // When nothing is found remove from list
-                    games.RemoveAt(i);
+                    filteredGames.RemoveAt(i);
 
                     // Decrease i by 1 because the current index is removed and replaced by another one
                     i--;
@@ -274,17 +309,17 @@ namespace Stedi {
 
             t.Start();
         }
+        
+        private void cbCategory_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            Update();
+        }
 
         /// <summary>
         /// Searches the lbGames for the specified game.
         /// </summary>
-        private void txtSearchbar_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void txtSearchbar_TextChanged(object sender, TextChangedEventArgs e)
         {
-            Update();
-        }
-
-        private void cbCategory_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            Update();
+            SearchUpdate();
         }
     }
 }
