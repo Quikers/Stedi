@@ -251,3 +251,4 @@ paket-files/
 .idea/
 *.sln.iml
 /Website/nbproject/private/
+Website/config.php
