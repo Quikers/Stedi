@@ -133,7 +133,6 @@ namespace Stedi {
             TxtDescription.Text = filteredGames[index]["description"];
 
             // Set image background
-            Console.WriteLine(Regex.Match(filteredGames[index]["background"], @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value);
             byte[] binaryData = Convert.FromBase64String(Regex.Match(filteredGames[index]["background"], @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value);
 
             BitmapImage bi = new BitmapImage();
