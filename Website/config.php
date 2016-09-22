@@ -1,6 +1,6 @@
 <?php
 
-define('URL', 'http://localhost/');
+define('URL', 'http://localhost:8080/');
 define('LIBS', 'libs/');
 
 define('DB_HOST', 'localhost');
