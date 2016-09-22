@@ -6,7 +6,7 @@ class Login extends Controller {
         
     }
 
-    public function index() {
+    public function index($params = NULL) {
         $this->loadModel("Login");
         $loginModel = new LoginModel();
         
@@ -25,5 +25,24 @@ class Login extends Controller {
             
             header("Location:" . URL . "home");
         }
+    }
+
+    public function register() {
+        $this->loadModel("Login");
+        $loginModel = new LoginModel();
+        
+        $result = $loginModel->Register($_POST["email"], $_POST["username"], $_POST["password"]);
+        
+        if ($result != false) {
+            
+        } else {
+            echo "<html><body><pre>";
+            print_r($result);
+            echo "<br>";
+            print_r($_POST);
+            echo "</pre></body></html>";
+        }
+        
+        $this->index(array("message" => "<p style=\"color: lightgreen\">Successfully registered!</p>"));
     }
 }

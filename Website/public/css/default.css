@@ -132,6 +132,9 @@ a:hover {
 }
 
 #registerContainer {
+    position: absolute;
+    top: 170px;
+    
     display: inline-block;
 }
 

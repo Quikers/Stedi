@@ -4,6 +4,9 @@ class Upload extends Controller {
 
     function __construct() {
         parent::__construct();
+        
+        // If user is not logged in return to home screen
+        if (!isset($_SESSION["loggedIn"]) || !$_SESSION["loggedIn"]) { header("Location:" . URL . "home"); }
     }
     
     private function base64_encode_image ($filename=string,$filetype=string) {

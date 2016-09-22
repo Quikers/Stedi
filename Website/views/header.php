@@ -22,7 +22,7 @@
             <?php if ($_SESSION["loggedIn"] != true) { ?>
                 <div class="li <?= $this->title == "Home" ? "active" : "" ?>"><a href="<?= URL ?>home">Home</a></div>
             <?php } else { ?>
-                <div class="li <?= $this->title == "Logout" ? "active" : "" ?>"><a href="<?= URL ?>logout">Logout</a></div>
+                <div class="li"><a href="<?= URL ?>logout">Logout</a></div>
                 <div class="li <?= $this->title == "Dashboard" ? "active" : "" ?>"><a href="<?= URL ?>dashboard">Dashboard</a></div>
                 <div class="li <?= $this->title == "Games" ? "active" : "" ?>"><a href="<?= URL ?>games">Games</a></div>
                 <div class="li <?= $this->title == "Upload" ? "active" : "" ?>"><a href="<?= URL ?>upload">Upload Your Game</a></div>
