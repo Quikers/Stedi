@@ -138,8 +138,9 @@ namespace Stedi {
             BitmapImage bi = new BitmapImage();
             bi.BeginInit();
             bi.StreamSource = new MemoryStream(binaryData);
-            bi.EndInit();
+            bi.EndInit(); 
             GridGameInfo.Background = new ImageBrush(bi);
+
         }
 
         /// <summary>
