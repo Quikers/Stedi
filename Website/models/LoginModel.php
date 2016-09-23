@@ -17,7 +17,9 @@ class LoginModel extends Model {
     }
     
     public function Register($email, $username, $password) {
-        $result = $this->db->Query('INSERT INTO `users`(`email`, `username`, `password`, `accountType`) VALUES ("' . $email . '", "' . $username . '", PASSWORD("' . $password . '"), 1)');
+        $result = $this->db->Query('INSERT INTO `users`(`email`, `username`, `password`, `accountType`) VALUES ("' . $email . '", "' . $username . '", PASSWORD("' . $password . '"), 1)', true, false, true);
+        
+        print_r($result);
         
         if ($result != array()) {
             return $result;

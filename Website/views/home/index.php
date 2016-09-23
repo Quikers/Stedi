@@ -1,8 +1,6 @@
 <div id="formContainer">
     
-    <?php if (isset($_SESSION["loginFail"]) && $_SESSION["loginFail"] == true) { ?>
-        <h1>Login failed, invalid username or password.</h1>
-    <?php } ?>
+    <?php if (isset($this->message)) { echo $this->message; } ?>
     
     <div id="loginContainer">
         <h2>LOGIN</h2>

@@ -3,7 +3,7 @@
 class Login extends Controller {
 
     function __construct() {
-        
+        parent::__construct();
     }
 
     public function index($params = NULL) {
@@ -13,7 +13,6 @@ class Login extends Controller {
         $result = $loginModel->login($_POST["username"], $_POST["password"]);
         
         if ($result != false) {
-            Session::init();
             
             $_SESSION["user"] = $result;
             $_SESSION["loggedIn"] = true;
@@ -21,7 +20,8 @@ class Login extends Controller {
             header("Location:" . URL . "games");
         } else {
             $_SESSION["loggedIn"] = false;
-            $_SESSION["loginFail"] = true;
+            $_SESSION["message"] = "<h1 style=\"position: relative; top: -75px; color: red; text-align: center; font-weight: 100;\">Invalid username or password.</h1>";
+                print_r($_SESSION);
             
             header("Location:" . URL . "home");
         }
@@ -33,16 +33,15 @@ class Login extends Controller {
         
         $result = $loginModel->Register($_POST["email"], $_POST["username"], $_POST["password"]);
         
+        return;
+        
         if ($result != false) {
-            
+            $_SESSION["message"] = "<h1 style=\"position: relative; top: -75px; color: lightgreen; text-align: center; font-weight: 100;\">Successfully registered!</h1>";
+            $_SESSION["login"] = array("username" => $_POST["username"], "password" => $_POST["password"]);
         } else {
-            echo "<html><body><pre>";
-            print_r($result);
-            echo "<br>";
-            print_r($_POST);
-            echo "</pre></body></html>";
+            $_SESSION["message"] = "<h1 style=\"position: relative; top: -75px; color: red; text-align: center; font-weight: 100;\">Registration failed!<br>Please contact the system administrator.</h1>";
         }
         
-        $this->index(array("message" => "<p style=\"color: lightgreen\">Successfully registered!</p>"));
+        header("Location:" . URL . "home");
     }
 }
