@@ -48,16 +48,18 @@ class Games extends Controller {
         if ($params != NULL) {
             $gameList["game"] = $gamesModel->getGameInfo($params[0]);
             
-            $rating = 0;
-            $ratings = $gamesModel->getGameRating($gameList["game"]["id"]);
-            if (count($ratings) > 0) {
-                for ($i = 0; $i < count($ratings); $i++) { $rating += $ratings[$i]["rating"]; }
-                $rating /= count($ratings);
-            } else {
-                $rating = "<p style=\"display: inline-block; color: lightblue\">This game has not been rated yet.</p>";
-            }
-            
-            $gameList["game"]["rating"] = $rating;
+            if ($gameList["game"] != false) {
+                $rating = 0;
+                $ratings = $gamesModel->getGameRating($gameList["game"]["id"]);
+                if (count($ratings) > 0) {
+                    for ($i = 0; $i < count($ratings); $i++) { $rating += $ratings[$i]["rating"]; }
+                    $rating /= count($ratings);
+                } else {
+                    $rating = "<p style=\"display: inline-block; color: lightblue\">This game has not been rated yet.</p>";
+                }
+
+                $gameList["game"]["rating"] = $rating;
+            } else { $gameList["gameid"] = $params[0]; }
         } else {
             header("Location:" . URL . "games/apps");
         }

@@ -21,7 +21,6 @@ class Login extends Controller {
         } else {
             $_SESSION["loggedIn"] = false;
             $_SESSION["message"] = "<h1 style=\"position: relative; top: -75px; color: red; text-align: center; font-weight: 100;\">Invalid username or password.</h1>";
-                print_r($_SESSION);
             
             header("Location:" . URL . "home");
         }
@@ -33,14 +32,14 @@ class Login extends Controller {
         
         $result = $loginModel->Register($_POST["email"], $_POST["username"], $_POST["password"]);
         
-        return;
-        
         if ($result != false) {
             $_SESSION["message"] = "<h1 style=\"position: relative; top: -75px; color: lightgreen; text-align: center; font-weight: 100;\">Successfully registered!</h1>";
             $_SESSION["login"] = array("username" => $_POST["username"], "password" => $_POST["password"]);
         } else {
             $_SESSION["message"] = "<h1 style=\"position: relative; top: -75px; color: red; text-align: center; font-weight: 100;\">Registration failed!<br>Please contact the system administrator.</h1>";
         }
+        
+        return;
         
         header("Location:" . URL . "home");
     }

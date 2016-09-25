@@ -11,7 +11,9 @@ class GamesModel extends Model {
     }
 
     public function getGameInfo($gameid) {
-        return $this->db->Query("SELECT * FROM `games` WHERE `id` = $gameid");
+        $result = $this->db->Query("SELECT * FROM `games` WHERE `id` = $gameid");
+        
+        return $result != array() ? $result : false;
     }
     
     public function getGameRating($gameid) {

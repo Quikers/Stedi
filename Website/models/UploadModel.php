@@ -6,51 +6,34 @@ class UploadModel extends Model {
         parent::__construct();
     }
 
-    public function UploadGame($gameName, $gameGenre, $gameAuthor, $gameDesc, $gameBackground, $gameZIP) {
-        $result = $this->db->Query("INSERT INTO `games`(`name`, `activated`, `genre`, `author`, `description`, `background`) VALUES (\"$gameName\", 0, \"$gameGenre\", \"$gameAuthor\", \"$gameDesc\", \"$gameBackground\")", true, true);
+    public function UploadGame($gameName, $gameGenre, $gameAuthor, $gameDesc, $gameBackground, $gameFile) {
+        $this->db->Query("INSERT INTO `games`(`userid`, `name`, `activated`, `genre`, `author`, `description`, `background`) VALUES (" . $_SESSION["user"]["id"] . ", \"$gameName\", 0, \"$gameGenre\", \"$gameAuthor\", \"$gameDesc\", \"$gameBackground\")", true, true);
+        $result = $this->db->Query("SELECT (`id`) FROM `games` ORDER BY `id` DESC LIMIT 1");
         
-//        $target_dir = GAME_DIR . "/Games/" . $gameID;
-//        $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-//        $uploadOk = 1;
-//        $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
-//        // Check if image file is a actual image or fake image
-//        if(isset($_POST["submit"])) {
-//            $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-//            if($check !== false) {
-//                echo "File is an image - " . $check["mime"] . ".";
-//                $uploadOk = 1;
-//            } else {
-//                echo "File is not an image.";
-//                $uploadOk = 0;
-//            }
-//        }
-//        // Check if file already exists
-//        if (file_exists($target_file)) {
-//            echo "Sorry, file already exists.";
-//            $uploadOk = 0;
-//        }
-//        // Check file size
-//        if ($_FILES["fileToUpload"]["size"] > 500000) {
-//            echo "Sorry, your file is too large.";
-//            $uploadOk = 0;
-//        }
-//        // Allow certain file formats
-//        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-//        && $imageFileType != "gif" ) {
-//            echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-//            $uploadOk = 0;
-//        }
-//        // Check if $uploadOk is set to 0 by an error
-//        if ($uploadOk == 0) {
-//            echo "Sorry, your file was not uploaded.";
-//        // if everything is ok, try to upload file
-//        } else {
-//            if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-//                echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
-//            } else {
-//                echo "Sorry, there was an error uploading your file.";
-//            }
-//        }
+        if (isset($result["id"])) {
+            $target_dir = GAME_DIR . "/Games/" . $result["id"];
+            $target_file = $target_dir . basename($gameFile["name"]);
+            $fileType = pathinfo($target_file,PATHINFO_EXTENSION);
+            // Check if file already exists
+            if (file_exists($target_file)) {
+                return "Game already exists.<br>if you wish to update your game please remove it first.";
+            }
+            // Allow certain file formats
+            if($fileType != "zip") {
+                return "Only ZIP files are allowed.";
+            }
+            // Check if $uploadOk is set to 0 by an error
+            if ($uploadOk == 0) {
+                $this->db->Query("DELETE FROM `games` WHERE id=" . $result["id"]);
+            // if everything is ok, try to upload file
+            } else {
+                if (move_uploaded_file($gameFile["tmp_name"], $target_file)) {
+                    echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+                } else {
+                    echo "Sorry, there was an error uploading your file.";
+                }
+            }
+        }
     }
     
 }

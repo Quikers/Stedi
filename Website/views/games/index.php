@@ -5,7 +5,7 @@ $gameList = $this->gamesList;
 if ($gameList["listType"] == "allGames") {
     if (count($gameList["games"]) > 0) {
         
-?><div id="gameListContainer"><?php
+?><div id="gameListContainer"><?php // ========================================= GET ALL GAMES =========================================
         
         foreach($gameList["games"] as $key => $game) {
             if ((int)$game["activated"] > 0) {
@@ -32,8 +32,8 @@ if ($gameList["listType"] == "allGames") {
 
     }
 } else {
-    if (count($gameList["game"]) > 0) {
-        $game = $gameList["game"];
+    if ($gameList["game"] != false && count($gameList["game"]) > 0) {
+        $game = $gameList["game"]; // ========================================= SINGLE GAME FOUND =========================================
 ?>
 
 
@@ -49,10 +49,19 @@ if ($gameList["listType"] == "allGames") {
 </div>
 
 
-<?php
-    }
-}
-?>
+<?php // ========================================= SINGLE GAME NOT FOUND =========================================
+    } else { ?>
+
+
+<div id="gameInfoContainer">
+    <div class="background" style="background: url('<?= $game["background"] ?>') no-repeat left top;"></div>
+
+    <h1 style="color: red;">GameID "<?= $gameList["gameid"] ?>" does not exist.</h1>
+</div>
+
+
+<?php }
+} ?>
 
 <script>
 
