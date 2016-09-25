@@ -49,8 +49,17 @@ class Upload extends Controller {
                     case "backgroundTooLarge":
                         $this->view->messages["backgroundTooLarge"] = "The background you tried to upload is too large in size!<br>Please refer to the instructions on this page.";
                         break;
+                    case "gameAlreadyExists":
+                        $this->view->messages["gameAlreadyExists"] = "Game already exists.<br>if you wish to update your game please remove it first.";
+                        break;
+                    case "gameExtNotSupported":
+                        $this->view->messages["gameExtNotSupported"] = "Games are to be uploaded in .ZIP compressed files only.";
+                        break;
+                    case "gameFileMoveError":
+                        $this->view->messages["gameFileMoveError"] = "There was an error uploading your file.<br>Please contact the system administrator.";
+                        break;
                     case "gameCreated":
-                        $this->view->messages["gameCreated"] = "Your game has been successfully uploaded!";
+                        $this->view->messages["gameCreated"] = "Success! Your game has been uploaded!";
                         break;
                 }
             }
@@ -64,7 +73,7 @@ class Upload extends Controller {
         $this->loadModel("Upload");
         $uploadModel = new UploadModel();
         
-        if (isset($_POST["submit"])) {
+        if (isset($_POST["submit"])) { // ============================= Check if background is within resolution limits =============================
             $supportedExts = array("jpg", "jpeg", "png", "bmp");
             
             $continue = false;
@@ -92,12 +101,10 @@ class Upload extends Controller {
                 // add in the field 'error' of the $file array the message 
                 $_SESSION["messages"] = array();
                 array_push($_SESSION["messages"], "backgroundTooSmall");
-                header("Location:" . URL . "upload");
             } else if ( $image_width > $maximum['width'] || $image_height > $maximum['height'] ) {
                 //add in the field 'error' of the $file array the message
                 $_SESSION["messages"] = array();
                 array_push($_SESSION["messages"], "backgroundTooLarge");
-                header("Location:" . URL . "upload");
             } else {
                 $extension = explode(".", $_FILES["gameBackground"]["name"]);
                 $uploadModel->UploadGame(
@@ -112,6 +119,8 @@ class Upload extends Controller {
                     $_FILES["gameFile"]
                 );
             }
+            
+            header("Location:" . URL . "upload");
         }
     }
 }

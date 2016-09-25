@@ -4,18 +4,7 @@
     
     if (isset($this->messages) && count($this->messages) > 0) {
         foreach($this->messages as $key => $message) {
-            switch($key) {
-                default: echo "<p style=\"font-size: 23px; color: red;\">" . $message . "</p><br>"; break;
-                case "backgroundExtNotSupported";
-                    echo "<p style=\"font-size: 23px; color: red;\">" . $message . "</p>";
-                    break;
-                case "gameExtNotSupported":
-                    echo "<p style=\"font-size: 23px; color: red;\">" . $message . "</p><br>";
-                    break;
-                case "gameCreated":
-                    echo "<p style=\"font-size: 23px; color: teal;\">" . $message . "</p><br>";
-                    break;
-            }
+            echo "<p style=\"font-size: 23px; color: " . ($key == "gameCreated" ? "lightgreen" : "crimson") . ";\">" . $message . "</p><br>";
         }
     }
     
@@ -45,6 +34,10 @@
     
     <div id="formInfo">
         <h1>Additional upload information</h1>
+        <h2>General</h2>
+        <h3>Once a game is uploaded, you cannot edit it's properties. To do this you must<br>
+            remove your game and then re-upload.</h3>
+        <br>
         <h2>Name</h2>
         <h3>This is the name of your game, which you cannot edit, so make it count.<br>
             <br>
@@ -54,7 +47,7 @@
         <h3>The genre of your game is very important when searching or filtering.<br>
             You can add multiple "tags" by adding a space in between them.<br>
             <br>
-            E.g. "FPS Action Cartoon" would show "Action / Cartoon / FPS"</h3>
+            E.g. "FPS Action Cartoon" would show as "Action / Cartoon / FPS"</h3>
         <br>
         <h2>Creator</h2>
         <h3>You can either name the creator of this game (if it's not yours), however<br>

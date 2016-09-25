@@ -427,6 +427,6 @@ input {
 @media screen and (max-width: 1799px) {
     #uploadContainer #formInfo {
         left: 125px;
-        top: 900px;
+        top: 1000px;
     }
 }
