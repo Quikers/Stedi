@@ -4,8 +4,8 @@
     <title><?=(isset($this->title)) ? "Stedi | " . $this->title : 'Stedi'; ?></title>
     <link rel="icon" href="<?= URL; ?>favicon.png" />
     
-    <!-- <link rel="stylesheet" href="<?= URL; ?>public/css/bootstrap.min.css" /> -->
-    <!-- <link rel="stylesheet" href="<?= URL; ?>public/css/bootstrap-theme.min.css" /> -->
+    <!-- <link rel="stylesheet" href="<?= URL; ?>public/css/bootstrap/bootstrap.min.css" /> -->
+    <!-- <link rel="stylesheet" href="<?= URL; ?>public/css/bootstrap/bootstrap-theme.min.css" /> -->
     
     <link rel="stylesheet" href="<?= URL; ?>public/css/default.css" />
 </head>
@@ -14,7 +14,7 @@
     <?php Session::init(); ?>
     
     <script src="<?= URL; ?>public/js/jquery.js"></script>
-    <!-- <script src="<?= URL; ?>public/js/bootstrap.min.js"></script> -->
+    <!-- <script src="<?= URL; ?>public/js/bootstrap/bootstrap.min.js"></script> -->
     
     <div id="header">
         
