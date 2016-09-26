@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 class Games extends Controller {
     
@@ -74,9 +74,13 @@ class Games extends Controller {
         $gamesModel = new GamesModel();
         $gameList = array();
         
-        $gameList["listType"] = $params != NULL ? "singleGame" : "allGames";
-        $gameList["game"] = $params != NULL ? $gamesModel->getGameInfo($params[0]) : $gamesModel->getGames(); 
-        $params != NULL ?: $gameList["game"]["rating"] = "4.5 / 5 TEST"; 
+        if ($params[0] != -1) {
+            $gameList["listType"] = $params != NULL ? "singleGame" : "allGames";
+            $gameList["game"] = $params != NULL ? $gamesModel->getGameInfo($params[0]) : $gamesModel->getGames(); 
+            $params != NULL ?: $gameList["game"]["rating"] = "4.5 / 5 TEST";
+        } else {
+            $gameList["game"] = $gamesModel->getGameInfo($params[1], false);
+        }
         
         echo json_encode($gameList);
     }

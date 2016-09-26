@@ -6,6 +6,7 @@
     
     <!-- <link rel="stylesheet" href="<?= URL; ?>public/css/bootstrap/bootstrap.min.css" /> -->
     <!-- <link rel="stylesheet" href="<?= URL; ?>public/css/bootstrap/bootstrap-theme.min.css" /> -->
+    <link rel="stylesheet" href="<?= URL; ?>public/css/datatables/datatables.css" />
     
     <link rel="stylesheet" href="<?= URL; ?>public/css/default.css" />
 </head>
@@ -15,6 +16,7 @@
     
     <script src="<?= URL; ?>public/js/jquery.js"></script>
     <!-- <script src="<?= URL; ?>public/js/bootstrap/bootstrap.min.js"></script> -->
+    <script src="<?= URL; ?>public/js/datatables/datatables.js"></script>
     
     <div id="header">
         

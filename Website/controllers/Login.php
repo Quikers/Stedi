@@ -32,14 +32,16 @@ class Login extends Controller {
         
         $result = $loginModel->Register($_POST["email"], $_POST["username"], $_POST["password"]);
         
-        if ($result != false) {
-            $_SESSION["message"] = "<h1 style=\"position: relative; top: -75px; color: lightgreen; text-align: center; font-weight: 100;\">Successfully registered!</h1>";
+        $preMessage = "<h1 style=\"position: relative; top: -75px; color: " . ($result > 0 ? "lightgreen" : "crimson") .  "; text-align: center; font-weight: 100;\">";
+        $afterMessage = "</h1>";
+        if ((int)$result > 0) {
+            $_SESSION["message"] = $preMessage . "Successfully registered!". $afterMessage;
             $_SESSION["login"] = array("username" => $_POST["username"], "password" => $_POST["password"]);
+        } else if ($result == 0) {
+            $_SESSION["message"] = $preMessage . "Username already exists." . $afterMessage;
         } else {
-            $_SESSION["message"] = "<h1 style=\"position: relative; top: -75px; color: red; text-align: center; font-weight: 100;\">Registration failed!<br>Please contact the system administrator.</h1>";
+            $_SESSION["message"] = $preMessage . "Registration failed!<br>Please contact the system administrator." . $afterMessage;
         }
-        
-        return;
         
         header("Location:" . URL . "home");
     }

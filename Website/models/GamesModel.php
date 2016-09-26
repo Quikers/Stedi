@@ -6,12 +6,14 @@ class GamesModel extends Model {
         parent::__construct();
     }
 
-    public function getGames() {
-        return $this->db->Query("SELECT `id`, `userid`, `name`, `activated`, `created`, `genre`, `author`, `description` FROM `games`", false);
+    public function getGames($getOnlyID = false, $getBackground = false) {
+        $columns = (!$getOnlyID ? ", `userid`, `name`, `activated`, `created`, `genre`, `author`, `description`" : "") . ($getBackground ? ", `background`" : "");
+        return $this->db->Query("SELECT `id`$columns FROM `games`", false);
     }
 
-    public function getGameInfo($gameid) {
-        $result = $this->db->Query("SELECT * FROM `games` WHERE `id` = $gameid");
+    public function getGameInfo($gameid, $getBackground = true) {
+        $columns = ($getBackground ? ", `background`" : "");
+        $result = $this->db->Query("SELECT `id`, `userid`, `name`, `activated`, `created`, `genre`, `author`, `description`$columns FROM `games` WHERE `id` = $gameid");
         
         return $result != array() ? $result : false;
     }

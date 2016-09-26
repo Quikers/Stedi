@@ -6,7 +6,6 @@ class Bootstrap {
     private $_controller = null;
     
     private $_controllerPath = 'controllers/';
-    private $_modelPath = 'models/';
     private $_errorFile = 'error.php';
     
     
@@ -46,7 +45,6 @@ class Bootstrap {
         if (file_exists($file)) {
             require $file;
             $this->_controller = new $this->_url[0];
-            $this->_controller->loadModel($this->_url[0], $this->_modelPath);
         } else {
             $this->_error($this->_url[0]);
             return false;

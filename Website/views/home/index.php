@@ -1,12 +1,23 @@
 <div id="formContainer">
     
-    <?php if (isset($this->message)) { echo $this->message; } ?>
+    <?php 
+    
+    $username = "";
+    $password = "";
+    
+    if (isset($this->message)) { echo $this->message; }
+    if (isset($this->login)) {
+        $username = $this->login["username"];
+        $password = $this->login["password"];
+    }
+    
+    ?>
     
     <div id="loginContainer">
         <h2>LOGIN</h2>
         <form method="POST" action="<?= URL ?>login">
-            <input required type="text" name="username" id="iUsername" placeholder="Username"><br>
-            <input required type="password" name="password" id="iPassword" placeholder="Password">
+            <input required type="text" name="username" id="iUsername" value="<?= $username ?>" placeholder="Username" autofocus><br>
+            <input required type="password" name="password" id="iPassword" value="<?= $password ?>" placeholder="Password">
             <input type="submit" id="iSubmit" hidden="true">
         </form>
     </div>

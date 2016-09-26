@@ -16,16 +16,18 @@ class LoginModel extends Model {
         }
     }
     
+    public function GetLastInsertedUser() {
+        return $this->db->Query("SELECT (`id`) FROM `users` ORDER BY `id` DESC LIMIT 1");
+    }
+    
     public function Register($email, $username, $password) {
-        $result = $this->db->Query('INSERT INTO `users`(`email`, `username`, `password`, `accountType`) VALUES ("' . $email . '", "' . $username . '", PASSWORD("' . $password . '"), 1)', true, false, true);
+        try {
+            $lastID = $this->GetLastInsertedUser()["id"];
+            $this->db->Query('INSERT INTO `users`(`email`, `username`, `password`, `accountType`) VALUES ("' . $email . '", "' . $username . '", PASSWORD("' . $password . '"), 1)', true, false, true);
+            $newID = $this->GetLastInsertedUser()["id"];
+        } catch(Exception $ex) { return -1; }
         
-        print_r($result);
-        
-        if ($result != array()) {
-            return $result;
-        } else {
-            return false;
-        }
+        return $lastID != $newID ? $newID : 0;
     }
 
 }
