@@ -27,7 +27,7 @@ body {
     height: 95.5%;
 }
 
-#header:not(thead) {
+div#header {
     position: absolute;
     top: 15px;
     left: 20px;
@@ -39,6 +39,7 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
+    min-width: 1025px;
     
     margin: 20px 20px 20px 235px;
     background: rgba(255,255,255, 0.16);
@@ -431,34 +432,13 @@ input {
     }
 }
 
-#table_wrapper * {
-    color: white;
+.tableLink {
+    display: inline-block;
+    padding: 15px 10px;
+    
+    width: calc(100% - 20px);
 }
 
-#table_wrapper thead {
-    text-shadow: none;
-    border-bottom-color: white;
-}
-
-#table_wrapper th {
+.tableLink:hover {
     background: rgba(0, 0, 0, 0.4);
-    transition: 150ms;
-}
-
-#table_wrapper th:hover {
-    background: rgba(0, 0, 0, 0.3);
-}
-
-#table_wrapper tr {
-    background: rgba(255, 255, 255, 0.25);
-    transition: 150ms;
-}
-
-#table_wrapper tr:hover {
-    background: rgba(255, 255, 255, 0.3);
-}
-
-#table_wrapper #table_filter {
-    float: left;
-    margin-bottom: 10px;
 }

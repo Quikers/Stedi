@@ -7,6 +7,7 @@
     <!-- <link rel="stylesheet" href="<?= URL; ?>public/css/bootstrap/bootstrap.min.css" /> -->
     <!-- <link rel="stylesheet" href="<?= URL; ?>public/css/bootstrap/bootstrap-theme.min.css" /> -->
     <link rel="stylesheet" href="<?= URL; ?>public/css/datatables/datatables.css" />
+    <link rel="stylesheet" href="<?= URL; ?>public/css/datatables/datatablesCustomized.css" />
     
     <link rel="stylesheet" href="<?= URL; ?>public/css/default.css" />
 </head>
