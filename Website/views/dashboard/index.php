@@ -38,7 +38,7 @@ $(document).ready(function () {
                             "<a class=\"tableLink\" href=\"<?= URL ?>games/app/" + data.game.id + "\">" + data.game.genre + "</a>",
                             "<a class=\"tableLink\" href=\"<?= URL ?>games/app/" + data.game.id + "\">" + data.game.author + "</a>",
                             "<a class=\"tableLink\" href=\"<?= URL ?>games/app/" + data.game.id + "\">" + data.game.created + "</a>",
-                            data.game.activated
+                            ( data.game.activated === "0" ? "Not activated" : ( data.game.activated === "1" ? "Activated" : ( data.game.activated === "2" ? "Missing game files" : "" ) ) )
                         ]).draw().node();
 
                         $(newRow).attr("id", data.game.id);
@@ -48,17 +48,6 @@ $(document).ready(function () {
         },
         "createdRow": function( row, data, dataIndex ) {
             $(row).children("td:not(td:last-of-type())").attr("style", "padding: 0;");
-            
-            $(row).children("td").bind({
-                mouseenter: function () {
-                    console.log($(this).siblings());
-                    $(this).siblings().children().bind("mouseenter");
-                },
-                mouseleave: function () {
-                    console.log("Mouse Leave");
-                    $(this).siblings().children().unbind("mouseenter");
-                }
-            });
         }
     });
 });

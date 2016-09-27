@@ -10,9 +10,8 @@ th, table.dataTable tbody td {
 
 #table_info {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: -2px;
+    left: 225px;
     text-align: center;
     
     pointer-events: none;
@@ -45,6 +44,7 @@ th, table.dataTable tbody td {
 
 #table_wrapper th {
     background: rgba(0, 0, 0, 0.4);
+    border-bottom-color: white;
     transition: 150ms;
 }
 
@@ -59,15 +59,17 @@ th, table.dataTable tbody td {
 
 #table_wrapper tr {
     background: rgba(255, 255, 255, 0.25);
+    border-top-color: rgb(17, 17, 17);
     transition: 150ms;
 }
 
 #table_wrapper tr:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgb(44,44,44);
 }
 
 #table_wrapper td {
     background: rgba(0, 0, 0, 0.3);
+    border-top-color: rgb(17, 17, 17);
 }
 
 #table_wrapper td.sorting, #table_wrapper td.sorting_1, #table_wrapper td.sorting_2, #table_wrapper td.sorting_3 {
