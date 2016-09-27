@@ -109,7 +109,7 @@ class Upload extends Controller {
                 $extension = explode(".", $_FILES["gameBackground"]["name"]);
                 $uploadModel->UploadGame(
                     $_POST["gameName"], 
-                    $_POST["gameGenre"], 
+                    $_POST["gametags"], 
                     $_POST["gameAuthor"], 
                     $_POST["gameDesc"], 
                     $this->base64_encode_image(

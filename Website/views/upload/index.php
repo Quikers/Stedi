@@ -18,8 +18,8 @@
         <div id="formContent">
             <label for="gameName">Name</label>
             <input type="text" name="gameName" id="gameName" placeholder="The name of your game" required><br>
-            <label for="gameGenre">Genre</label>
-            <input type="text" name="gameGenre" id="gameGenre" placeholder="Divide each genre with a space" required><br>
+            <label for="gametags">tags</label>
+            <input type="text" name="gametags" id="gametags" placeholder="Divide each tags with a space" required><br>
             <label for="gameAuthor">Creator</label>
             <input type="text" name="gameAuthor" id="gameAuthor" placeholder="If left empty, account username will be used" required><br>
             <label for="gameDesc">Description</label>
@@ -43,8 +43,8 @@
             <br>
             E.g. "The Tale of the Great Spatula"</h3>
         <br>
-        <h2>Genre</h2>
-        <h3>The genre of your game is very important when searching or filtering.<br>
+        <h2>tags</h2>
+        <h3>The tags of your game is very important when searching or filtering.<br>
             You can add multiple "tags" by adding a space in between them.<br>
             <br>
             E.g. "FPS Action Cartoon" would show as "Action / Cartoon / FPS"</h3>

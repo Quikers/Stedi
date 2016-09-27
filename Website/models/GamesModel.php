@@ -7,13 +7,13 @@ class GamesModel extends Model {
     }
 
     public function getGames($getOnlyID = false, $getBackground = false) {
-        $columns = (!$getOnlyID ? ", `userid`, `name`, `activated`, `created`, `genre`, `author`, `description`" : "") . ($getBackground ? ", `background`" : "");
+        $columns = (!$getOnlyID ? ", `userid`, `name`, `activated`, `created`, `tags`, `author`, `description`" : "") . ($getBackground ? ", `background`" : "");
         return $this->db->Query("SELECT `id`$columns FROM `games`", false);
     }
 
     public function getGameInfo($gameid, $getBackground = true) {
         $columns = ($getBackground ? ", `background`" : "");
-        $result = $this->db->Query("SELECT `id`, `userid`, `name`, `activated`, `created`, `genre`, `author`, `description`$columns FROM `games` WHERE `id` = $gameid");
+        $result = $this->db->Query("SELECT `id`, `userid`, `name`, `activated`, `created`, `tags`, `author`, `description`$columns FROM `games` WHERE `id` = $gameid");
         
         return $result != array() ? $result : false;
     }
