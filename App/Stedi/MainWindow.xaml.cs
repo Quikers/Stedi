@@ -43,7 +43,7 @@ namespace Stedi {
             lbGames.SetValue(ScrollViewer.HorizontalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
             lbGames.Margin = new Thickness(10, 81, 0, 9.6);
             lbGames.Width = 400;
-            lbGames.Background = (Brush)new BrushConverter().ConvertFromString("#28FFFFFF");
+            lbGames.Background = (Brush)new BrushConverter().ConvertFromString("#CC000000"); // 28
             lbGames.Foreground = Brushes.White;
             lbGames.BorderThickness = new Thickness(0);
             lbGames.SelectionChanged += lbGames_SelectionChanged;
@@ -139,7 +139,7 @@ namespace Stedi {
             bi.BeginInit();
             bi.StreamSource = new MemoryStream(binaryData);
             bi.EndInit(); 
-            GridGameInfo.Background = new ImageBrush(bi);
+            TheMainWindow.Background = new ImageBrush(bi);
 
         }
 
