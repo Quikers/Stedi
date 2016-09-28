@@ -236,7 +236,7 @@ namespace Stedi {
 
                     // Decrease i by 1 because the current index is removed and replaced by another one
                     i--;
-                } else if (!File.Exists(Directory.GetCurrentDirectory() + @"\Games\" + filteredGames[i]["id"] + @"\Game.exe")) {
+                } else if (!File.Exists(Directory.GetCurrentDirectory() + @"\Games\" + filteredGames[i]["id"] + @"\game.exe")) {
                     // Game.exe does not exist and will be removed from the list
                     filteredGames.RemoveAt(i);
 

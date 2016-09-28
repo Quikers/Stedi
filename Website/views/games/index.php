@@ -44,8 +44,8 @@ if ($gameList["listType"] == "allGames") {
     <h2><?= join(" / ", explode(" ", $game["tags"])) ?></h2>
     <h3>Created by: <p style="display: inline-block;"><?= $game["author"] ?></p></h3>
     <h3>Release date: <p style="display: inline-block;"><?= explode(" ", $game["created"])[0] ?></p></h3>
-    <h4>Rating: <?= $game["rating"] ?></h4>
-    <h5><?= $game["description"] ?></h5>
+    <h4>Rating: <?= $game["rating"] ?></h4><?= print_r($game) ?>
+    <h5><?= str_replace("\\r\\n", "<br>", $game["description"]) ?></h5>
 </div>
 
 
