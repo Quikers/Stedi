@@ -225,52 +225,46 @@ namespace Stedi {
 
             // Loop through all the games
             for (int i = 0; i < filteredGames.Count; i++) {
+                string dir = @"\Games\" + filteredGames[i]["id"];
                 // Check if game is activated
                 if (Convert.ToInt16(filteredGames[i]["activated"]) == 0) {
                     // Game is not activated and will be removed from the list
-                    filteredGames.RemoveAt(i);
+                    filteredGames.RemoveAt(i--);
 
-                    // Decrease i by 1 because the current index is removed and replaced by another one
-                    i--;
-                } else if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\Games\" + filteredGames[i]["id"])) {
+                } else if (Convert.ToInt16(filteredGames[i]["activated"]) == 2) {
+                    if (!Directory.Exists(Directory.GetCurrentDirectory() + dir) && !File.Exists(Directory.GetCurrentDirectory() + dir + @"\game.exe")) {
+                        // Game is not activated and will be removed from the list
+                        filteredGames.RemoveAt(i--);
+                    } else {
+                        Database.Query("UPDATE `games` SET `activated`=1 WHERE id=" + filteredGames[i]["id"]);
+                    }
+                } else if (!Directory.Exists(Directory.GetCurrentDirectory() + dir) || !File.Exists(Directory.GetCurrentDirectory() + dir + @"\game.exe")) {
+                    // Set game to activated but doesn't exist on hard drive
+                    Database.Query("UPDATE `games` SET `activated` = 2 WHERE id=" + filteredGames[i]["id"]);
+
                     // Game is not activated and will be removed from the list
-                    filteredGames.RemoveAt(i);
+                    filteredGames.RemoveAt(i--);
 
-                    // Set game to activated but doesn't exist on hard drive
-                    Database.Query("UPDATE `games` SET `activated` = 2");
-
-                    // Decrease i by 1 because the current index is removed and replaced by another one
-                    i--;
-                } else if (!File.Exists(Directory.GetCurrentDirectory() + @"\Games\" + filteredGames[i]["id"] + @"\game.exe")) {
-                    // Game.exe does not exist and will be removed from the list
-                    filteredGames.RemoveAt(i);
-
-                    // Set game to activated but doesn't exist on hard drive
-                    Database.Query("UPDATE `games` SET `activated` = 2");
-
-                    // Decrease i by 1 because the current index is removed and replaced by another one
-                    i--;
                 }
             }
 
-            if (TxtSearchbar.Text.Trim(' ') != "") {
+            if (TxtSearchbar.Text.Trim(' ') == "") return;
 
-                // String to search for
-                string searchValue = TxtSearchbar.Text.ToLower();
+            // String to search for
+            string searchValue = TxtSearchbar.Text.ToLower();
 
-                // Loop through all the games
-                for (int i = 0; i < filteredGames.Count; i++) {
-                    // WARNING this colum positions might change
-                    if (filteredGames[i]["name"].ToLower().Contains(searchValue) ||
-                        filteredGames[i]["author"].ToLower().Contains(searchValue) ||
-                        filteredGames[i]["tags"].ToLower().Contains(searchValue) ||
-                        filteredGames[i]["description"].ToLower().Contains(searchValue)) continue;
-                    // When nothing is found remove from list
-                    filteredGames.RemoveAt(i);
+            // Loop through all the games
+            for (int i = 0; i < filteredGames.Count; i++) {
+                // WARNING this colum positions might change
+                if (filteredGames[i]["name"].ToLower().Contains(searchValue) ||
+                    filteredGames[i]["author"].ToLower().Contains(searchValue) ||
+                    filteredGames[i]["tags"].ToLower().Contains(searchValue) ||
+                    filteredGames[i]["description"].ToLower().Contains(searchValue)) continue;
+                // When nothing is found remove from list
+                filteredGames.RemoveAt(i);
 
-                    // Decrease i by 1 because the current index is removed and replaced by another one
-                    i--;
-                }
+                // Decrease i by 1 because the current index is removed and replaced by another one
+                i--;
             }
         }
 
