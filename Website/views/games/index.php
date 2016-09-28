@@ -8,7 +8,7 @@ if ($gameList["listType"] == "allGames") {
 ?><div id="gameListContainer"><?php // ========================================= GET ALL GAMES =========================================
         
         foreach($gameList["games"] as $key => $game) {
-            if ((int)$game["activated"] > 0) {
+            if ((int)$game["activated"] == 1) {
 ?>
 
 <div style="display: none;" class="game" id="<?= $game["id"] ?>">
