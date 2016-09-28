@@ -38,12 +38,11 @@ namespace Stedi {
         public MainWindow()
         {
             InitializeComponent();
-
             lbGames.HorizontalAlignment = HorizontalAlignment.Left;
             lbGames.SetValue(ScrollViewer.HorizontalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
-            lbGames.Margin = new Thickness(10, 81, 0, 9.6);
-            lbGames.Width = 400;
-            lbGames.Background = (Brush)new BrushConverter().ConvertFromString("#CC000000"); // 28
+            lbGames.Margin = new Thickness(20, 262, 0, 20);
+            lbGames.Width = 390;
+            lbGames.Background = (Brush)new BrushConverter().ConvertFromString("#B3000000"); // 28
             lbGames.Foreground = Brushes.White;
             lbGames.BorderThickness = new Thickness(0);
             lbGames.SelectionChanged += lbGames_SelectionChanged;
@@ -123,7 +122,7 @@ namespace Stedi {
             // Set genre
             List<string> genres = new List<string>(filteredGames[index]["genre"].Split(' '));
             genres.Sort();
-            LblGenre.Content = string.Join(" / ", genres);
+            LblTag.Content = string.Join(" / ", genres);
 
             // Set created
             LblCreated.Content = "Created by: " + filteredGames[index]["author"];
@@ -140,7 +139,7 @@ namespace Stedi {
             bi.StreamSource = new MemoryStream(binaryData);
             bi.EndInit(); 
             TheMainWindow.Background = new ImageBrush(bi);
-
+            TheMainWindow.Background.Opacity = 0.5;
         }
 
         /// <summary>

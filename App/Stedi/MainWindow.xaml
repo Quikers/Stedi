@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Stedi"
         mc:Ignorable="d"
-        Title="Stedi" Height="720" Width="1280" WindowStartupLocation="CenterScreen" FontFamily="Segoe UI Light" WindowState="Maximized" WindowStyle="None">
+        Title="Stedi" Height="720" Width="1280" WindowStartupLocation="CenterScreen" FontFamily="Segoe UI Light" WindowState="Maximized" WindowStyle="None" Background="Black">
 
     <Window.Resources>
         <SolidColorBrush x:Key="ComboBoxNormalBorderBrush" Color="#e3e9ef" />
@@ -124,8 +124,8 @@
     </Window.Resources>
 
     <Grid x:Name="TheMainWindow" Background="Black" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <TextBox x:Name="TxtSearchbar" FontSize="20" Padding="10, 5, 10, 5" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" Background="#CC000000" BorderThickness="0" Width="400" Height="35" FontFamily="Century Gothic" TextChanged="txtSearchbar_TextChanged"/>
-        <TextBlock IsHitTestVisible="False" Padding="10, 5, 10, 5" Text="Search" FontSize="20" TextAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,8,0,0" Foreground="DarkGray" Height="37" Width="74">
+        <TextBox x:Name="TxtSearchbar" FontSize="20" Padding="10, 5, 10, 5" HorizontalAlignment="Left" Margin="20,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" Background="#B2000000" BorderThickness="0" Width="390" Height="35" FontFamily="Century Gothic" TextChanged="txtSearchbar_TextChanged"/>
+        <TextBlock IsHitTestVisible="False" Padding="10, 5, 10, 5" Text="Search" FontSize="20" TextAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,20,0,0" Foreground="DarkGray" Height="37" Width="74">
             <TextBlock.Style>
                 <Style TargetType="{x:Type TextBlock}">
                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -137,8 +137,8 @@
                 </Style>
             </TextBlock.Style>
         </TextBlock>
-        <Grid x:Name="GridGameInfo" Margin="415,10,9.6,9.6" Background="#CC000000">
-            <Label x:Name="LblGenre" Content="" HorizontalAlignment="Left" Margin="44,75,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="24" Height="40" Width="832"/>
+        <Grid x:Name="GridGameInfo" Margin="430,20,20,20" Background="#7F000000">
+            <Label x:Name="LblTag" Content="" HorizontalAlignment="Left" Margin="44,75,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="24" Height="40" Width="832"/>
             <Label x:Name="LblName" Content="Name" HorizontalAlignment="Left" Margin="32,32,0,0" VerticalAlignment="Top" Width="844" Height="62" FontSize="40" Background="#00000000" Foreground="White" FontFamily="Century Gothic" FontWeight="Thin"/>
             <Label x:Name="LblCreated" Content="Created by: " HorizontalAlignment="Left" Margin="32,132,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="18" Height="32" Width="844"/>
             <Label x:Name="LblDate" Content="Release date: " HorizontalAlignment="Left" Margin="32,168,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="18" Height="32" Width="844"/>
@@ -165,40 +165,11 @@
             </Button>
             <TextBox x:Name="TxtDescription" HorizontalAlignment="Left" Height="383" Margin="32,285,0,0" IsReadOnly="true" Cursor="Arrow" TextWrapping="Wrap" Text="Description" VerticalAlignment="Top" Width="844" Background="#01FFFFFF" Foreground="White" FontFamily="Segoe UI" BorderThickness="0" FontSize="20"/>
         </Grid>
-        <Label x:Name="LblSortBy" Content="Sort by:" HorizontalAlignment="Left" Margin="6,46,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Arial" FontSize="20"/>
-        <ComboBox x:Name="CbCategory" SelectedIndex="0" Style="{StaticResource ComboBoxFlatStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="326" Padding="5,0,5,0"  Margin="84,50,0,0" Height="26" FontSize="20" SelectionChanged="cbCategory_SelectionChanged">
-            <ComboBox.ItemContainerStyle>
-                <Style TargetType="{x:Type ComboBoxItem}">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ComboBoxItem">
-                                <Grid>
-                                    <Border x:Name="Border" Background="Transparent">
-                                        <TextBlock Padding="5,0,5,0" FontSize="20" Background="#9F000000" Foreground="White" FontFamily="Segoe UI">
-                                    <ContentPresenter></ContentPresenter>
-                                        </TextBlock>
-                                    </Border>
-                                </Grid>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="ComboBoxItem.IsSelected" Value="True">
-                                        <Setter TargetName="Border" Property="Background" Value="#99000000"></Setter>
-                                    </Trigger>
-                                    <Trigger Property="ComboBoxItem.IsMouseOver" Value="True">
-                                        <Setter TargetName="Border" Property="Background" Value="#66000000"></Setter>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ComboBox.ItemContainerStyle>
-            <ComboBoxItem>Most popular</ComboBoxItem>
-            <ComboBoxItem>Least popular</ComboBoxItem>
-            <ComboBoxItem>Highest rating</ComboBoxItem>
-            <ComboBoxItem>Lowest rating</ComboBoxItem>
-            <ComboBoxItem>Oldest</ComboBoxItem>
-            <ComboBoxItem>Newest</ComboBoxItem>
-        </ComboBox>
-
+        <Button x:Name="btnMostPopular" Content="Most popular" HorizontalAlignment="Left" Margin="20,62,0,0" VerticalAlignment="Top" Width="390" Height="30" Background="#7F000000" Foreground="White"/>
+        <Button x:Name="btnLeastPopular" Content="Least popular" HorizontalAlignment="Left" Margin="20,97,0,0" VerticalAlignment="Top" Width="390" Height="30" Background="#7F000000" Foreground="White"/>
+        <Button x:Name="btnHighestRating" Content="Highest Rating" HorizontalAlignment="Left" Margin="20,132,0,0" VerticalAlignment="Top" Width="390" Height="30" RenderTransformOrigin="0.497,-0.7" Background="#7F000000" Foreground="White"/>
+        <Button x:Name="btnLowestRating" Content="Lowest Rating" HorizontalAlignment="Left" Margin="20,167,0,0" VerticalAlignment="Top" Width="390" Height="30" Background="#7F000000" Foreground="White"/>
+        <Button x:Name="btnOldest" Content="Oldest" HorizontalAlignment="Left" Margin="20,202,0,0" VerticalAlignment="Top" Width="390" Height="30" Background="#7F000000" Foreground="White"/>
+        <Button x:Name="btnNewest" Content="Newest" HorizontalAlignment="Left" Margin="20,237,0,0" VerticalAlignment="Top" Width="390" Height="30" Background="#7F000000" Foreground="White"/>
     </Grid>
 </Window>
