@@ -315,6 +315,8 @@ namespace Stedi {
             t.Start();
         }
         
+
+        // Update
         private void cbCategory_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             Update();
         }
