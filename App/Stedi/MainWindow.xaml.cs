@@ -177,6 +177,8 @@ namespace Stedi {
 
             FilterGames();
 
+            //Convert.
+
             // TODO: Check if some sorting method is specified and sort by default
             SortGames();
 

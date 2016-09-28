@@ -17,7 +17,7 @@ if ($gameList["listType"] == "allGames") {
         
 
         <h1><?= $game["name"] ?></h1>
-        <h2><?= join(" / ", explode(" ", $game["genre"])) ?></h2>
+        <h2><?= join(" / ", explode(" ", $game["tags"])) ?></h2>
         <h3>Creator: <?= $game["author"] ?></h3>
         <h3>Released: <?= explode(" ", $game["created"])[0] ?></h3>
     </a>
@@ -41,7 +41,7 @@ if ($gameList["listType"] == "allGames") {
     <div class="background" style="background: url('<?= $game["background"] ?>') no-repeat left top;"></div>
     
     <h1><?= $game["name"] ?></h1>
-    <h2><?= join(" / ", explode(" ", $game["genre"])) ?></h2>
+    <h2><?= join(" / ", explode(" ", $game["tags"])) ?></h2>
     <h3>Created by: <p style="display: inline-block;"><?= $game["author"] ?></p></h3>
     <h3>Release date: <p style="display: inline-block;"><?= explode(" ", $game["created"])[0] ?></p></h3>
     <h4>Rating: <?= $game["rating"] ?></h4>

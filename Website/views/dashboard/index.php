@@ -2,7 +2,7 @@
     <table id="table"  class="display" cellspacing="0" width="100%">
         <thead id="header">
             <th id="name">Name</th>
-            <th id="genre">Genre</th>
+            <th id="tags">tags</th>
             <th id="author">Created by</th>
             <th id="created">Released on</th>
             <th id="created">Activation</th>
@@ -35,7 +35,7 @@ $(document).ready(function () {
                     for (var i = 0; i < 60; i++) {
                         var newRow = api.row.add([
                             "<a class=\"tableLink\" href=\"<?= URL ?>games/app/" + data.game.id + "\">" + data.game.name + "</a>",
-                            "<a class=\"tableLink\" href=\"<?= URL ?>games/app/" + data.game.id + "\">" + data.game.genre + "</a>",
+                            "<a class=\"tableLink\" href=\"<?= URL ?>games/app/" + data.game.id + "\">" + data.game.tags + "</a>",
                             "<a class=\"tableLink\" href=\"<?= URL ?>games/app/" + data.game.id + "\">" + data.game.author + "</a>",
                             "<a class=\"tableLink\" href=\"<?= URL ?>games/app/" + data.game.id + "\">" + data.game.created + "</a>",
                             ( data.game.activated === "0" ? "Not activated" : ( data.game.activated === "1" ? "Activated" : ( data.game.activated === "2" ? "Missing game files" : "" ) ) )

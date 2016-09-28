@@ -6,8 +6,8 @@ class UploadModel extends Model {
         parent::__construct();
     }
     
-    public function InsertGame($gameName, $gameGenre, $gameAuthor, $gameDesc, $gameBackground) {
-        return $this->db->Query("INSERT INTO `games`(`userid`, `name`, `activated`, `genre`, `author`, `description`, `background`) VALUES (" . $_SESSION["user"]["id"] . ", \"$gameName\", 0, \"$gameGenre\", \"$gameAuthor\", \"$gameDesc\", \"$gameBackground\")", true, true);
+    public function InsertGame($gameName, $gametags, $gameAuthor, $gameDesc, $gameBackground) {
+        return $this->db->Query("INSERT INTO `games`(`userid`, `name`, `activated`, `tags`, `author`, `description`, `background`) VALUES (" . $_SESSION["user"]["id"] . ", \"$gameName\", 0, \"$gametags\", \"$gameAuthor\", \"$gameDesc\", \"$gameBackground\")", true, true);
     }
     
     public function DeleteGameById($gameid) {
@@ -18,8 +18,8 @@ class UploadModel extends Model {
         return $this->db->Query("SELECT (`id`) FROM `games` ORDER BY `id` DESC LIMIT 1");
     }
 
-    public function UploadGame($gameName, $gameGenre, $gameAuthor, $gameDesc, $gameBackground, $gameFile) {
-        $this->InsertGame($gameName, $gameGenre, $gameAuthor, $gameDesc, $gameBackground);
+    public function UploadGame($gameName, $gametags, $gameAuthor, $gameDesc, $gameBackground, $gameFile) {
+        $this->InsertGame($gameName, $gametags, $gameAuthor, $gameDesc, $gameBackground);
         $result = $this->GetLastInsertedGame();
         
         if (isset($result["id"])) {
