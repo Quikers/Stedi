@@ -124,10 +124,10 @@ namespace Stedi {
             // Set title
             LblName.Content = filteredGames[index]["name"];
 
-            // Set genre
-            List<string> genres = new List<string>(filteredGames[index]["genre"].Split(' '));
-            genres.Sort();
-            LblTag.Content = string.Join(" / ", genres);
+            // Set tags
+            List<string> tags = new List<string>(filteredGames[index]["tags"].Split(' '));
+            tags.Sort();
+            LblTag.Content = string.Join(" / ", tags);
 
             // Set created
             LblCreated.Content = "Created by: " + filteredGames[index]["author"];
@@ -263,7 +263,7 @@ namespace Stedi {
                     // WARNING this colum positions might change
                     if (filteredGames[i]["name"].ToLower().Contains(searchValue) ||
                         filteredGames[i]["author"].ToLower().Contains(searchValue) ||
-                        filteredGames[i]["genre"].ToLower().Contains(searchValue) ||
+                        filteredGames[i]["tags"].ToLower().Contains(searchValue) ||
                         filteredGames[i]["description"].ToLower().Contains(searchValue)) continue;
                     // When nothing is found remove from list
                     filteredGames.RemoveAt(i);
