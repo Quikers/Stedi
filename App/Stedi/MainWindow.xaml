@@ -124,7 +124,7 @@
     </Window.Resources>
 
     <Grid x:Name="TheMainWindow" Background="Black" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <TextBox x:Name="TxtSearchbar" FontSize="20" Padding="10, 5, 10, 5" HorizontalAlignment="Left" Margin="20,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" Background="#B2000000" BorderThickness="0" Width="390" Height="35" FontFamily="Century Gothic" TextChanged="txtSearchbar_TextChanged"/>
+        <TextBox x:Name="TxtSearchbar" TabIndex="0" FontSize="20" Padding="10, 5, 10, 5" HorizontalAlignment="Left" Margin="20,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" Background="#7F000000" BorderThickness="0" Width="390" Height="35" FontFamily="Century Gothic" TextChanged="txtSearchbar_TextChanged"/>
         <TextBlock IsHitTestVisible="False" Padding="10, 5, 10, 5" Text="Search" FontSize="20" TextAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,20,0,0" Foreground="DarkGray" Height="37" Width="74">
             <TextBlock.Style>
                 <Style TargetType="{x:Type TextBlock}">
@@ -142,34 +142,8 @@
             <Label x:Name="LblName" Content="Name" HorizontalAlignment="Left" Margin="32,32,0,0" VerticalAlignment="Top" Width="844" Height="62" FontSize="40" Background="#00000000" Foreground="White" FontFamily="Century Gothic" FontWeight="Thin"/>
             <Label x:Name="LblCreated" Content="Created by: " HorizontalAlignment="Left" Margin="32,132,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="18" Height="32" Width="844"/>
             <Label x:Name="LblDate" Content="Release date: " HorizontalAlignment="Left" Margin="32,168,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="18" Height="32" Width="844"/>
-            <Button x:Name="BtnPlay" Content="Play" HorizontalAlignment="Left" VerticalAlignment="Top" Width="156" Height="40" Cursor="Hand" FontSize="21.333" FontFamily="Arial" Background="#9F000000" Foreground="White" Click="btnPlay_Click" Margin="32,223,0,0">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Background" Value="#7FFFFFFF" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Grid Background="{TemplateBinding Background}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Grid>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="#7FFFFFFF"/>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Button.Style>
-            </Button>
             <TextBox x:Name="TxtDescription" HorizontalAlignment="Left" Height="383" Margin="32,285,0,0" IsReadOnly="true" Cursor="Arrow" TextWrapping="Wrap" Text="Description" VerticalAlignment="Top" Width="844" Background="#01FFFFFF" Foreground="White" FontFamily="Segoe UI" BorderThickness="0" FontSize="20"/>
         </Grid>
-        <Button x:Name="btnMostPopular" Content="Most popular" HorizontalAlignment="Left" Margin="20,62,0,0" VerticalAlignment="Top" Width="390" Height="30" Background="#7F000000" Foreground="White"/>
-        <Button x:Name="btnLeastPopular" Content="Least popular" HorizontalAlignment="Left" Margin="20,97,0,0" VerticalAlignment="Top" Width="390" Height="30" Background="#7F000000" Foreground="White"/>
-        <Button x:Name="btnHighestRating" Content="Highest Rating" HorizontalAlignment="Left" Margin="20,132,0,0" VerticalAlignment="Top" Width="390" Height="30" RenderTransformOrigin="0.497,-0.7" Background="#7F000000" Foreground="White"/>
-        <Button x:Name="btnLowestRating" Content="Lowest Rating" HorizontalAlignment="Left" Margin="20,167,0,0" VerticalAlignment="Top" Width="390" Height="30" Background="#7F000000" Foreground="White"/>
-        <Button x:Name="btnOldest" Content="Oldest" HorizontalAlignment="Left" Margin="20,202,0,0" VerticalAlignment="Top" Width="390" Height="30" Background="#7F000000" Foreground="White"/>
-        <Button x:Name="btnNewest" Content="Newest" HorizontalAlignment="Left" Margin="20,237,0,0" VerticalAlignment="Top" Width="390" Height="30" Background="#7F000000" Foreground="White"/>
+        <Button x:Name="btnMostPopular" TabIndex="1" Content="Most popular" HorizontalAlignment="Left" Margin="20,62,0,0" VerticalAlignment="Top" Width="390" Height="30" Background="#7F000000" Foreground="White" FontFamily="Segoe UI" FontSize="16"/>
     </Grid>
 </Window>

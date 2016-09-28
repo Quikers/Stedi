@@ -36,24 +36,31 @@ namespace Stedi {
         public static List<Dictionary<string, string>> Query(string sql) {
             List<Dictionary<string, string>> items = new List<Dictionary<string, string>>();
 
-            MySqlCommand cmd = new MySqlCommand(sql, MySqlConn);
-            cmd.CommandType = System.Data.CommandType.Text;
+                MySqlCommand cmd = new MySqlCommand(sql, MySqlConn);
+                cmd.CommandType = System.Data.CommandType.Text;
 
-            try {
-                // Execute the query and save the result in the game list
-                using (MySqlDataReader reader = cmd.ExecuteReader()) {
-                    while (reader.Read()) {
-                        // Set the values of the string array
-                        items.Add(new Dictionary<string, string>());
+                try
+                {
+                    // Execute the query and save the result in the game list
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            // Set the values of the string array
+                            items.Add(new Dictionary<string, string>());
 
-                        for (int i = 0; i < reader.FieldCount; i++) {
-                            items[items.Count - 1].Add(reader.GetName(i), reader.GetString(i));
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                items[items.Count - 1].Add(reader.GetName(i), reader.GetString(i));
+                            }
                         }
                     }
                 }
-            } catch (Exception ex) {
-                MessageBox.Show("Something went wrong with the database connection.\n\nStats for nerds:\n\n" + ex);
-            }
+                catch (Exception ex)
+                {
+                    if (!ex.ToString().ToLower().Contains("connection must be valid and open"))
+                        MessageBox.Show("Something went wrong with the database connection.\n\nStats for nerds:\n\n" + ex);
+                }
 
             return items;
         }

@@ -26,28 +26,33 @@ namespace Stedi {
 
     public partial class MainWindow : Window {
         // Variables
+        string[] sortMethods = new string[] { "Most popular", "Least popular", "Highest rating", "Lowest rating", "Oldest", "Newest" };
+        UInt16 methodIndex = 0;
         List<Dictionary<string, string>> games = new List<Dictionary<string, string>>();
         List<Dictionary<string, string>> filteredGames = new List<Dictionary<string, string>>();
         private Process gameProcess = new Process();
-        private ComboBoxItems cbItems = new ComboBoxItems();
         private int savedIndex = -1;
         Timer t;
 
-        private ListBox lbGames = new ListBox();
+        private ListBox lbGames;
         
         public MainWindow()
         {
             InitializeComponent();
-            lbGames.HorizontalAlignment = HorizontalAlignment.Left;
+
+            lbGames = new ListBox {
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Margin = new Thickness(20, 99, 0, 20),
+                Width = 390,
+                Background = (Brush)new BrushConverter().ConvertFromString("#B3000000"),
+                Foreground = Brushes.White,
+                BorderThickness = new Thickness(0),
+                FontFamily = new FontFamily("Segoe UI Light"),
+                FontSize = 20
+            };
+
             lbGames.SetValue(ScrollViewer.HorizontalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
-            lbGames.Margin = new Thickness(20, 262, 0, 20);
-            lbGames.Width = 390;
-            lbGames.Background = (Brush)new BrushConverter().ConvertFromString("#B3000000"); // 28
-            lbGames.Foreground = Brushes.White;
-            lbGames.BorderThickness = new Thickness(0);
             lbGames.SelectionChanged += lbGames_SelectionChanged;
-            lbGames.FontFamily = new FontFamily("Segoe UI Light");
-            lbGames.FontSize = 20;
 
             TheMainWindow.Children.Add(lbGames);
 
@@ -293,7 +298,6 @@ namespace Stedi {
                 gameProcess = Process.Start(filePath);
             } catch (Exception ex) {
                 gameProcess = null;
-
                 MessageBox.Show(ex.ToString() + Environment.NewLine + Environment.NewLine + "File: " + filePath);
             }
         }
