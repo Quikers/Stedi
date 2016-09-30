@@ -22,4 +22,13 @@ class GamesModel extends Model {
         return $this->db->Query("SELECT * FROM `ratings` WHERE `id` = $gameid");
     }
     
+    public function Approve($gameid) {
+        return $this->db->Query("UPDATE `games` SET `activated`=1 WHERE `id` = $gameid");
+    }
+    
+    public function Delete($gameid) {
+        $this->db->Query("DELETE FROM `ratings` WHERE `gameid` = $gameid");
+        return $this->db->Query("DELETE FROM `games` WHERE `id` = $gameid");
+    }
+    
 }
