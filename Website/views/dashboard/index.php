@@ -35,9 +35,9 @@ $(document).ready(function () {
                     data = JSON.parse(data);
                     
                     var newRow = api.row.add([<?= $_SESSION["user"]["accountType"] == 0 ?
-                        '( data.game.activated == 0 ? "<a class=\"tableLink\" href=\"<?= URL ?>games/approve/" + data.game.id + "\">Approve</a>"+'
-                        . '"<a class=\"tableLink\" href=\"<?= URL ?>games/delete/" + data.game.id + "\">Reject</a>"+'
-                        . '"<a class=\"tableLink\" href=\"<?= URL ?>games/delete/" + data.game.id + "\">Delete</a>" : "<a style=\"width: 100%;\"  class=\"tableLink\" href=\"<?= URL ?>games/delete/" + data.game.id + "\">Delete</a>")'
+                        '( data.game.activated == 0 ? "<a class=\"tableControlLink1\" href=\"<?= URL ?>games/approve/" + data.game.id + "\">APPROVE</a><br>"+'
+                        . '"<a class=\"tableControlLink1\" href=\"<?= URL ?>games/delete/" + data.game.id + "\">REJECT</a><br>"+'
+                        . '"<a class=\"tableControlLink1\" href=\"<?= URL ?>games/delete/" + data.game.id + "\">DELETE</a>" : "<a class=\"tableControlLink2\" href=\"<?= URL ?>games/delete/" + data.game.id + "\">DELETE</a>")'
                         . ',' : "" ?>
                         "<a class=\"tableLink\" href=\"<?= URL ?>games/app/" + data.game.id + "\">" + data.game.name + "</a>",
                         "<a class=\"tableLink\" href=\"<?= URL ?>games/app/" + data.game.id + "\">" + data.game.tags + "</a>",
