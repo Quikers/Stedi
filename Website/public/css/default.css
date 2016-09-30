@@ -434,6 +434,22 @@ input {
     }
 }
 
+tr td {
+    max-width: 200px;
+    max-height: 50px;
+    
+    overflow: hidden;
+}
+
+
+.releaseDate {
+    max-width: 100px;
+    max-height: 50px;
+    
+    overflow: hidden;
+    text-align: center;
+}
+
 .tableLink {
     display: inline-block;
     padding: 10px;

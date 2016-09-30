@@ -19,8 +19,7 @@ class Games extends Controller {
         
         $gamesModel->approve($params[0]);
         
-        $this->view->title = "Games";
-        $this->view->render("games/index");
+        header("Location:" . URL . "dashboard");
     }
     
     public function delete($params = NULL) {
@@ -29,8 +28,7 @@ class Games extends Controller {
         
         $gamesModel->delete($params[0]);
         
-        $this->view->title = "Games";
-        $this->view->render("games/index");
+        header("Location:" . URL . "dashboard");
     }
     
     public function apps($params = NULL) {
