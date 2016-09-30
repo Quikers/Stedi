@@ -442,3 +442,9 @@ input {
 .tableLink:hover {
     background: rgba(0, 0, 0, 0.4);
 }
+
+tr td:first-of-type a {
+    padding: 15px 0;
+    width: calc(100% / 3);
+    text-align: center;
+}

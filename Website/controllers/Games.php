@@ -13,15 +13,22 @@ class Games extends Controller {
         header("Location:" . URL . "games/apps/");
     }
     
-    public function approval($params = NULL) {
+    public function approve($params = NULL) {
         $this->loadModel("Games");
         $gamesModel = new GamesModel();
-        $gameList = array();
         
-        $gameList["listType"] = "allGames";
-        $gameList["games"] = $gamesModel->getNonApprovedGames();
+        $gamesModel->approve($params[0]);
         
-        $this->view->gamesList = $gameList;
+        $this->view->title = "Games";
+        $this->view->render("games/index");
+    }
+    
+    public function delete($params = NULL) {
+        $this->loadModel("Games");
+        $gamesModel = new GamesModel();
+        
+        $gamesModel->delete($params[0]);
+        
         $this->view->title = "Games";
         $this->view->render("games/index");
     }

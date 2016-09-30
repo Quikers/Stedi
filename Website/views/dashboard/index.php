@@ -1,6 +1,7 @@
 <div id="tableWrapper" style="position: absolute; top: 75px; bottom: 75px; left: 100px; right: 100px;">
     <table id="table"  class="display" cellspacing="0" width="100%">
         <thead id="header">
+            <?= $_SESSION["user"]["accountType"] == 0 ? "<th id=\"created\">Controls</th>" : "" ?>
             <th id="name">Name</th>
             <th id="tags">tags</th>
             <th id="author">Created by</th>
@@ -25,6 +26,7 @@ $(document).ready(function () {
             search: "",
             searchPlaceholder: "Search games"
         },
+        order: [[ 1, "desc" ]],
         pageLength: 15,
         "fnInitComplete": function(oSettings, json) {
             var api = this.api();
@@ -32,22 +34,24 @@ $(document).ready(function () {
                 $.get("<?= URL ?>games/getgames/-1/" + jsonObject.games[i].id, function (data) {
                     data = JSON.parse(data);
                     
-                    for (var i = 0; i < 60; i++) {
-                        var newRow = api.row.add([
-                            "<a class=\"tableLink\" href=\"<?= URL ?>games/app/" + data.game.id + "\">" + data.game.name + "</a>",
-                            "<a class=\"tableLink\" href=\"<?= URL ?>games/app/" + data.game.id + "\">" + data.game.tags + "</a>",
-                            "<a class=\"tableLink\" href=\"<?= URL ?>games/app/" + data.game.id + "\">" + data.game.author + "</a>",
-                            "<a class=\"tableLink\" href=\"<?= URL ?>games/app/" + data.game.id + "\">" + data.game.created + "</a>",
-                            ( data.game.activated === "0" ? "Not activated" : ( data.game.activated === "1" ? "Activated" : ( data.game.activated === "2" ? "Missing game files" : "" ) ) )
-                        ]).draw().node();
+                    var newRow = api.row.add([<?= $_SESSION["user"]["accountType"] == 0 ?
+                        '( data.game.activated == 0 ? "<a class=\"tableLink\" href=\"<?= URL ?>games/approve/" + data.game.id + "\">Approve</a>"+'
+                        . '"<a class=\"tableLink\" href=\"<?= URL ?>games/delete/" + data.game.id + "\">Reject</a>"+'
+                        . '"<a class=\"tableLink\" href=\"<?= URL ?>games/delete/" + data.game.id + "\">Delete</a>" : "<a style=\"width: 100%;\"  class=\"tableLink\" href=\"<?= URL ?>games/delete/" + data.game.id + "\">Delete</a>")'
+                        . ',' : "" ?>
+                        "<a class=\"tableLink\" href=\"<?= URL ?>games/app/" + data.game.id + "\">" + data.game.name + "</a>",
+                        "<a class=\"tableLink\" href=\"<?= URL ?>games/app/" + data.game.id + "\">" + data.game.tags + "</a>",
+                        "<a class=\"tableLink\" href=\"<?= URL ?>games/app/" + data.game.id + "\">" + data.game.author + "</a>",
+                        "<a class=\"tableLink\" href=\"<?= URL ?>games/app/" + data.game.id + "\">" + data.game.created + "</a>",
+                        "<a class=\"tableLink\" href=\"<?= URL ?>games/app/" + data.game.id + "\">" + ( data.game.activated === "0" ? "Not activated" : ( data.game.activated === "1" ? "Activated" : ( data.game.activated === "2" ? "Missing game files" : "" ) ) ) + "</a>"
+                    ]).draw().node();
 
-                        $(newRow).attr("id", data.game.id);
-                    }
+                    $(newRow).attr("id", data.game.id);
                 });
             }
         },
         "createdRow": function( row, data, dataIndex ) {
-            $(row).children("td:not(td:last-of-type())").attr("style", "padding: 0;");
+            $(row).children("td").attr("style", "padding: 0;");
         }
     });
 });
