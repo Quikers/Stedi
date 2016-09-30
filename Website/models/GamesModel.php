@@ -6,9 +6,11 @@ class GamesModel extends Model {
         parent::__construct();
     }
 
-    public function getGames($getOnlyID = false, $getBackground = false) {
+    public function getGames($getOnlyID = false, $getBackground = false, $userid = NULL) {
         $columns = (!$getOnlyID ? ", `userid`, `name`, `activated`, `created`, `tags`, `author`, `description`" : "") . ($getBackground ? ", `background`" : "");
-        return $this->db->Query("SELECT `id`$columns FROM `games`", false);
+        $userID = ($userid != NULL ? " WHERE `userid`=$userid" : "" );
+        
+        return $this->db->Query("SELECT `id`$columns FROM `games`$userID", false);
     }
 
     public function getGameInfo($gameid, $getBackground = true) {
@@ -19,16 +21,22 @@ class GamesModel extends Model {
     }
     
     public function getGameRating($gameid) {
-        return $this->db->Query("SELECT * FROM `ratings` WHERE `id` = $gameid");
+        return $this->db->Query("SELECT * FROM `ratings` WHERE `gameid` = $gameid", false);
     }
     
     public function Approve($gameid) {
-        return $this->db->Query("UPDATE `games` SET `activated`=1 WHERE `id` = $gameid");
+        if ((int)$_SESSION["user"]["accountType"] == 0) {
+            return $this->db->Query("UPDATE `games` SET `activated`=1 WHERE `id` = $gameid");
+        }
     }
     
     public function Delete($gameid) {
-        $this->db->Query("DELETE FROM `ratings` WHERE `gameid` = $gameid");
-        return $this->db->Query("DELETE FROM `games` WHERE `id` = $gameid");
+        $gameuserid = $this->db->Query("SELECT `userid` FROM `games` WHERE `id`=$gameid")["userid"];
+        
+        if ((int)$_SESSION["user"]["accountType"] == 0 || $_SESSION["user"]["id"] == $gameuserid) {
+            $this->db->Query("DELETE FROM `ratings` WHERE `gameid` = $gameid");
+            return $this->db->Query("DELETE FROM `games` WHERE `id` = $gameid");
+        }
     }
     
 }

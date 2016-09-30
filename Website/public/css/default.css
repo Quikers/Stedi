@@ -466,7 +466,7 @@ tr td {
     display:inline-block;
     
     width: 100%;
-    height: calc(100% / 3);
+    height: calc(100% / 2);
     text-align: center;
 }
 
