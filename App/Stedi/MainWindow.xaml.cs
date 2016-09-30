@@ -13,6 +13,8 @@ using System.IO;
 using Timer = System.Timers.Timer;
 using System.Windows.Media.Imaging;
 using System.Text.RegularExpressions;
+using System.Windows.Input;
+using System.Linq;
 
 namespace Stedi {
     enum ComboBoxItems {
@@ -26,15 +28,28 @@ namespace Stedi {
 
     public partial class MainWindow : Window {
         // Variables
-        string[] sortMethods = new string[] { "Most popular", "Least popular", "Highest rating", "Lowest rating", "Oldest", "Newest" };
-        UInt16 methodIndex = 0;
+        string[] sortMethods = new string[] { " < Title > ", " < Most popular > ", " < Least popular > ", " < Highest rating > ", " < Lowest rating > ", " < Oldest > ", " < Newest > " };
+        private int methodIndex = 0;
         List<Dictionary<string, string>> games = new List<Dictionary<string, string>>();
         List<Dictionary<string, string>> filteredGames = new List<Dictionary<string, string>>();
         private Process gameProcess = new Process();
         private int savedIndex = -1;
         Timer t;
-
+        private int playTime = 0;
+        private int currentPlayingGameIndex = 0;
+        private int selectedControl = 0;
         private ListBox lbGames;
+        private int mode = 0;
+
+        // Rating window
+        private Grid gridRating;
+        private TextBox txtRatingMessage;
+        private double ratingValue = 5;
+
+        // Keyboard
+        private Grid gridKeyboard = new Grid();
+        private Label[] lblKey = new Label[37];
+        private int keyindex = 0;
         
         public MainWindow()
         {
@@ -50,7 +65,6 @@ namespace Stedi {
                 FontFamily = new FontFamily("Segoe UI Light"),
                 FontSize = 20
             };
-
             lbGames.SetValue(ScrollViewer.HorizontalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
             lbGames.SelectionChanged += lbGames_SelectionChanged;
 
@@ -59,6 +73,85 @@ namespace Stedi {
             t = new Timer(2000);
             t.Elapsed += t_elapsed;
             t.Start();
+
+            // Show selected item
+            TxtSearchbar.BorderThickness = new System.Windows.Thickness(2);
+            TxtSearchbar.BorderBrush = Brushes.White;
+            btnSort.BorderBrush = Brushes.White;
+            lbGames.BorderBrush = Brushes.White;
+
+            // Create popup window
+            gridRating = new Grid();
+            gridRating.Width = 500;
+            gridRating.Height = 300;
+            gridRating.HorizontalAlignment = HorizontalAlignment.Center;
+            gridRating.VerticalAlignment = VerticalAlignment.Center;
+            gridRating.Background = (Brush)new BrushConverter().ConvertFromString("#CC000000");
+            gridRating.Visibility = Visibility.Hidden;
+
+            txtRatingMessage = new TextBox();
+            txtRatingMessage.Text = "Rate this game! < 2.5 >";
+            txtRatingMessage.FontSize = 40;
+            txtRatingMessage.HorizontalAlignment = HorizontalAlignment.Center;
+            txtRatingMessage.VerticalAlignment = VerticalAlignment.Center;
+            txtRatingMessage.FontWeight = FontWeights.Normal;
+            txtRatingMessage.BorderThickness = new System.Windows.Thickness(0);
+            txtRatingMessage.Foreground = (Brush)new BrushConverter().ConvertFromString("#FFFFFFFF");
+            txtRatingMessage.Background = (Brush)new BrushConverter().ConvertFromString("#00000000");
+
+            gridRating.Children.Add(txtRatingMessage);
+            TheMainWindow.Children.Add(gridRating);
+
+            // Create keyboard
+            gridKeyboard.Width = 800;
+            gridKeyboard.Height = 300;
+            gridKeyboard.HorizontalAlignment = HorizontalAlignment.Center;
+            gridKeyboard.VerticalAlignment = VerticalAlignment.Center;
+            gridKeyboard.Background = (Brush)new BrushConverter().ConvertFromString("#CC000000");
+            gridKeyboard.Visibility = Visibility.Visible;
+
+            string[] keyChars = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "a", "s", "d", "f", "g", "h", "j", "k", "l", "z", "x", "c", "v", "b", "n", "m" };
+
+            for (int i=0; i<keyChars.Length; i++)
+            {
+                lblKey[i] = new Label();
+                lblKey[i].Content = keyChars[i];
+                lblKey[i].Width = 80;
+                lblKey[i].Height = 80;
+                lblKey[i].FontSize = 40;
+                lblKey[i].FontWeight = FontWeights.Normal;
+                lblKey[i].VerticalAlignment = VerticalAlignment.Top;
+                lblKey[i].HorizontalAlignment = HorizontalAlignment.Left;
+                lblKey[i].Foreground = (Brush)new BrushConverter().ConvertFromString("#FFFFFFFF");
+                lblKey[i].Background = (Brush)new BrushConverter().ConvertFromString("#00000000");
+                lblKey[i].BorderThickness = new System.Windows.Thickness(0);
+                int x = 0;
+                int y = 0;
+                if(i < 10)
+                {
+                    y = 0;
+                    x = i;
+                } 
+                else if(i < 20)
+                {
+                    y = 1;
+                    x = i - 10;
+                }
+                else if(i < 29)
+                {
+                    y = 2;
+                    x = i - 20;
+                }
+                else if(i < 36)
+                {
+                    y = 3;
+                    x = i - 29;
+                }
+                lblKey[i].Margin = new Thickness(20 + x * 50 + y * 25,20 + y * 50,1,1);
+                gridKeyboard.Children.Add(lblKey[i]);
+            }
+
+            //TheMainWindow.Children.Add(gridKeyboard);
 
             // Update while preparing the window
             Update();
@@ -136,6 +229,23 @@ namespace Stedi {
             // Set description
             TxtDescription.Text = filteredGames[index]["description"];
 
+            // Set rating
+            if (GetRating(Convert.ToInt32(filteredGames[index]["id"])) == 0)
+                LblRating.Content = "This game is not yet rated";
+            else
+                LblRating.Content = "Rating: " + Math.Round(GetRating(Convert.ToInt32(filteredGames[index]["id"])), 1);
+
+            // Set play count
+            LblPlayCount.Content = "Play count: " + filteredGames[index]["playcount"];
+
+            // Set time played
+            int seconds = Convert.ToInt32(filteredGames[index]["timeplayed"]);
+            int minutes = seconds / 60;
+            int hours = minutes / 60;
+            seconds %= 60;
+            minutes %= 60;
+            LblPlayTime.Content = "Total time played: " + hours.ToString() + "h " + minutes.ToString() + "m " + seconds.ToString() + "s";
+
             // Set image background
             byte[] binaryData = Convert.FromBase64String(Regex.Match(filteredGames[index]["background"], @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value);
 
@@ -162,8 +272,7 @@ namespace Stedi {
             filteredGames = null;
             filteredGames = new List<Dictionary<string, string>>(games);
             FilterGames();
-
-            // TODO: Check if some sorting method is specified and sort by default
+            
             SortGames();
 
             // Update view
@@ -183,16 +292,54 @@ namespace Stedi {
             FilterGames();
 
             //Convert.
-
-            // TODO: Check if some sorting method is specified and sort by default
+            
             SortGames();
 
             // Update view
             UpdateListbox();
         }
 
+        private double GetRating(int gameid)
+        {
+            List<Dictionary<string, string>> rating = Database.Query("SELECT gameid, AVG(rating) AS avgrating FROM ratings WHERE gameid = " + gameid.ToString() + " GROUP BY gameid");
+            if (rating.Count == 0)
+                return 0.0;
+            else
+                return Convert.ToDouble(rating[0]["avgrating"]);
+        }
+
         private void SortGames() {
-            // ============================== ZET HIER DE CATEGORY SORT ==============================
+            switch(methodIndex)
+            {
+                case 0:
+                    // Title
+                    games = games.OrderBy(o => o["name"]).ToList();
+                    break;
+                case 1:
+                    // Most popular
+                    games = games.OrderByDescending(o => o["playcount"]).ToList();
+                    break;
+                case 2:
+                    // Least popular
+                    games = games.OrderBy(o => o["playcount"]).ToList();
+                    break;
+                case 3:
+                    // Highest rating
+                    games = games.OrderByDescending(o => GetRating(Convert.ToInt32(o["id"]))).ToList();
+                    break;
+                case 4:
+                    // Lowest rating
+                    games = games.OrderBy(o => GetRating(Convert.ToInt32(o["id"]))).ToList();
+                    break;
+                case 5:
+                    // Oldest
+                    games = games.OrderBy(o => o["created"]).ToList();
+                    break;
+                case 6:
+                    // Newest
+                    games = games.OrderByDescending(o => o["created"]).ToList();
+                    break;
+            }
         }
 
         /// <summary>
@@ -202,6 +349,9 @@ namespace Stedi {
         {
             // Add query to a MySqlCommand object
             games = Database.Query("SELECT * FROM games");
+
+            // Sort games
+            SortGames();
         }
 
         private void PrintGamesArray() {
@@ -279,21 +429,59 @@ namespace Stedi {
         /// <summary>
         /// Executes the selected game.
         /// </summary>
-        private void btnPlay_Click(object sender, RoutedEventArgs e)
+        private void StartGame()
         {
+            // Check if a game is already running
+            if (playTime != 0) return;
+
             // Check if selected index is valid
             int index = lbGames.SelectedIndex;
             if (index < 0 || index >= games.Count) return;
 
-            string filePath = Directory.GetCurrentDirectory() + @"\games\" + games[index]["id"] + @"\game.exe";
+            string filePath = Directory.GetCurrentDirectory() + @"\games\" + filteredGames[index]["id"] + @"\game.exe";
 
             // Run executable
-            try {
-                gameProcess = Process.Start(filePath);
+            try
+            { 
+                gameProcess = new Process();
+                gameProcess.EnableRaisingEvents = true;
+                gameProcess.Exited += new EventHandler(Process_Exited);
+                gameProcess.StartInfo.FileName = filePath;
+                gameProcess.Start();
+                playTime = Convert.ToInt32(DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds / 1000);
+
+                // Update play count
+                Database.Query("UPDATE games SET playcount = playcount + 1 WHERE id = " + filteredGames[index]["id"]);
+
+                currentPlayingGameIndex = index;
             } catch (Exception ex) {
                 gameProcess = null;
                 MessageBox.Show(ex.ToString() + Environment.NewLine + Environment.NewLine + "File: " + filePath);
             }
+        }
+
+        private void ShowRatingWindow()
+        {
+            gridRating.Visibility = Visibility.Visible;
+        }
+
+        private void HideRatingWindow()
+        {
+            gridRating.Visibility = Visibility.Hidden;
+        }
+
+        // Handle Exited event and display process information.
+        private void Process_Exited(object sender, System.EventArgs e)
+        {
+            int elapsed = Convert.ToInt32(DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds / 1000) - playTime;
+            playTime = 0;
+
+            // Update play count
+            Database.Query("UPDATE games SET timeplayed = timeplayed + " + elapsed.ToString() + " WHERE id = " + filteredGames[currentPlayingGameIndex]["id"]);
+
+            // Show rating window
+            mode = 1;
+            Dispatcher.Invoke(ShowRatingWindow);
         }
 
         /// <summary>
@@ -304,7 +492,7 @@ namespace Stedi {
 
             try {
                 Dispatcher.Invoke(Update);
-            } catch (Exception ex) { } // Make sure program does not crash on exit
+            } catch { } // Make sure program does not crash on exit
 
             t.Start();
         }
@@ -321,6 +509,126 @@ namespace Stedi {
         private void txtSearchbar_TextChanged(object sender, TextChangedEventArgs e)
         {
             SearchUpdate();
+        }
+
+        // Input handler
+        private void Stedi_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            // Switch controls
+            if (mode == 0)
+            {
+                if (e.Key == System.Windows.Input.Key.Up)
+                {
+                    selectedControl--;
+                    if (selectedControl < 0) selectedControl = 2;
+                }
+                if (e.Key == System.Windows.Input.Key.Down)
+                {
+                    selectedControl++;
+                    if (selectedControl > 2) selectedControl = 0;
+                }
+
+                // Sorting method
+                if (selectedControl == 1)
+                {
+                    if (e.Key == System.Windows.Input.Key.Left)
+                    {
+                        methodIndex--;
+                        if (methodIndex < 0) methodIndex = sortMethods.Length - 1;
+                    }
+                    if (e.Key == System.Windows.Input.Key.Right)
+                    {
+                        methodIndex++;
+                        if (methodIndex >= sortMethods.Length) methodIndex = 0;
+                    }
+
+                    // Update text of button
+                    btnSort.Content = sortMethods[methodIndex];
+
+                    // Apply sort
+                    Update();
+                }
+
+                // Selected game
+                if (selectedControl == 2)
+                {
+                    if (e.Key == System.Windows.Input.Key.Left)
+                    {
+                        if (lbGames.SelectedIndex == 0) lbGames.SelectedIndex = lbGames.Items.Count - 1;
+                        else lbGames.SelectedIndex--;
+                    }
+                    if (e.Key == System.Windows.Input.Key.Right)
+                    {
+                        if (lbGames.SelectedIndex == lbGames.Items.Count - 1) lbGames.SelectedIndex = 0;
+                        else lbGames.SelectedIndex++;
+                    }
+                }
+
+                if (e.Key == System.Windows.Input.Key.Enter)
+                {
+                    if (selectedControl == 0)
+                    {
+                        // Show keyboard
+                    }
+                    else if (selectedControl == 2) StartGame();
+                }
+            }
+
+            // Rating
+            else if(mode == 1)
+            {
+                // Change rating value
+                if (e.Key == System.Windows.Input.Key.Left)
+                {
+                    ratingValue-=0.1;
+                    if (ratingValue < 1) ratingValue = 1;
+                }
+                if (e.Key == System.Windows.Input.Key.Right)
+                {
+                    ratingValue+=0.1;
+                    if (ratingValue > 5) ratingValue = 5;
+                }
+
+                // Rate and return to main menu
+                if (e.Key == System.Windows.Input.Key.Enter)
+                {
+                    // Insert rating
+                    Database.Query("INSERT INTO ratings (userid, gameid, rating) values(0, " + filteredGames[lbGames.SelectedIndex]["id"] + ", " + ratingValue.ToString() + ")");
+
+                    // Hide rating window
+                    mode = 0;
+                    ratingValue = 5;
+                    Dispatcher.Invoke(HideRatingWindow);
+                }
+
+                // Update rating window
+                txtRatingMessage.Text = "Rate this game! < " + ratingValue.ToString() + " >";
+            }
+
+            // Update user interface
+            TxtSearchbar.BorderThickness = new System.Windows.Thickness(0);
+            btnSort.BorderThickness = new System.Windows.Thickness(0);
+            lbGames.BorderThickness = new System.Windows.Thickness(0);
+
+            if (selectedControl == 0)
+            {
+                TxtSearchbar.BorderThickness = new System.Windows.Thickness(2);
+            }
+            else if (selectedControl == 1)
+            {
+                btnSort.BorderThickness = new System.Windows.Thickness(2);
+            }
+            else if (selectedControl == 2)
+            {
+                lbGames.BorderThickness = new System.Windows.Thickness(2);
+            }
+            else
+            {
+                selectedControl = 0;
+                TxtSearchbar.BorderThickness = new System.Windows.Thickness(2);
+            }
+
+            e.Handled = true;
         }
     }
 }

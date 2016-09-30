@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="13.3">
+<diagram program="umlet" version="14.1.1">
   <zoom_level>10</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>630</x>
-      <y>220</y>
+      <x>290</x>
+      <y>90</y>
       <w>160</w>
       <h>180</h>
     </coordinates>
@@ -21,10 +21,10 @@ varchar email(255)</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>630</x>
-      <y>420</y>
+      <x>290</x>
+      <y>290</y>
       <w>160</w>
-      <h>210</h>
+      <h>240</h>
     </coordinates>
     <panel_attributes>games
 --
@@ -38,14 +38,16 @@ varchar author(255)
 varchar genre(255)
 int playcount(16)
 varchar description(255)
-largetext backgroud()</panel_attributes>
+largetext backgroud()
+int playcount
+int timeplayed</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>850</x>
-      <y>400</y>
+      <x>510</x>
+      <y>270</y>
       <w>160</w>
       <h>180</h>
     </coordinates>
@@ -60,8 +62,8 @@ decimal rating(2,1)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>780</x>
-      <y>440</y>
+      <x>440</x>
+      <y>310</y>
       <w>90</w>
       <h>30</h>
     </coordinates>
@@ -71,8 +73,8 @@ decimal rating(2,1)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>780</x>
-      <y>240</y>
+      <x>440</x>
+      <y>110</y>
       <w>90</w>
       <h>210</h>
     </coordinates>
@@ -82,8 +84,8 @@ decimal rating(2,1)</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>850</x>
-      <y>220</y>
+      <x>510</x>
+      <y>90</y>
       <w>160</w>
       <h>130</h>
     </coordinates>
@@ -99,8 +101,8 @@ text comment</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>590</x>
-      <y>240</y>
+      <x>250</x>
+      <y>110</y>
       <w>60</w>
       <h>250</h>
     </coordinates>
@@ -110,8 +112,8 @@ text comment</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>780</x>
-      <y>240</y>
+      <x>440</x>
+      <y>110</y>
       <w>90</w>
       <h>80</h>
     </coordinates>
