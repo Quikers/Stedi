@@ -28,7 +28,7 @@ namespace Stedi {
 
     public partial class MainWindow : Window {
         // Variables
-        string[] sortMethods = new string[] { " < Title > ", " < Most popular > ", " < Least popular > ", " < Highest rating > ", " < Lowest rating > ", " < Oldest > ", " < Newest > " };
+        string[] sortMethods = new string[] { "Title", "Most popular", "Least popular", "Highest rating", "Lowest rating", "Oldest", "Newest" };
         private int methodIndex = 0;
         List<Dictionary<string, string>> games = new List<Dictionary<string, string>>();
         List<Dictionary<string, string>> filteredGames = new List<Dictionary<string, string>>();
@@ -47,6 +47,7 @@ namespace Stedi {
         private double ratingValue = 5;
 
         // Keyboard
+        string[] keyChars = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "a", "s", "d", "f", "g", "h", "j", "k", "l", "z", "x", "c", "v", "b", "n", "m", "<-" };
         private Grid gridKeyboard = new Grid();
         private Label[] lblKey = new Label[37];
         private int keyindex = 0;
@@ -103,21 +104,19 @@ namespace Stedi {
             TheMainWindow.Children.Add(gridRating);
 
             // Create keyboard
-            gridKeyboard.Width = 800;
-            gridKeyboard.Height = 300;
+            gridKeyboard.Width = 560;
+            gridKeyboard.Height = 250;
             gridKeyboard.HorizontalAlignment = HorizontalAlignment.Center;
             gridKeyboard.VerticalAlignment = VerticalAlignment.Center;
             gridKeyboard.Background = (Brush)new BrushConverter().ConvertFromString("#CC000000");
-            gridKeyboard.Visibility = Visibility.Visible;
-
-            string[] keyChars = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "a", "s", "d", "f", "g", "h", "j", "k", "l", "z", "x", "c", "v", "b", "n", "m" };
+            gridKeyboard.Visibility = Visibility.Hidden;
 
             for (int i=0; i<keyChars.Length; i++)
             {
                 lblKey[i] = new Label();
                 lblKey[i].Content = keyChars[i];
-                lblKey[i].Width = 80;
-                lblKey[i].Height = 80;
+                lblKey[i].Width = 45;
+                lblKey[i].Height = 70;
                 lblKey[i].FontSize = 40;
                 lblKey[i].FontWeight = FontWeights.Normal;
                 lblKey[i].VerticalAlignment = VerticalAlignment.Top;
@@ -142,7 +141,7 @@ namespace Stedi {
                     y = 2;
                     x = i - 20;
                 }
-                else if(i < 36)
+                else
                 {
                     y = 3;
                     x = i - 29;
@@ -151,7 +150,7 @@ namespace Stedi {
                 gridKeyboard.Children.Add(lblKey[i]);
             }
 
-            //TheMainWindow.Children.Add(gridKeyboard);
+            TheMainWindow.Children.Add(gridKeyboard);
 
             // Update while preparing the window
             Update();
@@ -470,6 +469,35 @@ namespace Stedi {
             gridRating.Visibility = Visibility.Hidden;
         }
 
+        private void ShowKeyboard()
+        {
+            gridKeyboard.Visibility = Visibility.Visible;
+        }
+
+        private void HideKeyboard()
+        {
+            gridKeyboard.Visibility = Visibility.Hidden;
+        }
+
+        private void UpdateKeyboard()
+        {
+            for(int i=0; i<keyChars.Length; i++)
+            {
+                lblKey[i].BorderBrush = Brushes.White;
+                lblKey[i].BorderThickness = new Thickness(0);
+            }
+            lblKey[keyindex].BorderThickness = new Thickness(2);
+        }
+
+        private void EnterKeyboard()
+        {
+            if (keyindex == keyChars.Length - 1)
+            {
+                if(TxtSearchbar.Text.Length > 0) TxtSearchbar.Text = TxtSearchbar.Text.Remove(TxtSearchbar.Text.Length - 1);
+            }
+            else TxtSearchbar.Text += keyChars[keyindex];
+        }
+
         // Handle Exited event and display process information.
         private void Process_Exited(object sender, System.EventArgs e)
         {
@@ -569,6 +597,8 @@ namespace Stedi {
                     if (selectedControl == 0)
                     {
                         // Show keyboard
+                        mode = 2;
+                        Dispatcher.Invoke(ShowKeyboard);
                     }
                     else if (selectedControl == 2) StartGame();
                 }
@@ -603,6 +633,70 @@ namespace Stedi {
 
                 // Update rating window
                 txtRatingMessage.Text = "Rate this game! < " + ratingValue.ToString() + " >";
+            }
+
+            // Keyboard
+            else if (mode == 2)
+            {
+                if (e.Key == System.Windows.Input.Key.Left)
+                {
+                    keyindex--;
+                    if (keyindex < 0) keyindex = keyChars.Length - 1;
+                }
+                if (e.Key == System.Windows.Input.Key.Right)
+                {
+                    keyindex++;
+                    if (keyindex > keyChars.Length - 1) keyindex = 0; ;
+                }
+                if (e.Key == System.Windows.Input.Key.Up)
+                {
+                    if (keyindex < 10)
+                    {
+                        keyindex += 29;
+                        if (keyindex >= keyChars.Length) keyindex = keyChars.Length - 1;
+                    }
+                    else if (keyindex < 20)
+                    {
+                        keyindex -= 10;
+                    }
+                    else if (keyindex < 29)
+                    {
+                        keyindex -= 10;
+                    }
+                    else
+                    {
+                        keyindex -= 9;
+                    }
+                }
+                if (e.Key == System.Windows.Input.Key.Down)
+                {
+                    if (keyindex < 10)
+                    {
+                        keyindex += 10;
+                    }
+                    else if (keyindex < 20)
+                    {
+                        keyindex += 10;
+                    }
+                    else if (keyindex < 29)
+                    {
+                        keyindex += 9;
+                    }
+                    else
+                    {
+                        keyindex -= 26;
+                    }
+                }
+                if (e.Key == System.Windows.Input.Key.Enter)
+                {
+                    Dispatcher.Invoke(EnterKeyboard);
+                }
+                if (e.Key == System.Windows.Input.Key.Escape)
+                {
+                    Dispatcher.Invoke(HideKeyboard);
+                    mode = 0;
+                }
+                Dispatcher.Invoke(UpdateKeyboard);
             }
 
             // Update user interface
