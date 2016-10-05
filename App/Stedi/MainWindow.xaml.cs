@@ -376,7 +376,7 @@ namespace Stedi {
             for (int i = 0; i < filteredGames.Count; i++) {
                 string dir = @"\Games\" + filteredGames[i]["id"];
                 // Check if game is activated
-                if (Convert.ToInt16(filteredGames[i]["activated"]) == 0) {
+                if (Convert.ToInt16(filteredGames[i]["activated"]) != 1) {
                     // Game is not activated and will be removed from the list
                     filteredGames.RemoveAt(i--);
 
