@@ -623,7 +623,7 @@ namespace Stedi {
                 if (e.Key == System.Windows.Input.Key.Enter)
                 {
                     // Insert rating
-                    Database.Query("INSERT INTO ratings (userid, gameid, rating) values(0, " + filteredGames[lbGames.SelectedIndex]["id"] + ", " + ratingValue.ToString() + ")");
+                    Database.Query("INSERT INTO ratings (userid, gameid, rating) values(0, " + filteredGames[lbGames.SelectedIndex]["id"] + ", " + ratingValue.ToString().Replace(",", ".") + ")");
 
                     // Hide rating window
                     mode = 0;
