@@ -102,8 +102,13 @@ a:hover {
     background: rgba(255,255,255, 0.16);
 }
 
-.li:first-child {
-    margin-bottom: 50px;
+.username {
+    text-align: center;
+    font-size: 18px;
+    margin: 25px 0;
+    padding: 10px 0;
+    
+    background: rgba(255,255,255,0.1);
 }
 
 #nav {
@@ -194,7 +199,7 @@ input {
 
 #gameListContainer {
     position: relative;
-    top: 0;
+    top: 50px;
     right: 0;
     bottom: 0;
     left: 0;

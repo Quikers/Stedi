@@ -25,9 +25,9 @@
             <label for="gameDesc">Description</label>
             <textarea type="text" name="gameDesc" id="gameDesc" placeholder="The description of your game" required></textarea><br>
             <label for="gameBackground">Background</label>
-            <input type="file" name="gameBackground" accept=".png" id="gameBackground"><br>
+            <input type="file" name="gameBackground" accept="image/*" id="gameBackground"><br>
             <label for="gameFile">Game files</label>
-            <input type="file" name="gameFile" id="gameFile" required><br>
+            <input type="file" name="gameFile" accept=".zip" id="gameFile" required><br>
             <input type="submit" name="submit" id="submit" value="Upload">
         </div>
     </form>

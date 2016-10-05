@@ -111,7 +111,7 @@ class Upload extends Controller {
                     $_POST["gameName"], 
                     $_POST["gametags"], 
                     $_POST["gameAuthor"], 
-                    $_POST["gameDesc"], 
+                    nl2br($_POST["gameDesc"]), 
                     $this->base64_encode_image(
                         $_FILES["gameBackground"]["tmp_name"], 
                         $extension[count($extension) - 1]
