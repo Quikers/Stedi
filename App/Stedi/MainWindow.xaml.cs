@@ -222,8 +222,8 @@ namespace Stedi {
             LblTag.Content = string.Join(" / ", tags);
 
             // Set created
-            LblCreated.Content = "Created by: " + filteredGames[index]["author"];
-            LblDate.Content = "Release date: " + filteredGames[index]["created"].Split(' ')[0];
+            LblCreated.Content = filteredGames[index]["author"];
+            LblDate.Content = filteredGames[index]["created"].Split(' ')[0];
 
             // Set description 
             TxtDescription.Text = filteredGames[index]["description"].Replace("\\r\\n", "\r\n");
@@ -232,10 +232,10 @@ namespace Stedi {
             if (GetRating(Convert.ToInt32(filteredGames[index]["id"])) == 0)
                 LblRating.Content = "This game is not yet rated";
             else
-                LblRating.Content = "Rating: " + Math.Round(GetRating(Convert.ToInt32(filteredGames[index]["id"])), 1);
+                LblRating.Content = Math.Round(GetRating(Convert.ToInt32(filteredGames[index]["id"])), 1);
 
             // Set play count
-            LblPlayCount.Content = "Play count: " + filteredGames[index]["playcount"];
+            LblPlayCount.Content = filteredGames[index]["playcount"];
 
             // Set time played
             int seconds = Convert.ToInt32(filteredGames[index]["timeplayed"]);
@@ -243,7 +243,7 @@ namespace Stedi {
             int hours = minutes / 60;
             seconds %= 60;
             minutes %= 60;
-            LblPlayTime.Content = "Total time played: " + hours.ToString() + "h " + minutes.ToString() + "m " + seconds.ToString() + "s";
+            LblPlayTime.Content = hours.ToString() + "h " + minutes.ToString() + "m " + seconds.ToString() + "s";
 
             // Set image background
             byte[] binaryData = Convert.FromBase64String(Regex.Match(filteredGames[index]["background"], @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value);

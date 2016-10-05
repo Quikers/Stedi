@@ -21,14 +21,23 @@
             </TextBlock.Style>
         </TextBlock>
         <Grid x:Name="GridGameInfo" Margin="430,20,20,20" Background="#7F000000">
-            <Label x:Name="LblTag" Content="" HorizontalAlignment="Left" Margin="44,75,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="24" Height="40" Width="832"/>
-            <Label x:Name="LblName" Content="Name" HorizontalAlignment="Left" Margin="32,32,0,0" VerticalAlignment="Top" Width="844" Height="62" FontSize="40" Background="#00000000" Foreground="White" FontFamily="Century Gothic" FontWeight="Thin"/>
-            <Label x:Name="LblCreated" Content="Created by: " HorizontalAlignment="Left" Margin="32,132,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="18" Height="32" Width="780"/>
-            <Label x:Name="LblDate" Content="Release date: " HorizontalAlignment="Left" Margin="32,168,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="18" Height="32" Width="780"/>
-            <TextBox x:Name="TxtDescription" HorizontalAlignment="Left" Height="351" Margin="34,316,0,0" IsReadOnly="true" Cursor="Arrow" TextWrapping="Wrap" Text="Description" VerticalAlignment="Top" Width="780" Background="#01FFFFFF" Foreground="White" FontFamily="Segoe UI" BorderThickness="0" FontSize="20"/>
-            <Label x:Name="LblRating" Content="Rating: " HorizontalAlignment="Left" Margin="32,205,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="18" Height="32" Width="780"/>
-            <Label x:Name="LblPlayCount" Content="Play count: " HorizontalAlignment="Left" Margin="32,242,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="18" Height="32" Width="780"/>
-            <Label x:Name="LblPlayTime" Content="Total time played: " HorizontalAlignment="Left" Margin="32,279,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="18" Height="32" Width="780"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="155*"/>
+                <RowDefinition Height="69*"/>
+            </Grid.RowDefinitions>
+            <Label x:Name="LblTag" Content="Tags" HorizontalAlignment="Left" Margin="44,75,-54,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="24" Height="52" Width="832"/>
+            <Label x:Name="LblName" Content="Name" HorizontalAlignment="Left" Margin="32,32,-54,0" VerticalAlignment="Top" Width="844" Height="62" FontSize="40" Background="#00000000" Foreground="White" FontFamily="Century Gothic" FontWeight="Thin"/>
+            <Label x:Name="LblCreated" Content="" HorizontalAlignment="Left" Margin="190,127,0,0" VerticalAlignment="Top" Foreground="#FFD8D8D8" FontFamily="Segoe UI" FontSize="18" Height="32" Width="620"/>
+            <Label x:Name="LblDate" Content="" HorizontalAlignment="Left" Margin="189,163,0,0" VerticalAlignment="Top" Foreground="#FFD8D8D8" FontFamily="Segoe UI" FontSize="18" Height="32" Width="625"/>
+            <TextBox x:Name="TxtDescription" HorizontalAlignment="Left" Height="351" Margin="34,316,0,0" IsReadOnly="true" Cursor="Arrow" TextWrapping="Wrap" Text="Description" VerticalAlignment="Top" Width="780" Background="#01FFFFFF" Foreground="#FFD8D8D8" FontFamily="Segoe UI" BorderThickness="0" FontSize="20" Grid.RowSpan="2"/>
+            <Label x:Name="LblRating" Content="" HorizontalAlignment="Left" Margin="189,200,0,0" VerticalAlignment="Top" Foreground="#FFD8D8D8" FontFamily="Segoe UI" FontSize="18" Height="32" Width="625"/>
+            <Label x:Name="LblPlayCount" Content="" HorizontalAlignment="Left" Margin="189,237,0,0" VerticalAlignment="Top" Foreground="#FFD8D8D8" FontFamily="Segoe UI" FontSize="18" Height="32" Width="625"/>
+            <Label x:Name="LblPlayTime" Content="" HorizontalAlignment="Left" Margin="190,274,0,0" VerticalAlignment="Top" Foreground="#FFD8D8D8" FontFamily="Segoe UI" FontSize="18" Height="32" Width="624"/>
+            <Label x:Name="LblCreatedLabel" Content="Created by: " HorizontalAlignment="Left" Margin="34,127,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="18" Height="32" Width="155"/>
+            <Label x:Name="LblDateLabel" Content="Release date: " HorizontalAlignment="Left" Margin="34,163,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="18" Height="32" Width="155"/>
+            <Label x:Name="LblRatingLabel" Content="Rating: " HorizontalAlignment="Left" Margin="34,200,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="18" Height="32" Width="155"/>
+            <Label x:Name="LblPlayCountLabel" Content="Play count: " HorizontalAlignment="Left" Margin="34,237,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="18" Height="32" Width="155"/>
+            <Label x:Name="LblPlayTimeLabel" Content="Total time played: " HorizontalAlignment="Left" Margin="34,274,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Segoe UI" FontSize="18" Height="32" Width="155"/>
         </Grid>
         <Button x:Name="btnSort" TabIndex="1" HorizontalAlignment="Left" Margin="20,60,0,0" VerticalAlignment="Top" Width="390" Height="30" Background="#7F000000" Foreground="White" FontFamily="Segoe UI" FontSize="16" Focusable="True" BorderThickness="0" Content="Title"/>
         <Label x:Name="label" Content="&lt;" HorizontalAlignment="Left" Margin="20,50,0,0" VerticalAlignment="Top" Height="46" Width="42" Foreground="White" FontSize="26.667" FontWeight="Bold"/>
