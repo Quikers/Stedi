@@ -58,7 +58,7 @@ class Games extends Controller {
                 $ratings = $gamesModel->getGameRating($gameList["game"]["id"]);
                 if (count($ratings) > 0) {
                     for ($i = 0; $i < count($ratings); $i++) { $rating += $ratings[$i]["rating"]; }
-                    $rating /= count($ratings);
+                    $rating = round((int)$rating / count($ratings));
                 } else {
                     $rating = "<p style=\"display: inline-block; color: lightblue\">This game has not been rated yet.</p>";
                 }
