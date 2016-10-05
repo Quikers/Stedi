@@ -26,7 +26,7 @@ $(document).ready(function () {
             search: "",
             searchPlaceholder: "Search games"
         },
-        order: [[ 1, "desc" ]],
+        order: [[ 4, "desc" ]],
         pageLength: 15,
         "fnInitComplete": function(oSettings, json) {
             var api = this.api();
@@ -50,7 +50,7 @@ $(document).ready(function () {
                                     . '"<a class=\"tableControlLink2 colorRed\" href=\"' . URL . 'games/delete/" + data.game.id + "\">DELETE</a>"'
                         . '))) ,' 
                     : 
-                        '"<a class=\"tableControlLink2 colorRed\" href=\"' . URL . 'games/delete/" + data.game.id + "\">DELETE</a>",'
+                        '"<a class=\"tableControlLink3 colorRed\" href=\"' . URL . 'games/delete/" + data.game.id + "\">DELETE</a>",'
                     ?>
                                                 
                         "<a class=\"tableLink\" href=\"<?= URL ?>games/app/" + data.game.id + "\">" + data.game.name + "</a>",
