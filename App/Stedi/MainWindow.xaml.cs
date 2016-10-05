@@ -226,7 +226,7 @@ namespace Stedi {
             LblDate.Content = "Release date: " + filteredGames[index]["created"].Split(' ')[0];
 
             // Set description
-            TxtDescription.Text = filteredGames[index]["description"];
+            TxtDescription.Text = filteredGames[index]["description"].Replace("\\r\\n", "\r\n");
 
             // Set rating
             if (GetRating(Convert.ToInt32(filteredGames[index]["id"])) == 0)
