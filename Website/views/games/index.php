@@ -1,3 +1,19 @@
+<div id="filterContainer">
+    <h3>Filter games</h3>
+    <input type="text" id="searchBar" placeholder="Search games"><br>
+    <select id="category">
+        <option value="0">A - Z</option>
+        <option value="1">Z - A</option>
+        <option value="2" selected="selected">Newest</option>
+        <option value="3">Oldest</option>
+        <option value="4">Most popular</option>
+        <option value="5">Least popular</option>
+        <option value="6">Highest rating</option>
+        <option value="7">Lowest rating</option>
+    </select>
+</div>
+
+
 <?php
 
 $gameList = $this->gamesList;
@@ -69,7 +85,6 @@ var listType = "<?= $gameList["listType"] ?>";
 
 if (listType === "allGames") {
     function Update () {
-        var prevWidth = 0;
         var i = 0;
 
         (function myLoop () {          
@@ -88,6 +103,31 @@ if (listType === "allGames") {
 
 
     $(document).ready(function () {
+    
+        $("#filterContainer select").change(function () {
+            switch ($(this).val()) {
+                default:
+                    console.log("Unknown value \"" + $(this).val() + "\"");
+                    break;
+                case "0":
+                    break;
+                case "1":
+                    break;
+                case "2":
+                    break;
+                case "3":
+                    break;
+                case "4":
+                    break;
+                case "5":
+                    break;
+                case "6":
+                    break;
+                case "7":
+                    break;
+            }
+        });
+    
         Update();
     });
 } else {
