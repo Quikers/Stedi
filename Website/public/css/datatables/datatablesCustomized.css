@@ -34,7 +34,7 @@ th, table.dataTable tbody td {
 }
 
 #table_wrapper * {
-    color: white !important;
+    color: white;
 }
 
 #table_wrapper thead {

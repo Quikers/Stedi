@@ -17,7 +17,7 @@ class Games extends Controller {
         $this->loadModel("Games");
         $gamesModel = new GamesModel();
         
-        $gamesModel->approve($params[0]);
+        $gamesModel->Approve($params[0]);
         
         header("Location:" . URL . "dashboard");
     }
@@ -26,7 +26,16 @@ class Games extends Controller {
         $this->loadModel("Games");
         $gamesModel = new GamesModel();
         
-        $gamesModel->delete($params[0]);
+        $gamesModel->Delete($params[0]);
+        
+        header("Location:" . URL . "dashboard");
+    }
+    
+    public function deactivate($params = NULL) {
+        $this->loadModel("Games");
+        $gamesModel = new GamesModel();
+        
+        $gamesModel->Deactivate($params[0]);
         
         header("Location:" . URL . "dashboard");
     }
@@ -37,7 +46,7 @@ class Games extends Controller {
         $gameList = array();
         
         $gameList["listType"] = "allGames";
-        $gameList["games"] = $gamesModel->getGames();
+        $gameList["games"] = $gamesModel->GetGames();
         
         $this->view->gamesList = $gameList;
         $this->view->title = "Games";
@@ -51,11 +60,11 @@ class Games extends Controller {
         
         $gameList["listType"] = "singleGame";
         if ($params != NULL) {
-            $gameList["game"] = $gamesModel->getGameInfo($params[0]);
+            $gameList["game"] = $gamesModel->GetGameInfo($params[0]);
             
             if ($gameList["game"] != false) {
                 $rating = 0;
-                $ratings = $gamesModel->getGameRating($gameList["game"]["id"]);
+                $ratings = $gamesModel->GetGameRating($gameList["game"]["id"]);
                 if (count($ratings) > 0) {
                     for ($i = 0; $i < count($ratings); $i++) { $rating += $ratings[$i]["rating"]; }
                     $rating = round((int)$rating / count($ratings));
@@ -81,10 +90,10 @@ class Games extends Controller {
         
         if ($params[0] != -1) {
             $gameList["listType"] = $params != NULL ? "singleGame" : "allGames";
-            $gameList["game"] = $params != NULL ? $gamesModel->getGameInfo($params[0]) : $gamesModel->getGames(); 
+            $gameList["game"] = $params != NULL ? $gamesModel->GetGameInfo($params[0]) : $gamesModel->GetGames(); 
             $params != NULL ?: $gameList["game"]["rating"] = "4.5 / 5 TEST";
         } else {
-            $gameList["game"] = $gamesModel->getGameInfo($params[1], false);
+            $gameList["game"] = $gamesModel->GetGameInfo($params[1], false);
         }
         
         echo json_encode($gameList);

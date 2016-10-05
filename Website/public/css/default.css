@@ -474,6 +474,30 @@ tr td {
     display:inline-block;
     
     width: 100%;
+    height: calc(100% / 2);
+    text-align: center;
+}
+
+.tableControlLink3{
+    display:inline-block;
+    
+    width: 100%;
     height: 100%;
     text-align: center;
+}
+
+.colorRed {
+    color: #ff6666 !important;
+}
+
+.colorOrange {
+    color: lightsalmon !important;
+}
+
+.colorGreen {
+    color: lightgreen !important;
+}
+
+.colorBlue {
+    color: lightblue !important;
 }
