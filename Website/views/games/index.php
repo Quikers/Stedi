@@ -1,8 +1,8 @@
 <?php
-
 $gameList = $this->gamesList;
 
-if ($gameList["listType"] == "allGames") { ?>
+if ($gameList["listType"] == "allGames") {
+    ?>
 
 <div id="filterContainer">
     <h3>Filter games</h3>
@@ -21,11 +21,11 @@ if ($gameList["listType"] == "allGames") { ?>
 
 <?php 
     if (count($gameList["games"]) > 0) {
+        ?><div id="gameListContainer"><?php
+        // ========================================= GET ALL GAMES =========================================
         
-?><div id="gameListContainer"><?php // ========================================= GET ALL GAMES =========================================
-        
-        foreach($gameList["games"] as $key => $game) {
-            if ((int)$game["activated"] == 1) {
+        foreach ($gameList["games"] as $key => $game) {
+            if ((int) $game["activated"] == 1) {
 ?>
 
 <div style="display: none;" class="game" id="<?= $game["id"] ?>">
@@ -42,9 +42,7 @@ if ($gameList["listType"] == "allGames") { ?>
 <?php
             }
         }
-        
 ?></div><?php
-
     }
 } else {
     if ($gameList["game"] != false && count($gameList["game"]) > 0) {
@@ -66,7 +64,8 @@ if ($gameList["listType"] == "allGames") { ?>
 
 
 <?php // ========================================= SINGLE GAME NOT FOUND =========================================
-    } else { ?>
+    } else {
+        ?>
 
 
 <div id="gameInfoContainer">
@@ -77,7 +76,8 @@ if ($gameList["listType"] == "allGames") { ?>
 
 
 <?php }
-} ?>
+}
+?>
 
 <script>
 
@@ -87,18 +87,18 @@ var gamesArr = <?= json_encode($gameList) ?>;
 var gamesUpdated = false;
 
 if (listType === "allGames") {
-    function Update () {
+        function Update() {
 		gamesUpdated = false;
 		
         var i = 0;
 		console.log(gamesArr.games);
-        (function myLoop () {          
+            (function myLoop() {
             setTimeout(function () {
 				$(".game:nth-child(" + (i + 1) + ")").attr("id", gamesArr.games[i].id.toString());
                 $.get("<?= URL ?>games/getgames/" + $(".game:nth-child(" + (i + 1) + ")").attr("id"), function (JSONdata) {
                     var data = JSON.parse(JSONdata);
                     
-					$(".game:nth-child(" + (i + 1) + ")").children("a").attr("href", location.origin+"/games/app/"+data.game.id);
+                        $(".game:nth-child(" + (i + 1) + ")").children("a").attr("href", location.origin + "/games/app/" + data.game.id);
 					$(".game:nth-child(" + (i + 1) + ")").children("a").children("h1").html(data.game.name);
 					$(".game:nth-child(" + (i + 1) + ")").children("a").children("h2").html(data.game.tags.replace(" ", " / "));
 					$(".game:nth-child(" + (i + 1) + ")").children("a").children("h3:nth-child(1)").html(data.game.author);
@@ -106,8 +106,10 @@ if (listType === "allGames") {
                     $(".game:nth-child(" + (i + 1) + ") .background").attr("style", "background: url('" + data.game.background + "') no-repeat left top;");
                     
                     $(".game:nth-child(" + (i + 1) + ")").fadeIn(400);
-                    if (++i < $(".game").length) myLoop();
-					else gamesUpdated = true;
+                        if (++i < $(".game").length)
+                            myLoop();
+                        else
+                            gamesUpdated = true;
                 });
             });
         })(); 
@@ -122,7 +124,8 @@ if (listType === "allGames") {
                 for (var i in searchVal) {
                     var containsSearch = false;
                     
-                    if (!/\S/.test(searchVal[i])) containsSearch = true;
+                        if (!/\S/.test(searchVal[i]))
+                            containsSearch = true;
 
                     if (game.name.toLowerCase().indexOf(searchVal[i]) !== -1 ||
                         game.tags.toLowerCase().split(" ").join(" / ").indexOf(searchVal[i]) !== -1 ||
@@ -130,8 +133,10 @@ if (listType === "allGames") {
                         containsSearch = true;
                     }
 
-                    if (!containsSearch) $(".game#" + game.id).css("-webkit-animation-name", "fadeOut").css("-o-animation-name", "fadeOut").css("animation-name", "fadeOut");
-                    else $(".game#" + game.id).css("-webkit-animation-name", "fadeIn").css("-o-animation-name", "fadeIn").css("animation-name", "fadeIn");
+                        if (!containsSearch)
+                            $(".game#" + game.id).css("-webkit-animation-name", "fadeOut").css("-o-animation-name", "fadeOut").css("animation-name", "fadeOut");
+                        else
+                            $(".game#" + game.id).css("-webkit-animation-name", "fadeIn").css("-o-animation-name", "fadeIn").css("animation-name", "fadeIn");
 
                     console.log(searchVal[i] + " || " + containsSearch);
                 }
@@ -150,7 +155,7 @@ if (listType === "allGames") {
 						// Sort A - Z
 						
 						// Sorting function
-						function compare(a,b) {
+                                function compare(a, b) {
 							if (a.name.toLowerCase() < b.name.toLowerCase())
 								return -1;
 							if (a.name.toLowerCase() > b.name.toLowerCase())
@@ -164,7 +169,7 @@ if (listType === "allGames") {
 						// Sort Z - A
 						
 						// Sorting function
-						function compare2(a,b) {
+                                function compare2(a, b) {
 							if (a.name.toLowerCase() > b.name.toLowerCase())
 								return -1;
 							if (a.name.toLowerCase() < b.name.toLowerCase())
@@ -178,7 +183,7 @@ if (listType === "allGames") {
 						// Sort newest
 						
 						// Sorting function
-						function compare3(a,b) {
+                                function compare3(a, b) {
 							if (a.created.toLowerCase() > b.created.toLowerCase())
 								return -1;
 							if (a.created.toLowerCase() < b.created.toLowerCase())
@@ -192,7 +197,7 @@ if (listType === "allGames") {
 						// Sort oldest
 						
 						// Sorting function
-						function compare4(a,b) {
+                                function compare4(a, b) {
 							if (a.created.toLowerCase() < b.created.toLowerCase())
 								return -1;
 							if (a.created.toLowerCase() > b.created.toLowerCase())
@@ -206,7 +211,7 @@ if (listType === "allGames") {
 						// Most popular
 						
 						// Sorting function
-						function compare5(a,b) {
+                                function compare5(a, b) {
 							if (parseInt(a.playcount.toLowerCase()) > parseInt(b.playcount.toLowerCase()))
 								return -1;
 							if (parseInt(a.playcount.toLowerCase()) < parseInt(b.playcount.toLowerCase()))
@@ -220,7 +225,7 @@ if (listType === "allGames") {
 						// Least popular
 						
 						// Sorting function
-						function compare6(a,b) {
+                                function compare6(a, b) {
 							if (parseInt(a.playcount.toLowerCase()) < parseInt(b.playcount.toLowerCase()))
 								return -1;
 							if (parseInt(a.playcount.toLowerCase()) > parseInt(b.playcount.toLowerCase()))
@@ -234,7 +239,7 @@ if (listType === "allGames") {
 						// Highest rating
 						
 						// Sorting function
-						function compare7(a,b) {
+                                function compare7(a, b) {
 							if (a.rating > b.rating)
 								return -1;
 							if (a.rating < b.rating)
