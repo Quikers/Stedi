@@ -17,7 +17,7 @@
     
     <script src="<?= URL; ?>public/js/jquery.js"></script>
     <!-- <script src="<?= URL; ?>public/js/bootstrap/bootstrap.min.js"></script> -->
-    <script src="<?= URL; ?>public/js/datatables/datatables.js"></script>
+    <?php if ($this->title == "Dashboard") { ?> <script src="<?= URL; ?>public/js/datatables/datatables.js"></script> <?php } ?>
     
     <div id="header">
         

@@ -1,10 +1,10 @@
 <?php
 
-define('GAME_DIR', 'C:');
-define('URL', 'http://localhost:8080/');
+//define('GAME_DIR', 'C:');
+//define('URL', 'http://localhost:8080/');
 
-//define('GAME_DIR', 'D:');
-//define('URL', 'http://localhost/');
+define('GAME_DIR', 'D:');
+define('URL', 'http://localhost/');
 
 define('LIBS', 'libs/');
 

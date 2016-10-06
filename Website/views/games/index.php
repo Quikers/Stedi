@@ -106,26 +106,27 @@ if (listType === "allGames") {
 
 
     $(document).ready(function () {
-        
-        console.log(gamesArr);
-        
-        var gameNameArr = [];
-        
-        $.each(gamesArr.games, function (gameKey, game) {
-            $.each(game, function (key, property) {
-                if (key !== "id") {
-                    switch(key) {
-                        default:
-                            console.log("");
-                            break;
+        $("#filterContainer #searchBar").keyup(function () {
+            $.each(gamesArr.games, function (key, game) {
+                var searchVal = $("#filterContainer #searchBar").val().toLowerCase().split(" ");
+                
+                for (var i in searchVal) {
+                    var containsSearch = false;
+                    
+                    if (!/\S/.test(searchVal)) containsSearch = true;
+
+                    if (game.name.toLowerCase().indexOf() !== -1 ||
+                        game.tags.toLowerCase().split(" ").join(" / ").indexOf(searchVal) !== -1 ||
+                        game.description.toLowerCase().indexOf(searchVal) !== -1) {
+                        containsSearch = true;
                     }
-                    gameNameArr[game.id] = property;
+
+                    if (!containsSearch) $(".game#" + game.id).attr("style", "display: none;");
+                    else $(".game#" + game.id).attr("style", "");
+
+                    console.log(containsSearch);
                 }
             });
-        });
-        
-        $("#filterContainer #searchBar").keydown(function () {
-            
         });
         
         $("#filterContainer select").change(function () {

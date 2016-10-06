@@ -90,10 +90,51 @@ class Games extends Controller {
         
         if ($params[0] != -1) {
             $gameList["listType"] = $params != NULL ? "singleGame" : "allGames";
-            $gameList["game"] = $params != NULL ? $gamesModel->GetGameInfo($params[0]) : $gamesModel->GetGames(); 
-            $params != NULL ?: $gameList["game"]["rating"] = "4.5 / 5 TEST";
+            if ($params != NULL) {
+                $gameList["game"] = $gamesModel->GetGameInfo($params[0]);
+                
+                $rating = 0;
+                $ratings = $gamesModel->GetGameRating($gameList["game"]["id"]);
+                if (count($ratings) > 0) {
+                    for ($i = 0; $i < count($ratings); $i++) { $rating += $ratings[$i]["rating"]; }
+                    $rating = round((int)$rating / count($ratings));
+                } else {
+                    $rating = "<p style=\"display: inline-block; color: lightblue\">This game has not been rated yet.</p>";
+                }
+
+                $gameList["game"]["rating"] = $rating;
+            } else {
+                $gameList["game"] = $gamesModel->GetGames();
+                
+                foreach($gameList["game"] as $key => $game) {
+                    $rating = 0;
+                    $ratings = $gamesModel->GetGameRating($game["id"]);
+                    if (count($ratings) > 0) {
+                        for ($i = 0; $i < count($ratings); $i++) { $rating += $ratings[$i]["rating"]; }
+                        $rating = round((int)$rating / count($ratings));
+                    } else {
+                        $rating = "<p style=\"display: inline-block; color: lightblue\">This game has not been rated yet.</p>";
+                    }
+
+                    $game["rating"] = $rating;
+                    
+                    $gameList["game"][$key] = $game;
+                }
+            }
+            
         } else {
             $gameList["game"] = $gamesModel->GetGameInfo($params[1], false);
+            
+            $rating = 0;
+            $ratings = $gamesModel->GetGameRating($gameList["game"]["id"]);
+            if (count($ratings) > 0) {
+                for ($i = 0; $i < count($ratings); $i++) { $rating += $ratings[$i]["rating"]; }
+                $rating = round((int)$rating / count($ratings));
+            } else {
+                $rating = "<p style=\"display: inline-block; color: lightblue\">This game has not been rated yet.</p>";
+            }
+
+            $gameList["game"]["rating"] = $rating;
         }
         
         echo json_encode($gameList);
