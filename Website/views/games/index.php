@@ -87,7 +87,7 @@ var gamesArr = <?= json_encode($gameList) ?>;
 if (listType === "allGames") {
     function Update () {
         var i = 0;
-
+		console.log(gamesArr.games);
         (function myLoop () {          
             setTimeout(function () {
 				$(".game:nth-child(" + (i + 1) + ")").attr("id", gamesArr.games[i].id.toString());
@@ -195,12 +195,60 @@ if (listType === "allGames") {
 					gamesArr.games = gamesArr.games.sort(compare4);
                     break;
                 case "4":
+					// Most popular
+					
+					// Sorting function
+					function compare5(a,b) {
+						if (parseInt(a.playcount.toLowerCase()) > parseInt(b.playcount.toLowerCase()))
+							return -1;
+						if (parseInt(a.playcount.toLowerCase()) < parseInt(b.playcount.toLowerCase()))
+							return 1;
+						return 0;
+					}
+					
+					gamesArr.games = gamesArr.games.sort(compare5);
                     break;
                 case "5":
+					// Least popular
+					
+					// Sorting function
+					function compare6(a,b) {
+						if (parseInt(a.playcount.toLowerCase()) < parseInt(b.playcount.toLowerCase()))
+							return -1;
+						if (parseInt(a.playcount.toLowerCase()) > parseInt(b.playcount.toLowerCase()))
+							return 1;
+						return 0;
+					}
+					
+					gamesArr.games = gamesArr.games.sort(compare6);
                     break;
                 case "6":
+					// Highest rating
+					
+					// Sorting function
+					function compare7(a,b) {
+						if (a.rating > b.rating)
+							return -1;
+						if (a.rating < b.rating)
+							return 1;
+						return 0;
+					}
+					
+					gamesArr.games = gamesArr.games.sort(compare7);
                     break;
                 case "7":
+					// Lowest rating
+					
+					// Sorting function
+					function compare8(a,b) {
+						if (a.rating < b.rating)
+							return -1;
+						if (a.rating > b.rating)
+							return 1;
+						return 0;
+					}
+					
+					gamesArr.games = gamesArr.games.sort(compare8);
                     break;
             }
 			Update();
