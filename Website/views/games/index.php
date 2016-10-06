@@ -114,7 +114,7 @@ if (listType === "allGames") {
         $.each(gamesArr.games, function (gameKey, game) {
             $.each(game, function (key, property) {
                 if (key !== "id") {
-                    switch() {
+                    switch(key) {
                         default:
                             console.log("");
                             break;
