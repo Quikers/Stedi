@@ -42,7 +42,7 @@ div#header {
     min-width: 1145px;
     
     margin: 20px 20px 20px 235px;
-    background: rgba(255,255,255, 0.16);
+    background: rgba(255,255,255, 0.1);
 }
 
 #content * {
@@ -226,13 +226,14 @@ input {
 }
 
 #filterContainer input[type="text"] {
+    background: rgba(0,0,0,0.5);
     display: inline-block;
     width: 92%;
 }
 
 #filterContainer select {
     border: 1px solid white;
-    background-color: rgba(255,255,255,0.2);
+    background-color: rgba(0,0,0,0.2);
     
     width: 100%;
     height: 30px;
@@ -255,16 +256,23 @@ input {
 }
 
 #gameInfoContainer .background {
-    position: absolute;
     display: inline-block;
-    top: 0;
-    left: 0;
     
-    min-width: 100%;
-    min-height: 100%;
+    position: absolute;
+    top: -20px;
+    left: -235px;
+    
+    min-width: 100vw;
+    min-height: 100vh;
     
     background-size: cover;
     background-repeat: no-repeat;
+    
+    z-index: -2;
+}
+
+#gameInfoContainer .background.cover {
+    background: rgba(0,0,0,0.8);
     
     z-index: -1;
 }

@@ -1,3 +1,9 @@
+<?php
+
+$gameList = $this->gamesList;
+
+if ($gameList["listType"] == "allGames") { ?>
+
 <div id="filterContainer">
     <h3>Filter games</h3>
     <input type="text" id="searchBar" placeholder="Search games"><br>
@@ -13,12 +19,7 @@
     </select>
 </div>
 
-
-<?php
-
-$gameList = $this->gamesList;
-
-if ($gameList["listType"] == "allGames") {
+<?php 
     if (count($gameList["games"]) > 0) {
         
 ?><div id="gameListContainer"><?php // ========================================= GET ALL GAMES =========================================
@@ -55,6 +56,7 @@ if ($gameList["listType"] == "allGames") {
 
 <div id="gameInfoContainer">
     <div class="background" style="background: url('<?= $game["background"] ?>') no-repeat left top;"></div>
+    <div class="background cover"></div>
     
     <h1><?= $game["name"] ?></h1>
     <h2><?= join(" / ", explode(" ", $game["tags"])) ?></h2>
@@ -82,6 +84,7 @@ if ($gameList["listType"] == "allGames") {
 <script>
 
 var listType = "<?= $gameList["listType"] ?>";
+var gamesArr = <?= json_encode($gameList) ?>;
 
 if (listType === "allGames") {
     function Update () {
@@ -103,17 +106,44 @@ if (listType === "allGames") {
 
 
     $(document).ready(function () {
-    
+        
+        console.log(gamesArr);
+        
+        var gameNameArr = [];
+        
+        $.each(gamesArr.games, function (gameKey, game) {
+            $.each(game, function (key, property) {
+                if (key !== "id") {
+                    switch() {
+                        default:
+                            console.log("");
+                            break;
+                    }
+                    gameNameArr[game.id] = property;
+                }
+            });
+        });
+        
+        $("#filterContainer #searchBar").keydown(function () {
+            
+        });
+        
         $("#filterContainer select").change(function () {
             switch ($(this).val()) {
                 default:
-                    console.log("Unknown value \"" + $(this).val() + "\"");
+                    console.log("Unknown ComboBox value \"" + $(this).val() + "\"");
                     break;
                 case "0":
                     break;
                 case "1":
                     break;
                 case "2":
+                    var dateArr = [];
+                    $.each(gamesArr.games, function(arrKey, game) {
+                        $.each(game, function(key, property) {
+                            
+                        });
+                    });
                     break;
                 case "3":
                     break;
@@ -130,9 +160,6 @@ if (listType === "allGames") {
     
         Update();
     });
-} else {
-    $("#content").css("background", "rgba(0, 0, 0, 0.75)");
 }
-
 
 </script>
