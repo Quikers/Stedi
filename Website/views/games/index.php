@@ -179,9 +179,9 @@ if (listType === "allGames") {
 						
 						// Sorting function
 						function compare3(a,b) {
-							if (a.created.toLowerCase() < b.created.toLowerCase())
-								return -1;
 							if (a.created.toLowerCase() > b.created.toLowerCase())
+								return -1;
+							if (a.created.toLowerCase() < b.created.toLowerCase())
 								return 1;
 							return 0;
 						}
@@ -193,9 +193,9 @@ if (listType === "allGames") {
 						
 						// Sorting function
 						function compare4(a,b) {
-							if (a.created.toLowerCase() > b.created.toLowerCase())
-								return -1;
 							if (a.created.toLowerCase() < b.created.toLowerCase())
+								return -1;
+							if (a.created.toLowerCase() > b.created.toLowerCase())
 								return 1;
 							return 0;
 						}
