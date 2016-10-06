@@ -122,18 +122,18 @@ if (listType === "allGames") {
                 for (var i in searchVal) {
                     var containsSearch = false;
                     
-                    if (!/\S/.test(searchVal)) containsSearch = true;
+                    if (!/\S/.test(searchVal[i])) containsSearch = true;
 
-                    if (game.name.toLowerCase().indexOf() !== -1 ||
-                        game.tags.toLowerCase().split(" ").join(" / ").indexOf(searchVal) !== -1 ||
-                        game.description.toLowerCase().indexOf(searchVal) !== -1) {
+                    if (game.name.toLowerCase().indexOf(searchVal[i]) !== -1 ||
+                        game.tags.toLowerCase().split(" ").join(" / ").indexOf(searchVal[i]) !== -1 ||
+                        game.description.toLowerCase().indexOf(searchVal[i]) !== -1) {
                         containsSearch = true;
                     }
 
-                    if (!containsSearch) $(".game#" + game.id).attr("style", "display: none;");
-                    else $(".game#" + game.id).attr("style", "");
+                    if (!containsSearch) $(".game#" + game.id).css("-webkit-animation-name", "fadeOut").css("-o-animation-name", "fadeOut").css("animation-name", "fadeOut");
+                    else $(".game#" + game.id).css("-webkit-animation-name", "fadeIn").css("-o-animation-name", "fadeIn").css("animation-name", "fadeIn");
 
-                    console.log(containsSearch);
+                    console.log(searchVal[i] + " || " + containsSearch);
                 }
             });
         });
