@@ -84,8 +84,12 @@ if ($gameList["listType"] == "allGames") { ?>
 var listType = "<?= $gameList["listType"] ?>";
 var gamesArr = <?= json_encode($gameList) ?>;
 
+var gamesUpdated = false;
+
 if (listType === "allGames") {
     function Update () {
+		gamesUpdated = false;
+		
         var i = 0;
 		console.log(gamesArr.games);
         (function myLoop () {          
@@ -103,6 +107,7 @@ if (listType === "allGames") {
                     
                     $(".game:nth-child(" + (i + 1) + ")").fadeIn(400);
                     if (++i < $(".game").length) myLoop();
+					else gamesUpdated = true;
                 });
             });
         })(); 
@@ -134,124 +139,129 @@ if (listType === "allGames") {
         });
         
         $("#filterContainer select").change(function () {
-            switch ($(this).val()) {
-                default:
-                    console.log("Unknown ComboBox value \"" + $(this).val() + "\"");
-                    break;
-                case "0":
-					// Sort A - Z
-					
-					// Sorting function
-					function compare(a,b) {
-						if (a.name.toLowerCase() < b.name.toLowerCase())
-							return -1;
-						if (a.name.toLowerCase() > b.name.toLowerCase())
-							return 1;
-						return 0;
+			var count = 0;
+			$(".game").fadeOut(400, function () {
+				if (++count == $(".game").length) {
+					switch ($("#filterContainer select").val()) {
+					default:
+						console.log("Unknown ComboBox value \"" + $("#filterContainer select").val() + "\"");
+						break;
+					case "0":
+						// Sort A - Z
+						
+						// Sorting function
+						function compare(a,b) {
+							if (a.name.toLowerCase() < b.name.toLowerCase())
+								return -1;
+							if (a.name.toLowerCase() > b.name.toLowerCase())
+								return 1;
+							return 0;
+						}
+						
+						gamesArr.games = gamesArr.games.sort(compare);
+						break;
+					case "1":
+						// Sort Z - A
+						
+						// Sorting function
+						function compare2(a,b) {
+							if (a.name.toLowerCase() > b.name.toLowerCase())
+								return -1;
+							if (a.name.toLowerCase() < b.name.toLowerCase())
+								return 1;
+							return 0;
+						}
+						
+						gamesArr.games = gamesArr.games.sort(compare2);
+						break;
+					case "2":
+						// Sort newest
+						
+						// Sorting function
+						function compare3(a,b) {
+							if (a.created.toLowerCase() < b.created.toLowerCase())
+								return -1;
+							if (a.created.toLowerCase() > b.created.toLowerCase())
+								return 1;
+							return 0;
+						}
+						
+						gamesArr.games = gamesArr.games.sort(compare3);
+						break;
+					case "3":
+						// Sort oldest
+						
+						// Sorting function
+						function compare4(a,b) {
+							if (a.created.toLowerCase() > b.created.toLowerCase())
+								return -1;
+							if (a.created.toLowerCase() < b.created.toLowerCase())
+								return 1;
+							return 0;
+						}
+						
+						gamesArr.games = gamesArr.games.sort(compare4);
+						break;
+					case "4":
+						// Most popular
+						
+						// Sorting function
+						function compare5(a,b) {
+							if (parseInt(a.playcount.toLowerCase()) > parseInt(b.playcount.toLowerCase()))
+								return -1;
+							if (parseInt(a.playcount.toLowerCase()) < parseInt(b.playcount.toLowerCase()))
+								return 1;
+							return 0;
+						}
+						
+						gamesArr.games = gamesArr.games.sort(compare5);
+						break;
+					case "5":
+						// Least popular
+						
+						// Sorting function
+						function compare6(a,b) {
+							if (parseInt(a.playcount.toLowerCase()) < parseInt(b.playcount.toLowerCase()))
+								return -1;
+							if (parseInt(a.playcount.toLowerCase()) > parseInt(b.playcount.toLowerCase()))
+								return 1;
+							return 0;
+						}
+						
+						gamesArr.games = gamesArr.games.sort(compare6);
+						break;
+					case "6":
+						// Highest rating
+						
+						// Sorting function
+						function compare7(a,b) {
+							if (a.rating > b.rating)
+								return -1;
+							if (a.rating < b.rating)
+								return 1;
+							return 0;
+						}
+						
+						gamesArr.games = gamesArr.games.sort(compare7);
+						break;
+					case "7":
+						// Lowest rating
+						
+						// Sorting function
+						function compare8(a,b) {
+							if (a.rating < b.rating)
+								return -1;
+							if (a.rating > b.rating)
+								return 1;
+							return 0;
+						}
+						
+						gamesArr.games = gamesArr.games.sort(compare8);
+						break;
 					}
-					
-					gamesArr.games = gamesArr.games.sort(compare);
-                    break;
-                case "1":
-					// Sort Z - A
-					
-					// Sorting function
-					function compare2(a,b) {
-						if (a.name.toLowerCase() > b.name.toLowerCase())
-							return -1;
-						if (a.name.toLowerCase() < b.name.toLowerCase())
-							return 1;
-						return 0;
-					}
-					
-					gamesArr.games = gamesArr.games.sort(compare2);
-                    break;
-                case "2":
-                    // Sort newest
-					
-					// Sorting function
-					function compare3(a,b) {
-						if (a.created.toLowerCase() < b.created.toLowerCase())
-							return -1;
-						if (a.created.toLowerCase() > b.created.toLowerCase())
-							return 1;
-						return 0;
-					}
-					
-					gamesArr.games = gamesArr.games.sort(compare3);
-                    break;
-                case "3":
-					// Sort oldest
-					
-					// Sorting function
-					function compare4(a,b) {
-						if (a.created.toLowerCase() > b.created.toLowerCase())
-							return -1;
-						if (a.created.toLowerCase() < b.created.toLowerCase())
-							return 1;
-						return 0;
-					}
-					
-					gamesArr.games = gamesArr.games.sort(compare4);
-                    break;
-                case "4":
-					// Most popular
-					
-					// Sorting function
-					function compare5(a,b) {
-						if (parseInt(a.playcount.toLowerCase()) > parseInt(b.playcount.toLowerCase()))
-							return -1;
-						if (parseInt(a.playcount.toLowerCase()) < parseInt(b.playcount.toLowerCase()))
-							return 1;
-						return 0;
-					}
-					
-					gamesArr.games = gamesArr.games.sort(compare5);
-                    break;
-                case "5":
-					// Least popular
-					
-					// Sorting function
-					function compare6(a,b) {
-						if (parseInt(a.playcount.toLowerCase()) < parseInt(b.playcount.toLowerCase()))
-							return -1;
-						if (parseInt(a.playcount.toLowerCase()) > parseInt(b.playcount.toLowerCase()))
-							return 1;
-						return 0;
-					}
-					
-					gamesArr.games = gamesArr.games.sort(compare6);
-                    break;
-                case "6":
-					// Highest rating
-					
-					// Sorting function
-					function compare7(a,b) {
-						if (a.rating > b.rating)
-							return -1;
-						if (a.rating < b.rating)
-							return 1;
-						return 0;
-					}
-					
-					gamesArr.games = gamesArr.games.sort(compare7);
-                    break;
-                case "7":
-					// Lowest rating
-					
-					// Sorting function
-					function compare8(a,b) {
-						if (a.rating < b.rating)
-							return -1;
-						if (a.rating > b.rating)
-							return 1;
-						return 0;
-					}
-					
-					gamesArr.games = gamesArr.games.sort(compare8);
-                    break;
-            }
-			Update();
+					Update();
+				}
+			});
         });
     
         Update();
