@@ -244,9 +244,43 @@ input {
     background: #080808;
 }
 
+@keyframes fadeIn {
+    0% {
+        display: inline-block;
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        display: inline-block;
+        opacity: 1;
+    }
+    100% {
+        position: absolute;
+        top: 50%;
+        left: 40%;
+        opacity: 0;
+        width: 0;
+        margin: 0;
+    }
+}
+
 #gameListContainer .game {
     position: relative;
     display: inline-block;
+    
+    -webkit-animation-fill-mode: forward;
+    -moz-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+    
+    -webkit-animation-duration: 400ms;
+    -moz-animation-duration: 400ms;
+    -o-animation-duration: 400ms;
+    animation-duration: 400ms;
     
     background: rgba(0, 0, 0, 0.4);
     
