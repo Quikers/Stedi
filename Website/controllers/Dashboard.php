@@ -23,7 +23,7 @@ class Dashboard extends Controller {
                         $ratings = $gamesModel->getGameRating($game["id"]);
                         if (count($ratings) > 0) {
                             for ($i = 0; $i < count($ratings); $i++) { $rating += $ratings[$i]["rating"]; }
-                            $rating = round((int)$rating / count($ratings));
+                            $rating = round((float)$rating / count($ratings), 1);
                         } else {
                             $rating = "<p style=\"display: inline-block; color: lightblue\">This game has not been rated yet.</p>";
                         }
