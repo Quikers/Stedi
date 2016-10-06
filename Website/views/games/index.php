@@ -31,8 +31,6 @@ if ($gameList["listType"] == "allGames") { ?>
 <div style="display: none;" class="game" id="<?= $game["id"] ?>">
     <div class="background"></div>
     <a class="fade" href="<?= URL ?>games/app/<?= $game["id"] ?>">
-        
-
         <h1><?= $game["name"] ?></h1>
         <h2><?= join(" / ", explode(" ", $game["tags"])) ?></h2>
         <h3>Creator: <?= $game["author"] ?></h3>
@@ -92,9 +90,15 @@ if (listType === "allGames") {
 
         (function myLoop () {          
             setTimeout(function () {
+				$(".game:nth-child(" + (i + 1) + ")").attr("id", gamesArr.games[i].id.toString());
                 $.get("<?= URL ?>games/getgames/" + $(".game:nth-child(" + (i + 1) + ")").attr("id"), function (JSONdata) {
                     var data = JSON.parse(JSONdata);
                     
+					$(".game:nth-child(" + (i + 1) + ")").children("a").attr("href", location.origin+"/games/app/"+data.game.id);
+					$(".game:nth-child(" + (i + 1) + ")").children("a").children("h1").html(data.game.name);
+					$(".game:nth-child(" + (i + 1) + ")").children("a").children("h2").html(data.game.tags.replace(" ", " / "));
+					$(".game:nth-child(" + (i + 1) + ")").children("a").children("h3:nth-child(1)").html(data.game.author);
+					$(".game:nth-child(" + (i + 1) + ")").children("a").children("h3:nth-child(2)").html(data.game.created);
                     $(".game:nth-child(" + (i + 1) + ") .background").attr("style", "background: url('" + data.game.background + "') no-repeat left top;");
                     
                     $(".game:nth-child(" + (i + 1) + ")").fadeIn(400);
@@ -135,18 +139,60 @@ if (listType === "allGames") {
                     console.log("Unknown ComboBox value \"" + $(this).val() + "\"");
                     break;
                 case "0":
+					// Sort A - Z
+					
+					// Sorting function
+					function compare(a,b) {
+						if (a.name.toLowerCase() < b.name.toLowerCase())
+							return -1;
+						if (a.name.toLowerCase() > b.name.toLowerCase())
+							return 1;
+						return 0;
+					}
+					
+					gamesArr.games = gamesArr.games.sort(compare);
                     break;
                 case "1":
+					// Sort Z - A
+					
+					// Sorting function
+					function compare2(a,b) {
+						if (a.name.toLowerCase() > b.name.toLowerCase())
+							return -1;
+						if (a.name.toLowerCase() < b.name.toLowerCase())
+							return 1;
+						return 0;
+					}
+					
+					gamesArr.games = gamesArr.games.sort(compare2);
                     break;
                 case "2":
-                    var dateArr = [];
-                    $.each(gamesArr.games, function(arrKey, game) {
-                        $.each(game, function(key, property) {
-                            
-                        });
-                    });
+                    // Sort newest
+					
+					// Sorting function
+					function compare3(a,b) {
+						if (a.created.toLowerCase() < b.created.toLowerCase())
+							return -1;
+						if (a.created.toLowerCase() > b.created.toLowerCase())
+							return 1;
+						return 0;
+					}
+					
+					gamesArr.games = gamesArr.games.sort(compare3);
                     break;
                 case "3":
+					// Sort oldest
+					
+					// Sorting function
+					function compare4(a,b) {
+						if (a.created.toLowerCase() > b.created.toLowerCase())
+							return -1;
+						if (a.created.toLowerCase() < b.created.toLowerCase())
+							return 1;
+						return 0;
+					}
+					
+					gamesArr.games = gamesArr.games.sort(compare4);
                     break;
                 case "4":
                     break;
@@ -157,6 +203,7 @@ if (listType === "allGames") {
                 case "7":
                     break;
             }
+			Update();
         });
     
         Update();
