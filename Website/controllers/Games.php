@@ -47,20 +47,20 @@ class Games extends Controller {
         
         $gameList["listType"] = "allGames";
         $gameList["games"] = $gamesModel->GetGames();
-		foreach($gameList["games"] as $key => $game) {
-			$rating = 0;
-			$ratings = $gamesModel->GetGameRating($game["id"]);
-			if (count($ratings) > 0) {
-				for ($i = 0; $i < count($ratings); $i++) { $rating += $ratings[$i]["rating"]; }
-				$rating = round((int)$rating / count($ratings));
-			} else {
-				$rating = "<p style=\"display: inline-block; color: lightblue\">This game has not been rated yet.</p>";
-			}
+            foreach($gameList["games"] as $key => $game) {
+                $rating = 0;
+                $ratings = $gamesModel->GetGameRating($game["id"]);
+                if (count($ratings) > 0) {
+                        for ($i = 0; $i < count($ratings); $i++) { $rating += $ratings[$i]["rating"]; }
+                        $rating = round((float)$rating / count($ratings), 1);
+                } else {
+                        $rating = "<p style=\"display: inline-block; color: lightblue\">This game has not been rated yet.</p>";
+                }
 
-			$game["rating"] = $rating;
-			
-			$gameList["games"][$key] = $game;
-		}
+                $game["rating"] = $rating;
+
+                $gameList["games"][$key] = $game;
+            }
         
         $this->view->gamesList = $gameList;
         $this->view->title = "Games";
@@ -81,7 +81,7 @@ class Games extends Controller {
                 $ratings = $gamesModel->GetGameRating($gameList["game"]["id"]);
                 if (count($ratings) > 0) {
                     for ($i = 0; $i < count($ratings); $i++) { $rating += $ratings[$i]["rating"]; }
-                    $rating = round((int)$rating / count($ratings));
+                    $rating = round((float)$rating / count($ratings), 1);
                 } else {
                     $rating = "<p style=\"display: inline-block; color: lightblue\">This game has not been rated yet.</p>";
                 }
@@ -111,7 +111,7 @@ class Games extends Controller {
                 $ratings = $gamesModel->GetGameRating($gameList["game"]["id"]);
                 if (count($ratings) > 0) {
                     for ($i = 0; $i < count($ratings); $i++) { $rating += $ratings[$i]["rating"]; }
-                    $rating = round((int)$rating / count($ratings));
+                    $rating = round((float)$rating / count($ratings), 1);
                 } else {
                     $rating = "<p style=\"display: inline-block; color: lightblue\">This game has not been rated yet.</p>";
                 }
@@ -125,7 +125,7 @@ class Games extends Controller {
                     $ratings = $gamesModel->GetGameRating($game["id"]);
                     if (count($ratings) > 0) {
                         for ($i = 0; $i < count($ratings); $i++) { $rating += $ratings[$i]["rating"]; }
-                        $rating = round((int)$rating / count($ratings));
+                        $rating = round((float)$rating / count($ratings), 1);
                     } else {
                         $rating = "<p style=\"display: inline-block; color: lightblue\">This game has not been rated yet.</p>";
                     }
@@ -143,7 +143,7 @@ class Games extends Controller {
             $ratings = $gamesModel->GetGameRating($gameList["game"]["id"]);
             if (count($ratings) > 0) {
                 for ($i = 0; $i < count($ratings); $i++) { $rating += $ratings[$i]["rating"]; }
-                $rating = round((int)$rating / count($ratings));
+                $rating = round((float)$rating / count($ratings), 1);
             } else {
                 $rating = "<p style=\"display: inline-block; color: lightblue\">This game has not been rated yet.</p>";
             }
