@@ -72,7 +72,10 @@ namespace Stedi {
             };
             lbGames.SetValue(ScrollViewer.HorizontalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
             lbGames.SelectionChanged += lbGames_SelectionChanged;
-
+            Style styleItem = new Style(typeof(ListBoxItem));
+            styleItem.Setters.Add(new Setter(ListBoxItem.BorderBrushProperty, Brushes.White));
+            styleItem.Setters.Add(new Setter(ListBoxItem.BorderThicknessProperty, new Thickness(0.5)));
+            lbGames.ItemContainerStyle = styleItem;
             TheMainWindow.Children.Add(lbGames);
 
             t = new Timer(2000);
@@ -189,6 +192,14 @@ namespace Stedi {
                     }
 
                     lbGames.Items.Add(name + Environment.NewLine + string.Join(" / ", game["tags"].Split(' ')) + Environment.NewLine + game["author"]); // WARNING this colum position might change
+
+                    /*byte[] binaryData = Convert.FromBase64String(Regex.Match(game["background"], @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value);
+
+                    BitmapImage bi = new BitmapImage();
+                    bi.BeginInit();
+                    bi.StreamSource = new MemoryStream(binaryData);
+                    bi.EndInit();
+                    */
                 }
 
                 // If there are any games select the first one
