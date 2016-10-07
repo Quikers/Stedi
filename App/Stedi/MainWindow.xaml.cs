@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 using System.Linq;
+using System.Threading;
 
 namespace Stedi {
     enum ComboBoxItems {
@@ -28,13 +29,16 @@ namespace Stedi {
 
     public partial class MainWindow : Window {
         // Variables
-        string[] sortMethods = new string[] { "Title", "Most popular", "Least popular", "Highest rating", "Lowest rating", "Oldest", "Newest" };
+        private string[] sortMethods = new string[] { "Title", "Most popular", "Least popular", "Highest rating", "Lowest rating", "Oldest", "Newest" };
         private int methodIndex = 0;
-        List<Dictionary<string, string>> games = new List<Dictionary<string, string>>();
-        List<Dictionary<string, string>> filteredGames = new List<Dictionary<string, string>>();
+        private List<Dictionary<string, string>> games = new List<Dictionary<string, string>>();
+        private List<Dictionary<string, string>> filteredGames = new List<Dictionary<string, string>>();
         private Process gameProcess = new Process();
         private int savedIndex = -1;
-        Timer t;
+        private Timer t;
+        private Timer backgroundFadeTimer = new Timer(10);
+        private bool isLeft = false;
+        private bool isFadeOut = false;
         private int playTime = 0;
         private int currentPlayingGameIndex = 0;
         private int selectedControl = 0;
@@ -47,7 +51,7 @@ namespace Stedi {
         private double ratingValue = 5;
 
         // Keyboard
-        string[] keyChars = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "a", "s", "d", "f", "g", "h", "j", "k", "l", "z", "x", "c", "v", "b", "n", "m", "<-" };
+        private string[] keyChars = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "a", "s", "d", "f", "g", "h", "j", "k", "l", "z", "x", "c", "v", "b", "n", "m", "<-" };
         private Grid gridKeyboard = new Grid();
         private Label[] lblKey = new Label[37];
         private int keyindex = 0;
@@ -82,6 +86,9 @@ namespace Stedi {
             t.Elapsed += t_elapsed;
             t.Start();
 
+            backgroundFadeTimer.Elapsed += FadeHandler;
+            backgroundFadeTimer.Start();
+
             // Show selected item
             TxtSearchbar.BorderThickness = new System.Windows.Thickness(2);
             TxtSearchbar.BorderBrush = Brushes.White;
@@ -89,26 +96,29 @@ namespace Stedi {
             lbGames.BorderBrush = Brushes.White;
 
             // Create popup window
-            gridRating = new Grid();
-            gridRating.Width = 500;
-            gridRating.Height = 300;
-            gridRating.HorizontalAlignment = HorizontalAlignment.Center;
-            gridRating.VerticalAlignment = VerticalAlignment.Center;
-            gridRating.Background = (Brush)new BrushConverter().ConvertFromString("#CC000000");
-            gridRating.Visibility = Visibility.Hidden;
+            gridRating = new Grid {
+                Width = 500,
+                Height = 300,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Background = (Brush) new BrushConverter().ConvertFromString("#CC000000"),
+                Visibility = Visibility.Hidden
+            };
 
-            txtRatingMessage = new TextBox();
-            txtRatingMessage.Text = "Rate this game! < 2.5 >";
-            txtRatingMessage.FontSize = 40;
-            txtRatingMessage.HorizontalAlignment = HorizontalAlignment.Center;
-            txtRatingMessage.VerticalAlignment = VerticalAlignment.Center;
-            txtRatingMessage.FontWeight = FontWeights.Normal;
-            txtRatingMessage.BorderThickness = new System.Windows.Thickness(0);
-            txtRatingMessage.Foreground = (Brush)new BrushConverter().ConvertFromString("#FFFFFFFF");
-            txtRatingMessage.Background = (Brush)new BrushConverter().ConvertFromString("#00000000");
+            txtRatingMessage = new TextBox {
+                Text = "Rate this game! < 2.5 >",
+                FontSize = 40,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                FontWeight = FontWeights.Normal,
+                BorderThickness = new System.Windows.Thickness(0),
+                Foreground = (Brush) new BrushConverter().ConvertFromString("#FFFFFFFF"),
+                Background = (Brush) new BrushConverter().ConvertFromString("#00000000")
+            };
 
             gridRating.Children.Add(txtRatingMessage);
             TheMainWindow.Children.Add(gridRating);
+            TheMainWindow.Background = new ImageBrush {Opacity = 0.5};
 
             // Create keyboard
             gridKeyboard.Width = 560;
@@ -119,17 +129,18 @@ namespace Stedi {
             gridKeyboard.Visibility = Visibility.Hidden;
 
             for (int i = 0; i < keyChars.Length; i++) {
-                lblKey[i] = new Label();
-                lblKey[i].Content = keyChars[i];
-                lblKey[i].Width = 45;
-                lblKey[i].Height = 70;
-                lblKey[i].FontSize = 40;
-                lblKey[i].FontWeight = FontWeights.Normal;
-                lblKey[i].VerticalAlignment = VerticalAlignment.Top;
-                lblKey[i].HorizontalAlignment = HorizontalAlignment.Left;
-                lblKey[i].Foreground = (Brush)new BrushConverter().ConvertFromString("#FFFFFFFF");
-                lblKey[i].Background = (Brush)new BrushConverter().ConvertFromString("#00000000");
-                lblKey[i].BorderThickness = new System.Windows.Thickness(0);
+                lblKey[i] = new Label {
+                    Content = keyChars[i],
+                    Width = 45,
+                    Height = 70,
+                    FontSize = 40,
+                    FontWeight = FontWeights.Normal,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Foreground = (Brush) new BrushConverter().ConvertFromString("#FFFFFFFF"),
+                    Background = (Brush) new BrushConverter().ConvertFromString("#00000000"),
+                    BorderThickness = new System.Windows.Thickness(0)
+                };
                 int x = 0;
                 int y = 0;
                 if (i < 10) {
@@ -258,9 +269,40 @@ namespace Stedi {
             BitmapImage bi = new BitmapImage();
             bi.BeginInit();
             bi.StreamSource = new MemoryStream(binaryData);
-            bi.EndInit(); 
-            TheMainWindow.Background = new ImageBrush(bi);
-            TheMainWindow.Background.Opacity = 0.5;
+            bi.EndInit();
+            double prev = TheMainWindow.Background.Opacity;
+            TheMainWindow.Background = new ImageBrush(bi) {Opacity = prev};
+        }
+
+        private void HandleFade() {
+            if (isFadeOut) {
+                if (TheMainWindow.Background.Opacity > 0)
+                    TheMainWindow.Background.Opacity -= 0.05;
+                else {
+                    if (isLeft) {
+                        if (lbGames.SelectedIndex == 0)
+                            lbGames.SelectedIndex = lbGames.Items.Count - 1;
+                        else
+                            lbGames.SelectedIndex--;
+                    } else {
+                        if (lbGames.SelectedIndex == lbGames.Items.Count - 1)
+                            lbGames.SelectedIndex = 0;
+                        else
+                            lbGames.SelectedIndex++;
+                    }
+
+                    isFadeOut = false;
+                }
+            } else {
+                if (TheMainWindow.Background.Opacity < 0.5)
+                    TheMainWindow.Background.Opacity += 0.05;
+            }
+        }
+        
+        private void FadeHandler(object sender, EventArgs e) {
+            try {
+                Dispatcher.Invoke(HandleFade);
+            } catch { } // Make sure program does not crash on exit
         }
 
         /// <summary>
@@ -584,12 +626,12 @@ namespace Stedi {
                 // Selected game
                 if (selectedControl == 2) {
                     if (e.Key == System.Windows.Input.Key.Left) {
-                        if (lbGames.SelectedIndex == 0) lbGames.SelectedIndex = lbGames.Items.Count - 1;
-                        else lbGames.SelectedIndex--;
+                        isFadeOut = true;
+                        isLeft = true;
                     }
                     if (e.Key == System.Windows.Input.Key.Right) {
-                        if (lbGames.SelectedIndex == lbGames.Items.Count - 1) lbGames.SelectedIndex = 0;
-                        else lbGames.SelectedIndex++;
+                        isFadeOut = true;
+                        isLeft = false;
                     }
                 }
 
