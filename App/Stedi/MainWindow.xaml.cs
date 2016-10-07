@@ -56,6 +56,10 @@ namespace Stedi {
         {
             InitializeComponent();
 
+            Init();
+        }
+
+        private void Init() {
             lbGames = new ListBox {
                 HorizontalAlignment = HorizontalAlignment.Left,
                 Margin = new Thickness(20, 99, 0, 20),
@@ -111,8 +115,7 @@ namespace Stedi {
             gridKeyboard.Background = (Brush)new BrushConverter().ConvertFromString("#CC000000");
             gridKeyboard.Visibility = Visibility.Hidden;
 
-            for (int i=0; i<keyChars.Length; i++)
-            {
+            for (int i = 0; i < keyChars.Length; i++) {
                 lblKey[i] = new Label();
                 lblKey[i].Content = keyChars[i];
                 lblKey[i].Width = 45;
@@ -126,27 +129,20 @@ namespace Stedi {
                 lblKey[i].BorderThickness = new System.Windows.Thickness(0);
                 int x = 0;
                 int y = 0;
-                if(i < 10)
-                {
+                if (i < 10) {
                     y = 0;
                     x = i;
-                } 
-                else if(i < 20)
-                {
+                } else if (i < 20) {
                     y = 1;
                     x = i - 10;
-                }
-                else if(i < 29)
-                {
+                } else if (i < 29) {
                     y = 2;
                     x = i - 20;
-                }
-                else
-                {
+                } else {
                     y = 3;
                     x = i - 29;
                 }
-                lblKey[i].Margin = new Thickness(20 + x * 50 + y * 25,20 + y * 50,1,1);
+                lblKey[i].Margin = new Thickness(20 + x * 50 + y * 25, 20 + y * 50, 1, 1);
                 gridKeyboard.Children.Add(lblKey[i]);
             }
 
@@ -192,7 +188,7 @@ namespace Stedi {
                         name = name.Substring(0, name.Length - ofWidth) + "...";
                     }
 
-                    lbGames.Items.Add(name); // WARNING this colum position might change
+                    lbGames.Items.Add(name + Environment.NewLine + string.Join(" / ", game["tags"].Split(' ')) + Environment.NewLine + game["author"]); // WARNING this colum position might change
                 }
 
                 // If there are any games select the first one
@@ -226,7 +222,7 @@ namespace Stedi {
             LblDate.Content = filteredGames[index]["created"].Split(' ')[0];
 
             // Set description 
-            TxtDescription.Text = filteredGames[index]["description"].Replace("\\r\\n", "\r\n");
+            TxtDescription.Text = filteredGames[index]["description"].Replace("<br />", "");
 
             // Set rating
             if (GetRating(Convert.ToInt32(filteredGames[index]["id"])) == 0)
@@ -543,29 +539,26 @@ namespace Stedi {
         private void Stedi_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             // Switch controls
-            if (mode == 0)
-            {
-                if (e.Key == System.Windows.Input.Key.Up)
-                {
+            if (mode == 0) {
+                if (e.Key == System.Windows.Input.Key.Escape) {
+                    Environment.Exit(0);
+                }
+                if (e.Key == System.Windows.Input.Key.Up) {
                     selectedControl--;
                     if (selectedControl < 0) selectedControl = 2;
                 }
-                if (e.Key == System.Windows.Input.Key.Down)
-                {
+                if (e.Key == System.Windows.Input.Key.Down) {
                     selectedControl++;
                     if (selectedControl > 2) selectedControl = 0;
                 }
 
                 // Sorting method
-                if (selectedControl == 1)
-                {
-                    if (e.Key == System.Windows.Input.Key.Left)
-                    {
+                if (selectedControl == 1) {
+                    if (e.Key == System.Windows.Input.Key.Left) {
                         methodIndex--;
                         if (methodIndex < 0) methodIndex = sortMethods.Length - 1;
                     }
-                    if (e.Key == System.Windows.Input.Key.Right)
-                    {
+                    if (e.Key == System.Windows.Input.Key.Right) {
                         methodIndex++;
                         if (methodIndex >= sortMethods.Length) methodIndex = 0;
                     }
@@ -578,52 +571,41 @@ namespace Stedi {
                 }
 
                 // Selected game
-                if (selectedControl == 2)
-                {
-                    if (e.Key == System.Windows.Input.Key.Left)
-                    {
+                if (selectedControl == 2) {
+                    if (e.Key == System.Windows.Input.Key.Left) {
                         if (lbGames.SelectedIndex == 0) lbGames.SelectedIndex = lbGames.Items.Count - 1;
                         else lbGames.SelectedIndex--;
                     }
-                    if (e.Key == System.Windows.Input.Key.Right)
-                    {
+                    if (e.Key == System.Windows.Input.Key.Right) {
                         if (lbGames.SelectedIndex == lbGames.Items.Count - 1) lbGames.SelectedIndex = 0;
                         else lbGames.SelectedIndex++;
                     }
                 }
 
-                if (e.Key == System.Windows.Input.Key.Enter)
-                {
-                    if (selectedControl == 0)
-                    {
+                if (e.Key == System.Windows.Input.Key.Enter) {
+                    if (selectedControl == 0) {
                         // Show keyboard
                         mode = 2;
                         Dispatcher.Invoke(ShowKeyboard);
-                    }
-                    else if (selectedControl == 2) StartGame();
+                    } else if (selectedControl == 2) StartGame();
                 }
-            }
-
-            // Rating
-            else if(mode == 1)
-            {
+            } else if (mode == 1) {
                 // Change rating value
-                if (e.Key == System.Windows.Input.Key.Left)
-                {
-                    ratingValue-=0.1;
+                if (e.Key == System.Windows.Input.Key.Left) {
+                    ratingValue -= 0.1;
                     if (ratingValue < 1) ratingValue = 1;
                 }
-                if (e.Key == System.Windows.Input.Key.Right)
-                {
-                    ratingValue+=0.1;
+                if (e.Key == System.Windows.Input.Key.Right) {
+                    ratingValue += 0.1;
                     if (ratingValue > 5) ratingValue = 5;
                 }
 
                 // Rate and return to main menu
-                if (e.Key == System.Windows.Input.Key.Enter)
-                {
+                if (e.Key == System.Windows.Input.Key.Enter) {
                     // Insert rating
-                    Database.Query("INSERT INTO ratings (userid, gameid, rating) values(0, " + filteredGames[lbGames.SelectedIndex]["id"] + ", " + ratingValue.ToString().Replace(",", ".") + ")");
+                    Database.Query("INSERT INTO ratings (userid, gameid, rating) values(0, " +
+                                   filteredGames[lbGames.SelectedIndex]["id"] + ", " +
+                                   ratingValue.ToString().Replace(",", ".") + ")");
 
                     // Hide rating window
                     mode = 0;
@@ -633,66 +615,43 @@ namespace Stedi {
 
                 // Update rating window
                 txtRatingMessage.Text = "Rate this game! < " + ratingValue.ToString() + " >";
-            }
-
-            // Keyboard
-            else if (mode == 2)
-            {
-                if (e.Key == System.Windows.Input.Key.Left)
-                {
+            } else if (mode == 2) {
+                if (e.Key == System.Windows.Input.Key.Left) {
                     keyindex--;
                     if (keyindex < 0) keyindex = keyChars.Length - 1;
                 }
-                if (e.Key == System.Windows.Input.Key.Right)
-                {
+                if (e.Key == System.Windows.Input.Key.Right) {
                     keyindex++;
-                    if (keyindex > keyChars.Length - 1) keyindex = 0; ;
+                    if (keyindex > keyChars.Length - 1) keyindex = 0;
+                    ;
                 }
-                if (e.Key == System.Windows.Input.Key.Up)
-                {
-                    if (keyindex < 10)
-                    {
+                if (e.Key == System.Windows.Input.Key.Up) {
+                    if (keyindex < 10) {
                         keyindex += 29;
                         if (keyindex >= keyChars.Length) keyindex = keyChars.Length - 1;
-                    }
-                    else if (keyindex < 20)
-                    {
+                    } else if (keyindex < 20) {
                         keyindex -= 10;
-                    }
-                    else if (keyindex < 29)
-                    {
+                    } else if (keyindex < 29) {
                         keyindex -= 10;
-                    }
-                    else
-                    {
+                    } else {
                         keyindex -= 9;
                     }
                 }
-                if (e.Key == System.Windows.Input.Key.Down)
-                {
-                    if (keyindex < 10)
-                    {
+                if (e.Key == System.Windows.Input.Key.Down) {
+                    if (keyindex < 10) {
                         keyindex += 10;
-                    }
-                    else if (keyindex < 20)
-                    {
+                    } else if (keyindex < 20) {
                         keyindex += 10;
-                    }
-                    else if (keyindex < 29)
-                    {
+                    } else if (keyindex < 29) {
                         keyindex += 9;
-                    }
-                    else
-                    {
+                    } else {
                         keyindex -= 26;
                     }
                 }
-                if (e.Key == System.Windows.Input.Key.Enter)
-                {
+                if (e.Key == System.Windows.Input.Key.Enter) {
                     Dispatcher.Invoke(EnterKeyboard);
                 }
-                if (e.Key == System.Windows.Input.Key.Escape)
-                {
+                if (e.Key == System.Windows.Input.Key.Escape) {
                     Dispatcher.Invoke(HideKeyboard);
                     mode = 0;
                 }
